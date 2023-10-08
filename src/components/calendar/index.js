@@ -1,96 +1,70 @@
 import React, { useState } from "react";
 import styles from "./calendar.module.css";
 
-function CalendarDays(props) {
-  const firstDayOfMonth = new Date(
-    props.day.getFullYear(),
-    props.day.getMonth(),
-    1
-  );
-  const weekdayOfFirstDay = firstDayOfMonth.getDay();
-  let currentDays = [];
-
-  for (let day = 0; day < 42; day++) {
-    if (day === 0 && weekdayOfFirstDay === 0) {
-      firstDayOfMonth.setDate(firstDayOfMonth.getDate() - 7);
-    } else if (day === 0) {
-      firstDayOfMonth.setDate(
-        firstDayOfMonth.getDate() + (day - weekdayOfFirstDay)
-      );
-    } else {
-      firstDayOfMonth.setDate(firstDayOfMonth.getDate() + 1);
-    }
-
-    let calendarDay = {
-      currentMonth: firstDayOfMonth.getMonth() === props.day.getMonth(),
-      date: new Date(firstDayOfMonth),
-      month: firstDayOfMonth.getMonth(),
-      number: firstDayOfMonth.getDate(),
-      selected: firstDayOfMonth.toDateString() === props.day.toDateString(),
-      year: firstDayOfMonth.getFullYear(),
-    };
-
-    currentDays.push(calendarDay);
-  }
-
-  return (
-    <div className="table-content">
-      {currentDays.map((day) => {
-        return (
-          <div
-            className={
-              "calendar-day" +
-              (day.currentMonth ? " current" : "") +
-              (day.selected ? " selected" : "")
-            }
-            onClick={() => props.changeCurrentDay(day)}
-          >
-            <p>{day.number}</p>
-          </div>
-        );
-      })}
-    </div>
-  );
+function daysInMonth(month, year) {
+  return new Date(year, month, 0).getDate();
 }
 
-export default function Calendar() {
-  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+const CalendarMain = ({ currentDate, setCurrentDate }) => {
+  const localDate = {
+    number: currentDate.getDate(),
+    day: currentDate.getDay(),
+    month: currentDate.getMonth(),
+    year: currentDate.getFullYear(),
+  };
 
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const month = [];
 
-  const handleChangeDate = (day) => {
-    setCurrentDate(new Date(day.year, day.month, day.number));
+  localDate.number = localDate.number % 7;
+  localDate.number = localDate.number - localDate.day;
+  localDate.day = 0;
+
+  if (localDate.number < 1) {
+    localDate.number += daysInMonth(localDate.month, localDate.year);
+  }
+
+  for (let j = 0; j <= 5; j++) {
+    const oneWeek = [];
+    for (let i = 0; i <= 6; i++) {
+      if (
+        i > 0 &&
+        oneWeek[i - 1] > daysInMonth(localDate.month, localDate.year) - 1
+      ) {
+        localDate.number = 1 - i;
+      }
+      oneWeek.push(localDate.number + i);
+    }
+    localDate.number = oneWeek[6] + 1;
+    localDate.day = 0;
+    month.push(oneWeek);
+  }
+
+  const handleOnClickDay = (day) => {
+    console.log("sdk", day);
+    console.log("sdk", localDate);
+    console.log("sdk", currentDate);
   };
 
   return (
-    <div className="calendar">
-      <div className="calendar-header">
-        <h2>
-          {months[currentDate.getMonth()]} {currentDate.getFullYear()}
-        </h2>
-      </div>
-      <div className="calendar-body">
-        <div className="table-header">
-          {weekdays.map((head) => (
-            <div className={styles.weekHead}>{head}</div>
+    <>
+      {month.map((week) => (
+        <div className={styles.week}>
+          {week.map((day) => (
+            <div className={styles.day} onClick={() => handleOnClickDay(day)}>
+              {day}
+            </div>
           ))}
         </div>
-        <CalendarDays day={currentDate} changeCurrentDay={handleChangeDate} />
-      </div>
+      ))}
+    </>
+  );
+};
+
+export default function Calendar() {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  return (
+    <div className={styles.Calendar}>
+      <CalendarMain currentDate={currentDate} setCurrentDate={setCurrentDate} />
     </div>
   );
 }
