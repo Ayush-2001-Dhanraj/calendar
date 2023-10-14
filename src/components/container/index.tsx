@@ -14,26 +14,27 @@ export default function Container() {
   const createCalendarDate = () => {
     let firstDateOfWeek = new Date(selectedDate);
     let temp = firstDateOfWeek.getDate() - firstDateOfWeek.getDay();
+    // skew towards sunday
     firstDateOfWeek.setDate(
       firstDateOfWeek.getDate() - firstDateOfWeek.getDay()
     );
 
-    console.log("sdk temp", temp);
+    // factor to push back date
     let count = 0;
     while (temp > 0) {
       temp -= 7;
       count++;
     }
-    console.log("sdk before firstDateOfWeek", firstDateOfWeek);
-    console.log("sdk count", count);
+
+    // push back date
     firstDateOfWeek.setDate(firstDateOfWeek.getDate() - count * 7);
-    console.log("sdk after firstDateOfWeek", firstDateOfWeek);
 
     const month: Array<Array<Date>> = [];
 
     for (let j = 0; j < 6; j++) {
       let week = [firstDateOfWeek];
       for (let i = 0; i < 6; i++) {
+        // increase date by 1
         const localDate = new Date(
           week[i].getFullYear(),
           week[i].getMonth(),
@@ -41,8 +42,9 @@ export default function Container() {
         );
         week.push(localDate);
       }
-      console.log("sdk week", week);
+
       month.push(week);
+      // firstDateOfWeek is last week last date + 1
       firstDateOfWeek = new Date(
         week[6].getFullYear(),
         week[6].getMonth(),
@@ -50,7 +52,6 @@ export default function Container() {
       );
     }
 
-    console.log("sdk month", month);
     setCalendarData(month);
   };
 

@@ -1,0 +1,18 @@
+.dayOfWeek {
+    padding: 10px;
+    border: 1px solid rgba(1, 1, 1, 0.1);
+    flex: 1;
+    height: 100px;
+}
+
+.dayOfWeek:hover {
+    background-color: rgba(1, 1, 1, 0.1);
+}
+
+.daysNotOfCurrentMonth {
+    color: rgba(1, 1, 1, 0.2);
+}
+
+.selectedDayOfWeek {
+    border: 2px solid rgba(1, 1, 1, 1);
+}
