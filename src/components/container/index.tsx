@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
 import styles from "./container.module.css";
 import Month from "../monthView";
+import { calendarViews, changeMonthControls } from "../../common";
+import Header from "../header";
+import WeekView from "../weekView";
 
 export default function Container() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   const [calendarData, setCalendarData] = useState<Array<Array<Date>>>([]);
 
+  const [viewSelected, setViewSelected] = useState<calendarViews>(
+    calendarViews.WEEK
+  );
+
   const handleChangeSelectedDate = (date: Date) => {
     setSelectedDate(date);
   };
 
-  const createCalendarDate = () => {
+  const createMonthData = () => {
     if (
       calendarData[2] &&
       calendarData[2][6] &&
@@ -62,18 +69,53 @@ export default function Container() {
 
     setCalendarData(month);
   };
+  const createWeekData = () => {};
+  const createYearData = () => {};
+
+  const createCalendarDate = () => {
+    if (viewSelected === calendarViews.MONTH) {
+      createMonthData();
+    } else if (viewSelected === calendarViews.WEEK) {
+      createWeekData();
+    } else if (viewSelected === calendarViews.YEAR) {
+      createYearData();
+    }
+  };
+
+  const handleChangeMonth = (control: changeMonthControls) => {
+    const newMonth =
+      control === changeMonthControls.NEXT
+        ? selectedDate.getMonth() + 1
+        : selectedDate.getMonth() - 1;
+    const newSelectedDate = new Date(selectedDate.getFullYear(), newMonth, 1);
+    handleChangeSelectedDate(newSelectedDate);
+  };
+
+  const onClickNext = () => handleChangeMonth(changeMonthControls.NEXT);
+  const onClickBack = () => handleChangeMonth(changeMonthControls.BACK);
 
   useEffect(() => {
     createCalendarDate();
-  }, [selectedDate]);
+  }, [selectedDate, viewSelected]);
 
   return (
     <div className={styles.container}>
-      <Month
+      <Header
         selectedDate={selectedDate}
-        calendarData={calendarData}
-        onChangeDate={handleChangeSelectedDate}
+        onClickNext={onClickNext}
+        onClickBack={onClickBack}
+        viewSelected={viewSelected}
+        setViewSelected={setViewSelected}
       />
+      {viewSelected === calendarViews.WEEK && <WeekView />}
+      {viewSelected === calendarViews.MONTH && (
+        <Month
+          selectedDate={selectedDate}
+          calendarData={calendarData}
+          onChangeDate={handleChangeSelectedDate}
+        />
+      )}
+      {viewSelected === calendarViews.YEAR && <WeekView />}
     </div>
   );
 }

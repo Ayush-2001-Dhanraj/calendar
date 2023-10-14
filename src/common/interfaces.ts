@@ -1,3 +1,6 @@
+import { Dispatch, SetStateAction } from "react";
+import { calendarViews } from ".";
+
 export interface MonthProps {
   selectedDate: Date;
   onChangeDate: (arg0: Date) => void;
@@ -14,4 +17,12 @@ export interface DayCellProps {
   selectedDate: Date;
   dayOfWeek: Date;
   onChangeDate: (arg0: Date) => void;
+}
+
+export interface HeaderProps {
+  selectedDate: Date;
+  onClickNext: () => void;
+  onClickBack: () => void;
+  setViewSelected: Dispatch<SetStateAction<calendarViews>>;
+  viewSelected: calendarViews;
 }

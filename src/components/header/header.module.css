@@ -1,0 +1,39 @@
+.monthHead {
+    padding: 10px;
+    font-size: larger;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .btns {
+        outline: none;
+        padding: 10px 20px;
+        border: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fff;
+        color: rgba(1, 1, 1, 0.2);
+    }
+
+    .outline {
+        border: 1px solid rgba(1, 1, 1, 0.2);
+    }
+
+    .btns:hover {
+        color: rgba(1, 1, 1, 0.5);
+    }
+
+    .actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        padding-right: 10px;
+    }
+}

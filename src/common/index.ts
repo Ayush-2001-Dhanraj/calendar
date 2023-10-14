@@ -18,3 +18,9 @@ export enum changeMonthControls {
   NEXT = "NEXT",
   BACK = "BACK",
 }
+
+export enum calendarViews {
+  WEEK = "WEEK",
+  MONTH = "MONTH",
+  YEAR = "YEAR",
+}
