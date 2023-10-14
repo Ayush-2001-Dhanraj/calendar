@@ -1,0 +1,54 @@
+.month {
+
+    .monthHead {
+        padding: 10px;
+        font-size: larger;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .monthChangers {
+            outline: none;
+            border: 1px solid rgba(1, 1, 1, 0.1);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            color: rgba(1, 1, 1, 0.2);
+        }
+
+        .monthChangers:hover {
+            color: rgba(1, 1, 1, 0.5);
+            border: 1px solid rgba(1, 1, 1, 0.5);
+        }
+    }
+
+    .week {
+        display: flex;
+    }
+
+    .headsOfWeek,
+    .dayOfWeek {
+        width: 100px;
+        padding: 10px;
+        border: 1px solid rgba(1, 1, 1, 0.1);
+        flex: 1;
+    }
+
+    .dayOfWeek {
+        height: 100px;
+    }
+
+    .dayOfWeek:hover {
+        background-color: rgba(1, 1, 1, 0.1);
+    }
+
+    .daysNotOfCurrentMonth {
+        color: rgba(1, 1, 1, 0.2);
+    }
+
+    .selectedDayOfWeek {
+        border: 2px solid rgba(1, 1, 1, 1);
+    }
+}
