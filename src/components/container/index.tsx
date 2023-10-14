@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./container.module.css";
-import Month from "../month";
+import Month from "../monthView";
 
 export default function Container() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -12,6 +12,14 @@ export default function Container() {
   };
 
   const createCalendarDate = () => {
+    if (
+      calendarData[2] &&
+      calendarData[2][6] &&
+      calendarData[2][6].getMonth() === selectedDate.getMonth()
+    ) {
+      return;
+    }
+
     let firstDateOfWeek = new Date(selectedDate);
     let temp = firstDateOfWeek.getDate() - firstDateOfWeek.getDay();
     // skew towards sunday
