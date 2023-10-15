@@ -4,6 +4,7 @@ import Month from "../monthView";
 import { calendarViews, changeMonthControls } from "../../common";
 import Header from "../header";
 import WeekView from "../weekView";
+import YearView from "../yearView";
 
 export default function Container() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -93,6 +94,7 @@ export default function Container() {
 
   const onClickNext = () => handleChangeMonth(changeMonthControls.NEXT);
   const onClickBack = () => handleChangeMonth(changeMonthControls.BACK);
+  const onClickToday = () => handleChangeSelectedDate(new Date());
 
   useEffect(() => {
     createCalendarDate();
@@ -105,6 +107,7 @@ export default function Container() {
         onClickNext={onClickNext}
         onClickBack={onClickBack}
         viewSelected={viewSelected}
+        onClickToday={onClickToday}
         setViewSelected={setViewSelected}
       />
       {viewSelected === calendarViews.WEEK && <WeekView />}
@@ -115,7 +118,7 @@ export default function Container() {
           onChangeDate={handleChangeSelectedDate}
         />
       )}
-      {viewSelected === calendarViews.YEAR && <WeekView />}
+      {viewSelected === calendarViews.YEAR && <YearView />}
     </div>
   );
 }

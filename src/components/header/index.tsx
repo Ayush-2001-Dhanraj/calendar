@@ -10,10 +10,16 @@ export default function Header({
   onClickBack,
   viewSelected,
   setViewSelected,
+  onClickToday,
 }: HeaderProps) {
   return (
     <div className={styles.monthHead}>
-      <button className={`${styles.btns} ${styles.outline}`}>Today</button>
+      <button
+        className={`${styles.btns} ${styles.outline}`}
+        onClick={onClickToday}
+      >
+        Today
+      </button>
       <div className={styles.actions}>
         <button onClick={onClickBack} className={styles.btns}>
           <HiOutlineArrowLeft />

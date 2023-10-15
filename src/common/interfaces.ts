@@ -22,6 +22,7 @@ export interface DayCellProps {
 export interface HeaderProps {
   selectedDate: Date;
   onClickNext: () => void;
+  onClickToday: () => void;
   onClickBack: () => void;
   setViewSelected: Dispatch<SetStateAction<calendarViews>>;
   viewSelected: calendarViews;

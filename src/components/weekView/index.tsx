@@ -2,5 +2,5 @@ import React from "react";
 import styles from "./weekView.module.css";
 
 export default function WeekView() {
-  return <div className={styles.weekView}>WeekView</div>;
+  return <div className={styles.weekView}>Week View</div>;
 }
