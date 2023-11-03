@@ -1,24 +1,14 @@
 import React, { memo } from "react";
-import styles from "./month.module.css";
-import { weekHeads } from "../../common/index";
+import WeekHeads from "../weekHeads";
 import { MonthProps } from "../../common/interfaces";
+
 import Week from "./week";
 
-function Month({ selectedDate, onChangeDate, calendarData }: MonthProps) {
-  const WeekHeadsSection = (
-    <div className={styles.week}>
-      {weekHeads.map((head: string) => (
-        <div key={head} className={styles.headsOfWeek}>
-          {head}
-        </div>
-      ))}
-    </div>
-  );
-
+function Month({ selectedDate, onChangeDate, month }: MonthProps) {
   const MonthSection = () => {
     return (
       <>
-        {calendarData.map((week, index) => (
+        {month.map((week, index) => (
           <Week
             key={`week ${index + 1}`}
             week={week}
@@ -31,10 +21,10 @@ function Month({ selectedDate, onChangeDate, calendarData }: MonthProps) {
   };
 
   return (
-    <div className={styles.month}>
-      {WeekHeadsSection}
+    <>
+      <WeekHeads />
       <MonthSection />
-    </div>
+    </>
   );
 }
 

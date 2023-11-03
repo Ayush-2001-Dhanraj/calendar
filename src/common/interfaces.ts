@@ -1,16 +1,21 @@
 import { Dispatch, SetStateAction } from "react";
 import { calendarViews } from ".";
 
-export interface MonthProps {
+export interface CommonViewProps {
   selectedDate: Date;
   onChangeDate: (arg0: Date) => void;
-  calendarData: Array<Array<Date>>;
 }
 
-export interface WeekProps {
+export interface MonthProps extends CommonViewProps {
+  month: Array<Array<Date>>;
+}
+
+export interface WeekProps extends CommonViewProps {
   week: Array<Date>;
-  selectedDate: Date;
-  onChangeDate: (arg0: Date) => void;
+}
+
+export interface YearProps extends CommonViewProps {
+  year: Array<Array<Array<Date>>>;
 }
 
 export interface DayCellProps {

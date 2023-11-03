@@ -9,7 +9,9 @@ import YearView from "../yearView";
 export default function Container() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-  const [calendarData, setCalendarData] = useState<any>([]);
+  const [weekData, setWeekData] = useState<Array<Date>>([]);
+  const [monthData, setMonthData] = useState<Array<Array<Date>>>([]);
+  const [yearData, setYearData] = useState<Array<Array<Array<Date>>>>([]);
 
   const [viewSelected, setViewSelected] = useState<calendarViews>(
     calendarViews.WEEK
@@ -19,9 +21,9 @@ export default function Container() {
     setSelectedDate(date);
   };
 
-  const createWeekData = () => {
+  const createWeekData = (existingDate: Date) => {
     console.log("week");
-    let firstDayOfWeek = new Date(selectedDate);
+    let firstDayOfWeek = new Date(existingDate);
     firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay());
     const week: Array<Date> = [firstDayOfWeek];
 
@@ -33,7 +35,7 @@ export default function Container() {
       );
       week.push(newDate);
     }
-    // console.log(week);
+    return week;
   };
 
   const createMonthData = (existingDate: Date) => {
@@ -95,20 +97,21 @@ export default function Container() {
   const createCalendarDate = () => {
     if (viewSelected === calendarViews.MONTH) {
       if (
-        calendarData[2] &&
-        calendarData[2][6] &&
-        calendarData[2][6].getMonth() === selectedDate.getMonth()
+        monthData[2] &&
+        monthData[2][6] &&
+        monthData[2][6].getMonth() === selectedDate.getMonth()
       ) {
         return;
       }
       const updatedData: Array<Array<Date>> = createMonthData(selectedDate);
-      setCalendarData(updatedData);
+      setMonthData(updatedData);
     } else if (viewSelected === calendarViews.WEEK) {
-      createWeekData();
+      const updatedData: Array<Date> = createWeekData(selectedDate);
+      setWeekData(updatedData);
     } else if (viewSelected === calendarViews.YEAR) {
       const updatedData: Array<Array<Array<Date>>> =
         createYearData(selectedDate);
-      setCalendarData(updatedData);
+      setYearData(updatedData);
     }
   };
 
@@ -139,16 +142,26 @@ export default function Container() {
         onClickToday={onClickToday}
         setViewSelected={setViewSelected}
       />
-      {viewSelected === calendarViews.WEEK && <WeekView />}
+      {viewSelected === calendarViews.WEEK && (
+        <WeekView
+          week={weekData}
+          selectedDate={selectedDate}
+          onChangeDate={handleChangeSelectedDate}
+        />
+      )}
       {viewSelected === calendarViews.MONTH && (
         <Month
+          month={monthData}
           selectedDate={selectedDate}
-          calendarData={calendarData}
           onChangeDate={handleChangeSelectedDate}
         />
       )}
       {viewSelected === calendarViews.YEAR && (
-        <YearView calendarData={calendarData} />
+        <YearView
+          year={yearData}
+          selectedDate={selectedDate}
+          onChangeDate={handleChangeSelectedDate}
+        />
       )}
     </div>
   );

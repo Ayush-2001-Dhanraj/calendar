@@ -1,0 +1,33 @@
+.mainContainer {
+    display: flex;
+}
+
+.currentDate {
+    box-shadow: 0 4px 12px #000;
+}
+
+.DateNumberContainer {
+    flex: 1;
+    position: relative;
+}
+
+.DateNumber {
+    padding: 15px;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    color: #fff;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.DateNumber:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}

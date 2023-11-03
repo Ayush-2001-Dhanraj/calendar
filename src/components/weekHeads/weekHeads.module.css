@@ -1,0 +1,14 @@
+.week {
+    display: flex;
+}
+
+.headsOfWeek {
+    padding: 10px;
+    border: 1px solid rgba(1, 1, 1, 0.1);
+    flex: 1;
+}
+
+.weekView {
+    text-align: center;
+    padding-bottom: 20px;
+}
