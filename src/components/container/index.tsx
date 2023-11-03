@@ -20,6 +20,7 @@ export default function Container() {
   };
 
   const createMonthData = () => {
+    // date change in current month
     if (
       calendarData[2] &&
       calendarData[2][6] &&
@@ -70,8 +71,27 @@ export default function Container() {
 
     setCalendarData(month);
   };
-  const createWeekData = () => {};
-  const createYearData = () => {};
+
+  const createWeekData = () => {
+    console.log("week");
+    let firstDayOfWeek = new Date(selectedDate);
+    firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay());
+    const week: Array<Date> = [firstDayOfWeek];
+
+    for (let i = 0; i < 6; i++) {
+      const newDate = new Date(
+        week[i].getFullYear(),
+        week[i].getMonth(),
+        week[i].getDate() + 1
+      );
+      week.push(newDate);
+    }
+    console.log(week);
+  };
+
+  const createYearData = () => {
+    console.log("year");
+  };
 
   const createCalendarDate = () => {
     if (viewSelected === calendarViews.MONTH) {
