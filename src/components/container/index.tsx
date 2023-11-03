@@ -9,7 +9,7 @@ import YearView from "../yearView";
 export default function Container() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-  const [calendarData, setCalendarData] = useState<Array<Array<Date>>>([]);
+  const [calendarData, setCalendarData] = useState<any>([]);
 
   const [viewSelected, setViewSelected] = useState<calendarViews>(
     calendarViews.WEEK
@@ -19,17 +19,25 @@ export default function Container() {
     setSelectedDate(date);
   };
 
-  const createMonthData = () => {
-    // date change in current month
-    if (
-      calendarData[2] &&
-      calendarData[2][6] &&
-      calendarData[2][6].getMonth() === selectedDate.getMonth()
-    ) {
-      return;
-    }
+  const createWeekData = () => {
+    console.log("week");
+    let firstDayOfWeek = new Date(selectedDate);
+    firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay());
+    const week: Array<Date> = [firstDayOfWeek];
 
-    let firstDateOfWeek = new Date(selectedDate);
+    for (let i = 0; i < 6; i++) {
+      const newDate = new Date(
+        week[i].getFullYear(),
+        week[i].getMonth(),
+        week[i].getDate() + 1
+      );
+      week.push(newDate);
+    }
+    // console.log(week);
+  };
+
+  const createMonthData = (existingDate: Date) => {
+    let firstDateOfWeek = new Date(existingDate);
     let temp = firstDateOfWeek.getDate() - firstDateOfWeek.getDay();
     // skew towards sunday
     firstDateOfWeek.setDate(
@@ -69,37 +77,38 @@ export default function Container() {
       );
     }
 
-    setCalendarData(month);
+    return month;
   };
 
-  const createWeekData = () => {
-    console.log("week");
-    let firstDayOfWeek = new Date(selectedDate);
-    firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay());
-    const week: Array<Date> = [firstDayOfWeek];
+  const createYearData = (existingDate: Date) => {
+    console.log("Year");
+    const year: Array<Array<Array<Date>>> = [];
 
-    for (let i = 0; i < 6; i++) {
-      const newDate = new Date(
-        week[i].getFullYear(),
-        week[i].getMonth(),
-        week[i].getDate() + 1
-      );
-      week.push(newDate);
+    for (let i = 0; i < 12; i++) {
+      const firstDate = new Date(existingDate.getFullYear(), 0 + i, 1);
+      const month: Array<Array<Date>> | undefined = createMonthData(firstDate);
+      year.push(month);
     }
-    console.log(week);
-  };
-
-  const createYearData = () => {
-    console.log("year");
+    return year;
   };
 
   const createCalendarDate = () => {
     if (viewSelected === calendarViews.MONTH) {
-      createMonthData();
+      if (
+        calendarData[2] &&
+        calendarData[2][6] &&
+        calendarData[2][6].getMonth() === selectedDate.getMonth()
+      ) {
+        return;
+      }
+      const updatedData: Array<Array<Date>> = createMonthData(selectedDate);
+      setCalendarData(updatedData);
     } else if (viewSelected === calendarViews.WEEK) {
       createWeekData();
     } else if (viewSelected === calendarViews.YEAR) {
-      createYearData();
+      const updatedData: Array<Array<Array<Date>>> =
+        createYearData(selectedDate);
+      setCalendarData(updatedData);
     }
   };
 
@@ -138,7 +147,9 @@ export default function Container() {
           onChangeDate={handleChangeSelectedDate}
         />
       )}
-      {viewSelected === calendarViews.YEAR && <YearView />}
+      {viewSelected === calendarViews.YEAR && (
+        <YearView calendarData={calendarData} />
+      )}
     </div>
   );
 }
