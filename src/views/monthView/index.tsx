@@ -1,10 +1,10 @@
 import React, { memo } from "react";
-import WeekHeads from "../weekHeads";
 import { MonthProps } from "../../common/interfaces";
 
 import Week from "./week";
+import WeekHeads from "../../components/weekHeads";
 
-function Month({ selectedDate, onChangeDate, month }: MonthProps) {
+function MonthView({ selectedDate, onChangeDate, month }: MonthProps) {
   const MonthSection = () => {
     return (
       <>
@@ -28,4 +28,4 @@ function Month({ selectedDate, onChangeDate, month }: MonthProps) {
   );
 }
 
-export default memo(Month);
+export default memo(MonthView);

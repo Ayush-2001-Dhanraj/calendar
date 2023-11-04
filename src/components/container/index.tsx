@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styles from "./container.module.css";
-import Month from "../monthView";
 import { calendarViews, changeMonthControls } from "../../common";
 import Header from "../header";
-import WeekView from "../weekView";
-import YearView from "../yearView";
+import WeekView from "../../views/weekView";
+import YearView from "../../views/yearView";
+import MonthView from "../../views/monthView";
 
 export default function Container() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -18,16 +18,10 @@ export default function Container() {
   );
 
   const handleChangeSelectedDate = (date: Date) => {
-    if (
-      date.getDay() !== selectedDate.getDay() ||
-      date.getMonth() !== selectedDate.getMonth() ||
-      date.getFullYear() !== selectedDate.getFullYear()
-    )
-      setSelectedDate(date);
+    setSelectedDate(date);
   };
 
   const createWeekData = (existingDate: Date) => {
-    console.log("week");
     let firstDayOfWeek = new Date(existingDate);
     firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay());
     const week: Array<Date> = [firstDayOfWeek];
@@ -88,7 +82,6 @@ export default function Container() {
   };
 
   const createYearData = (existingDate: Date) => {
-    console.log("Year");
     const year: Array<Array<Array<Date>>> = [];
 
     for (let i = 0; i < 12; i++) {
@@ -182,7 +175,7 @@ export default function Container() {
         />
       )}
       {viewSelected === calendarViews.MONTH && (
-        <Month
+        <MonthView
           month={monthData}
           selectedDate={selectedDate}
           onChangeDate={handleChangeSelectedDate}

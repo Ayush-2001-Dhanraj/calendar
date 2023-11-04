@@ -1,8 +1,8 @@
 import React from "react";
 import styles from "./weekView.module.css";
 import { WeekProps } from "../../common/interfaces";
-import WeekHeads from "../weekHeads";
 import { calendarViews, monthHeads } from "../../common";
+import WeekHeads from "../../components/weekHeads";
 
 export default function WeekView({
   week,
@@ -23,7 +23,9 @@ export default function WeekView({
             >
               <span
                 className={`${styles.DateNumber} ${
-                  new Date().getDate() === dayOfWeek.getDate()
+                  new Date().getDate() === dayOfWeek.getDate() &&
+                  new Date().getFullYear() === dayOfWeek.getFullYear() &&
+                  new Date().getMonth() === dayOfWeek.getMonth()
                     ? styles.currentDate
                     : ""
                 }  ${
