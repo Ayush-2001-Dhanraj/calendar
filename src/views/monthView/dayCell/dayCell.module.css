@@ -2,6 +2,13 @@
     padding: 10px;
     border: 1px solid rgba(1, 1, 1, 0.1);
     flex: 1;
+}
+
+.heightAuto {
+    height: auto;
+}
+
+.height100 {
     height: 100px;
 }
 

@@ -138,6 +138,14 @@ export default function Container() {
         handleChangeSelectedDate(newSelectedDate);
         break;
       case calendarViews.YEAR:
+        const newYear = new Date(
+          control === changeMonthControls.NEXT
+            ? selectedDate.getFullYear() + 1
+            : selectedDate.getFullYear() - 1,
+          0,
+          1
+        );
+        handleChangeSelectedDate(newYear);
         break;
 
       default:
@@ -166,6 +174,7 @@ export default function Container() {
         viewSelected={viewSelected}
         onClickToday={onClickToday}
         setViewSelected={setViewSelected}
+        week={weekData}
       />
       {viewSelected === calendarViews.WEEK && (
         <WeekView

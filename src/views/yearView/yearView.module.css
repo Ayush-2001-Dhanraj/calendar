@@ -1,0 +1,10 @@
+.yearView {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.monthContainer {
+    width: 500px;
+    flex: 1;
+    padding: 10px;
+}

@@ -8,10 +8,13 @@ export interface CommonViewProps {
 
 export interface MonthProps extends CommonViewProps {
   month: Array<Array<Date>>;
+  showMonth?: boolean;
+  heightAuto?: boolean;
 }
 
 export interface WeekProps extends CommonViewProps {
   week: Array<Date>;
+  heightAuto?: boolean;
 }
 
 export interface YearProps extends CommonViewProps {
@@ -22,6 +25,7 @@ export interface DayCellProps {
   selectedDate: Date;
   dayOfWeek: Date;
   onChangeDate: (arg0: Date) => void;
+  heightAuto?: boolean;
 }
 
 export interface HeaderProps {
@@ -31,4 +35,5 @@ export interface HeaderProps {
   onClickBack: () => void;
   setViewSelected: Dispatch<SetStateAction<calendarViews>>;
   viewSelected: calendarViews;
+  week: Array<Date>;
 }

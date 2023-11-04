@@ -4,7 +4,12 @@ import { WeekProps } from "../../../common/interfaces";
 import DayCell from "../dayCell";
 import { monthHeads } from "../../../common";
 
-export default function Week({ week, selectedDate, onChangeDate }: WeekProps) {
+export default function Week({
+  week,
+  selectedDate,
+  onChangeDate,
+  heightAuto,
+}: WeekProps) {
   return (
     <div className={styles.week}>
       {week.map((dayOfWeek, index) => (
@@ -15,6 +20,7 @@ export default function Week({ week, selectedDate, onChangeDate }: WeekProps) {
           dayOfWeek={dayOfWeek}
           selectedDate={selectedDate}
           onChangeDate={onChangeDate}
+          heightAuto={heightAuto}
         />
       ))}
     </div>

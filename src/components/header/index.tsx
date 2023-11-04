@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 import styles from "./header.module.css";
 import { calendarViews, monthHeads } from "../../common";
@@ -11,7 +11,38 @@ export default function Header({
   viewSelected,
   setViewSelected,
   onClickToday,
+  week,
 }: HeaderProps) {
+  const [headerText, setHeaderText] = useState<string>(
+    `${monthHeads[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`
+  );
+
+  useEffect(() => {
+    switch (viewSelected) {
+      case calendarViews.WEEK:
+        if (week[0] && week[6])
+          if (week[0].getMonth() !== week[6].getMonth())
+            setHeaderText(
+              `${monthHeads[week[0].getMonth()]} - ${
+                monthHeads[week[6].getMonth()]
+              }`
+            );
+          else setHeaderText(`${monthHeads[week[0].getMonth()]}`);
+        break;
+      case calendarViews.MONTH:
+        setHeaderText(
+          `${monthHeads[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`
+        );
+        break;
+      case calendarViews.YEAR:
+        setHeaderText(`${selectedDate.getFullYear()}`);
+        break;
+
+      default:
+        break;
+    }
+  }, [selectedDate, viewSelected, week]);
+
   return (
     <div className={styles.monthHead}>
       <button
@@ -24,7 +55,7 @@ export default function Header({
         <button onClick={onClickBack} className={styles.btns}>
           <HiOutlineArrowLeft />
         </button>
-        {`${monthHeads[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`}
+        {headerText}
         <button onClick={onClickNext} className={styles.btns}>
           <HiOutlineArrowRight />
         </button>

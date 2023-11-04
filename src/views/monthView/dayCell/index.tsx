@@ -5,6 +5,7 @@ export default function DayCell({
   selectedDate,
   dayOfWeek,
   onChangeDate,
+  heightAuto,
 }: DayCellProps) {
   const dayCellStyles = `${styles.dayOfWeek} ${
     dayOfWeek.getMonth() !== selectedDate.getMonth()
@@ -20,7 +21,7 @@ export default function DayCell({
     dayOfWeek.getDate() === new Date().getDate()
       ? styles.today
       : ""
-  }`;
+  } ${heightAuto ? styles.heightAuto : styles.height100}`;
 
   return (
     <div className={dayCellStyles} onClick={() => onChangeDate(dayOfWeek)}>
