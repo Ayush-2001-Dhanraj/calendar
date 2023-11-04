@@ -18,7 +18,12 @@ export default function Container() {
   );
 
   const handleChangeSelectedDate = (date: Date) => {
-    setSelectedDate(date);
+    if (
+      date.getDay() !== selectedDate.getDay() ||
+      date.getMonth() !== selectedDate.getMonth() ||
+      date.getFullYear() !== selectedDate.getFullYear()
+    )
+      setSelectedDate(date);
   };
 
   const createWeekData = (existingDate: Date) => {
@@ -116,12 +121,35 @@ export default function Container() {
   };
 
   const handleChangeMonth = (control: changeMonthControls) => {
-    const newMonth =
-      control === changeMonthControls.NEXT
-        ? selectedDate.getMonth() + 1
-        : selectedDate.getMonth() - 1;
-    const newSelectedDate = new Date(selectedDate.getFullYear(), newMonth, 1);
-    handleChangeSelectedDate(newSelectedDate);
+    switch (viewSelected) {
+      case calendarViews.WEEK:
+        const delta = control === changeMonthControls.NEXT ? 7 : -7;
+
+        const newWeek = new Date(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          selectedDate.getDate() - selectedDate.getDay() + delta
+        );
+        handleChangeSelectedDate(newWeek);
+        break;
+      case calendarViews.MONTH:
+        const newMonth =
+          control === changeMonthControls.NEXT
+            ? selectedDate.getMonth() + 1
+            : selectedDate.getMonth() - 1;
+        const newSelectedDate = new Date(
+          selectedDate.getFullYear(),
+          newMonth,
+          1
+        );
+        handleChangeSelectedDate(newSelectedDate);
+        break;
+      case calendarViews.YEAR:
+        break;
+
+      default:
+        break;
+    }
   };
 
   const onClickNext = () => handleChangeMonth(changeMonthControls.NEXT);
@@ -130,7 +158,11 @@ export default function Container() {
 
   useEffect(() => {
     createCalendarDate();
-  }, [selectedDate, viewSelected]);
+  }, [selectedDate]);
+
+  useEffect(() => {
+    setSelectedDate(new Date());
+  }, [viewSelected]);
 
   return (
     <div className={styles.container}>

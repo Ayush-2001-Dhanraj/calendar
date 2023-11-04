@@ -4,7 +4,11 @@ import { WeekProps } from "../../common/interfaces";
 import WeekHeads from "../weekHeads";
 import { calendarViews, monthHeads } from "../../common";
 
-export default function WeekView({ week, selectedDate }: WeekProps) {
+export default function WeekView({
+  week,
+  selectedDate,
+  onChangeDate,
+}: WeekProps) {
   return (
     <div className={styles.weekView}>
       <WeekHeads view={calendarViews.WEEK} />
@@ -19,13 +23,19 @@ export default function WeekView({ week, selectedDate }: WeekProps) {
             >
               <span
                 className={`${styles.DateNumber} ${
-                  selectedDate.getDate() === dayOfWeek.getDate()
+                  new Date().getDate() === dayOfWeek.getDate()
                     ? styles.currentDate
                     : ""
+                }  ${
+                  selectedDate.getDate() === dayOfWeek.getDate()
+                    ? styles.selectedDate
+                    : ""
                 }`}
+                onClick={() => onChangeDate(dayOfWeek)}
               >
                 {dayOfWeek.getDate()}
               </span>
+              <div className={styles.timeZoneSection}> </div>
             </div>
           );
         })}

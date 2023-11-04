@@ -15,6 +15,11 @@ export default function DayCell({
     dayOfWeek.getDate() === selectedDate.getDate()
       ? styles.selectedDayOfWeek
       : ""
+  } ${
+    dayOfWeek.getMonth() === new Date().getMonth() &&
+    dayOfWeek.getDate() === new Date().getDate()
+      ? styles.today
+      : ""
   }`;
 
   return (

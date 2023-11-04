@@ -14,5 +14,9 @@
 }
 
 .selectedDayOfWeek {
+    border: 2px solid rgba(1, 1, 1, 0.3);
+}
+
+.today {
     border: 2px solid rgba(1, 1, 1, 1);
 }
