@@ -159,11 +159,11 @@ export default function Container() {
 
   useEffect(() => {
     createCalendarDate();
-  }, [selectedDate]);
+  }, [selectedDate, viewSelected]);
 
-  useEffect(() => {
-    setSelectedDate(new Date());
-  }, [viewSelected]);
+  // useEffect(() => {
+  //   setSelectedDate(new Date());
+  // }, [viewSelected]);
 
   return (
     <div className={styles.container}>

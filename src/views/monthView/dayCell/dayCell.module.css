@@ -1,7 +1,8 @@
 .dayOfWeek {
     padding: 10px;
-    border: 1px solid rgba(1, 1, 1, 0.1);
+    border: 2px solid rgba(1, 1, 1, 0.1);
     flex: 1;
+    cursor: pointer;
 }
 
 .heightAuto {
@@ -25,5 +26,10 @@
 }
 
 .today {
-    border: 2px solid rgba(1, 1, 1, 1);
+    color: #fff;
+    background-color: #000;
+}
+
+.today:hover {
+    background-color: #000;
 }

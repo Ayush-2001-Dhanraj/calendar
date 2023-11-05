@@ -8,7 +8,7 @@ export default function DayCell({
   heightAuto,
 }: DayCellProps) {
   const dayCellStyles = `${styles.dayOfWeek} ${
-    dayOfWeek.getMonth() !== selectedDate.getMonth()
+    dayOfWeek.getMonth() !== selectedDate.getMonth() && !heightAuto
       ? styles.daysNotOfCurrentMonth
       : ""
   } ${
