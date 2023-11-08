@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./container.module.css";
 import { calendarViews, changeMonthControls } from "../../common";
 import Header from "../header";
 import WeekView from "../../views/weekView";
 import YearView from "../../views/yearView";
 import MonthView from "../../views/monthView";
+import { createYearData } from "../../utils/createYearData";
+import { createWeekData } from "../../utils/createWeekData";
+import { createMonthData } from "../../utils/createMonthData";
 
 export default function Container() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -21,78 +24,7 @@ export default function Container() {
     setSelectedDate(date);
   };
 
-  const createWeekData = (existingDate: Date) => {
-    let firstDayOfWeek = new Date(existingDate);
-    firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay());
-    const week: Array<Date> = [firstDayOfWeek];
-
-    for (let i = 0; i < 6; i++) {
-      const newDate = new Date(
-        week[i].getFullYear(),
-        week[i].getMonth(),
-        week[i].getDate() + 1
-      );
-      week.push(newDate);
-    }
-    return week;
-  };
-
-  const createMonthData = (existingDate: Date) => {
-    let firstDateOfWeek = new Date(existingDate);
-    let temp = firstDateOfWeek.getDate() - firstDateOfWeek.getDay();
-    // skew towards sunday
-    firstDateOfWeek.setDate(
-      firstDateOfWeek.getDate() - firstDateOfWeek.getDay()
-    );
-
-    // factor to push back date
-    let count = 0;
-    while (temp > 0) {
-      temp -= 7;
-      count++;
-    }
-
-    // push back date
-    firstDateOfWeek.setDate(firstDateOfWeek.getDate() - count * 7);
-
-    const month: Array<Array<Date>> = [];
-
-    for (let j = 0; j < 6; j++) {
-      let week = [firstDateOfWeek];
-      for (let i = 0; i < 6; i++) {
-        // increase date by 1
-        const localDate = new Date(
-          week[i].getFullYear(),
-          week[i].getMonth(),
-          week[i].getDate() + 1
-        );
-        week.push(localDate);
-      }
-
-      month.push(week);
-      // firstDateOfWeek is last week last date + 1
-      firstDateOfWeek = new Date(
-        week[6].getFullYear(),
-        week[6].getMonth(),
-        week[6].getDate() + 1
-      );
-    }
-
-    return month;
-  };
-
-  const createYearData = (existingDate: Date) => {
-    const year: Array<Array<Array<Date>>> = [];
-
-    for (let i = 0; i < 12; i++) {
-      const firstDate = new Date(existingDate.getFullYear(), 0 + i, 1);
-      const month: Array<Array<Date>> | undefined = createMonthData(firstDate);
-      year.push(month);
-    }
-    return year;
-  };
-
-  const createCalendarDate = () => {
+  const createCalendarDate = useCallback(() => {
     if (viewSelected === calendarViews.MONTH) {
       if (
         monthData[2] &&
@@ -104,14 +36,22 @@ export default function Container() {
       const updatedData: Array<Array<Date>> = createMonthData(selectedDate);
       setMonthData(updatedData);
     } else if (viewSelected === calendarViews.WEEK) {
+      console.log("week called");
       const updatedData: Array<Date> = createWeekData(selectedDate);
       setWeekData(updatedData);
     } else if (viewSelected === calendarViews.YEAR) {
+      if (
+        yearData[5] &&
+        yearData[5][2][6] &&
+        yearData[5][2][6].getFullYear() === selectedDate.getFullYear()
+      ) {
+        return;
+      }
       const updatedData: Array<Array<Array<Date>>> =
         createYearData(selectedDate);
       setYearData(updatedData);
     }
-  };
+  }, [monthData, selectedDate, viewSelected]);
 
   const handleChangeMonth = (control: changeMonthControls) => {
     switch (viewSelected) {
@@ -159,11 +99,7 @@ export default function Container() {
 
   useEffect(() => {
     createCalendarDate();
-  }, [selectedDate, viewSelected]);
-
-  // useEffect(() => {
-  //   setSelectedDate(new Date());
-  // }, [viewSelected]);
+  }, [createCalendarDate, selectedDate, viewSelected]);
 
   return (
     <div className={styles.container}>
