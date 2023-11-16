@@ -14,7 +14,7 @@ export const monthHeads = [
   "Dec",
 ];
 
-export enum changeMonthControls {
+export enum calendarViewControls {
   NEXT = "NEXT",
   BACK = "BACK",
 }
