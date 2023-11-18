@@ -5,9 +5,7 @@ import Header from "../header";
 import WeekView from "../../views/weekView";
 import YearView from "../../views/yearView";
 import MonthView from "../../views/monthView";
-import { createYearData } from "../../utils/createYearData";
-import { createWeekData } from "../../utils/createWeekData";
-import { createMonthData } from "../../utils/createMonthData";
+import { createWeekData, createMonthData, createYearData } from "clad-calendar";
 import { handleClickViewControls } from "../../utils/handleClickViewControls";
 
 export default function Container() {
