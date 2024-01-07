@@ -17,41 +17,45 @@
 
 
 .DateNumber {
-    padding: 15px;
-    width: 26px;
-    height: 26px;
     display: flex;
-    border-radius: 50%;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: -13px;
-    left: calc(50% - 13px);
     cursor: pointer;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    background-color: #fff;
     transition: transform 0.3s ease;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 2.5rem;
+    position: relative;
+
+    @media screen and (max-width:430px) {
+        font-size: 1.5rem;
+    }
 }
 
-.DateNumber:hover {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-    transform: scale(1.05);
-}
-
-.selectedDate {
-    background-color: rgba(0, 0, 0, 0.5);
+.weekHead {
+    position: absolute;
+    bottom: 5px;
+    left: 33%;
+    text-align: center;
+    z-index: 100;
     color: #fff;
+    font-size: 1.2rem;
+    font-style: normal;
+    text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000;
+
+    @media screen and (max-width:430px) {
+        font-size: 0.5rem;
+    }
+
 }
 
-.currentDate {
-    box-shadow: 0 4px 12px #000;
-    background-color: #000;
-    color: #fff;
-}
+.DateNumber:hover {}
 
-.currentDate:hover {
-    box-shadow: 0 4px 12px #000;
-}
+.selectedDate {}
+
+.currentDate {}
+
+.currentDate:hover {}
 
 .timeBlockContainer {
     height: 100%;
