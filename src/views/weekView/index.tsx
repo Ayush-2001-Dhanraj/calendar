@@ -1,8 +1,7 @@
 import React from "react";
 import styles from "./weekView.module.css";
 import { WeekProps } from "../../common/interfaces";
-import { calendarViews, monthHeads, hoursOfDay } from "../../common";
-import WeekHeads from "../../components/weekHeads";
+import { weekHeads, monthHeads, hoursOfDay } from "../../common";
 
 export default function WeekView({
   week,
@@ -18,7 +17,6 @@ export default function WeekView({
   };
   return (
     <div className={styles.weekView}>
-      <WeekHeads view={calendarViews.WEEK} />
       <div className={styles.mainContainer}>
         {week.map((dayOfWeek, index) => {
           return (
@@ -43,7 +41,11 @@ export default function WeekView({
                 onClick={() => onChangeDate(dayOfWeek)}
               >
                 {dayOfWeek.getDate()}
+                <span className={styles.weekHead}>
+                  {weekHeads[dayOfWeek.getDay()]}
+                </span>
               </span>
+
               <div className={styles.timeBlockContainer}>
                 {hoursOfDay.map((hour) => (
                   <div
