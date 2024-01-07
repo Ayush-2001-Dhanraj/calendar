@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./weekView.module.css";
 import { WeekProps } from "../../common/interfaces";
-import { calendarViews, monthHeads } from "../../common";
+import { calendarViews, monthHeads, hoursOfDay } from "../../common";
 import WeekHeads from "../../components/weekHeads";
 
 export default function WeekView({
@@ -9,6 +9,13 @@ export default function WeekView({
   selectedDate,
   onChangeDate,
 }: WeekProps) {
+  const handleTimeBlockClick = (
+    date: Date,
+    hour: string,
+    timeQuater: number
+  ) => {
+    console.log("Date: ", date, " hour: ", hour, "quater: ", timeQuater);
+  };
   return (
     <div className={styles.weekView}>
       <WeekHeads view={calendarViews.WEEK} />
@@ -37,7 +44,28 @@ export default function WeekView({
               >
                 {dayOfWeek.getDate()}
               </span>
-              <div className={styles.timeZoneSection}> </div>
+              <div className={styles.timeBlockContainer}>
+                {hoursOfDay.map((hour) => (
+                  <div
+                    className={styles.timeBlock}
+                    key={`timeBlock - ${dayOfWeek.getDate()} - ${hour}`}
+                  >
+                    {dayOfWeek.getDay() === 0 && (
+                      <div className={styles.timeBlockGuide}>{hour}</div>
+                    )}
+
+                    {[1, 2, 3, 4].map((timeQuater) => (
+                      <div
+                        key={`timeBlock - ${dayOfWeek.getDate()} - ${hour} - ${timeQuater}`}
+                        className={styles.timeBlockQuater}
+                        onClick={() =>
+                          handleTimeBlockClick(dayOfWeek, hour, timeQuater)
+                        }
+                      ></div>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           );
         })}

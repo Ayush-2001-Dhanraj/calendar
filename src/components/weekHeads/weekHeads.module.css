@@ -4,7 +4,7 @@
 
 .headsOfWeek {
     padding: 10px;
-    border: 1px solid rgba(1, 1, 1, 0.1);
+    border: none !important;
     flex: 1;
     font-size: larger;
 }

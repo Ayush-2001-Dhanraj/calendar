@@ -51,7 +51,7 @@ export default function Container() {
       default:
         break;
     }
-  }, [monthData, selectedDate, viewSelected]);
+  }, [monthData, selectedDate, viewSelected, yearData]);
 
   const onClickNext = () =>
     handleClickViewControls(
