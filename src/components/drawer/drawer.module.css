@@ -1,0 +1,64 @@
+.drawer {
+    position: fixed;
+    bottom: -100%;
+    right: 0;
+    height: auto;
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.4);
+    transition: left 0.3s ease;
+    z-index: 999;
+    transition: bottom 0.3s ease-in;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.drawer.open {
+    bottom: 0;
+}
+
+.drawer div {
+    margin-bottom: 10px;
+}
+
+.dateBtn {
+    background-color: rgba(0, 0, 0, 0.05);
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    text-align: left;
+    padding: 6px;
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+.saveBtn {
+    text-align: right;
+    background-color: rgba(0, 0, 0, 1);
+    color: #fff;
+}
+
+.drawer div input,
+.drawer div textarea {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 6px;
+}
+
+.drawer div textarea {
+    height: auto;
+    resize: none;
+    min-height: 100px;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+
+}

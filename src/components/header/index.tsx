@@ -3,8 +3,9 @@ import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 import styles from "./header.module.css";
 import { calendarViews, monthHeads } from "../../common";
 import { HeaderProps } from "../../common/interfaces";
-import { useAppDispatch } from "../../redux/store";
-import { toggleDrawer } from "../../redux/appSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { toggleDrawer, getDrawerState } from "../../redux/appSlice";
+import Drawer from "../drawer";
 
 export default function Header({
   selectedDate,
@@ -20,6 +21,7 @@ export default function Header({
   );
 
   const dispatch = useAppDispatch();
+  const isDrawerOpen = useAppSelector(getDrawerState);
 
   const handleAddEvent = () => {
     dispatch(toggleDrawer());
@@ -83,6 +85,7 @@ export default function Header({
       <button className={styles.createEventFAB} onClick={handleAddEvent}>
         ➕
       </button>
+      <Drawer isOpen={isDrawerOpen} onClose={handleAddEvent} />
     </div>
   );
 }
