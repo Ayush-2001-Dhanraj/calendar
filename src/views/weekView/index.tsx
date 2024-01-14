@@ -26,7 +26,7 @@ export default function WeekView({
               } ${dayOfWeek.getDate()}`}
               className={`${styles.DateNumberContainer}`}
             >
-              <span
+              <div
                 className={`${styles.DateNumber} ${
                   new Date().getDate() === dayOfWeek.getDate() &&
                   new Date().getFullYear() === dayOfWeek.getFullYear() &&
@@ -44,7 +44,7 @@ export default function WeekView({
                 <span className={styles.weekHead}>
                   {weekHeads[dayOfWeek.getDay()]}
                 </span>
-              </span>
+              </div>
 
               <div className={styles.timeBlockContainer}>
                 {hoursOfDay.map((hour) => (
