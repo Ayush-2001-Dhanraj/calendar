@@ -3,6 +3,8 @@ import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 import styles from "./header.module.css";
 import { calendarViews, monthHeads } from "../../common";
 import { HeaderProps } from "../../common/interfaces";
+import { useAppDispatch } from "../../redux/store";
+import { toggleDrawer } from "../../redux/appSlice";
 
 export default function Header({
   selectedDate,
@@ -16,6 +18,12 @@ export default function Header({
   const [headerText, setHeaderText] = useState<string>(
     `${monthHeads[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`
   );
+
+  const dispatch = useAppDispatch();
+
+  const handleAddEvent = () => {
+    dispatch(toggleDrawer());
+  };
 
   useEffect(() => {
     switch (viewSelected) {
@@ -60,6 +68,7 @@ export default function Header({
           <HiOutlineArrowRight />
         </button>
       </div>
+
       <select
         className={`${styles.btns} ${styles.outline} ${styles.select}`}
         value={viewSelected}
@@ -71,6 +80,9 @@ export default function Header({
           </option>
         ))}
       </select>
+      <button className={styles.createEventFAB} onClick={handleAddEvent}>
+        ➕
+      </button>
     </div>
   );
 }
