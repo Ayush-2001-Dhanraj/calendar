@@ -39,14 +39,19 @@
 }
 
 .drawer div input,
+.drawer div select,
 .drawer div textarea {
     width: 100%;
     border: none;
     border-bottom: 2px solid rgba(0, 0, 0, 0.1);
     font-size: 1.05rem;
     line-height: 1.5;
-    background-color: rgba(0, 0, 0, 0.05);
     padding: 6px;
+}
+
+.drawer div input[name="title"] {
+    font-size: 1.1rem;
+    font-weight: bolder;
 }
 
 .drawer div textarea {
@@ -61,4 +66,12 @@
     font-size: 24px;
     cursor: pointer;
 
+}
+
+.dntSection {
+    display: flex;
+}
+
+.dntSection input {
+    flex: 1;
 }
