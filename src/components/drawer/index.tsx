@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import styles from "./drawer.module.css";
 import TimePicker from "../timePicker";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import {
+  getSelectedDate,
+  setSelectedDate,
+  addEvent,
+} from "../../redux/appSlice";
 
 interface DrawerProps {
   isOpen: boolean;
@@ -12,12 +18,16 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
   const [selectedMinute, setSelectedMinute] = useState("00");
   const [selectedPeriod, setSelectedPeriod] = useState("AM");
 
-  const [event, setEvent] = useState({
+  const selectedDate = useAppSelector(getSelectedDate);
+  const dispatch = useAppDispatch();
+
+  const eventDefault = {
     title: "",
-    date: "",
     description: "",
     time: `${selectedHour}:${selectedMinute} ${selectedPeriod}`,
-  });
+  };
+
+  const [event, setEvent] = useState(eventDefault);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -44,12 +54,16 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
           break;
       }
       setEvent((preV) => ({ ...preV, time }));
+    } else if (e.target.name === "date") {
+      dispatch(setSelectedDate({ newDate: e.target.value }));
     } else setEvent((preV) => ({ ...preV, [e.target.name]: e.target.value }));
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log(event);
+    setEvent(eventDefault);
+    dispatch(addEvent({ ...event, date: selectedDate.toISOString() }));
   };
 
   return (
@@ -73,7 +87,12 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
             placeholder="haha"
             name="date"
             onChange={handleChange}
-            value={event.date}
+            value={selectedDate.toLocaleDateString("en-CA", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+            })}
+            required
           />
         </div>
         <div className={styles.dntSection}>
