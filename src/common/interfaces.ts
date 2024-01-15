@@ -37,3 +37,10 @@ export interface HeaderProps {
   viewSelected: calendarViews;
   week: Array<Date>;
 }
+
+export interface Event {
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+}

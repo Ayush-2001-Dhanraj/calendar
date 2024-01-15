@@ -61,7 +61,6 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(event);
     setEvent(eventDefault);
     dispatch(addEvent({ ...event, date: selectedDate.toISOString() }));
   };

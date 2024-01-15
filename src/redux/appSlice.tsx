@@ -2,13 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import { createSelector } from "reselect";
-
-interface Event {
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-}
+import { Event } from "../common/interfaces";
 
 interface AppState {
   isDrawerOpen: boolean;
@@ -18,7 +12,26 @@ interface AppState {
 
 const initialState: AppState = {
   isDrawerOpen: false,
-  events: [],
+  events: [
+    {
+      date: "Mon Jan 15 2024 00:00:00 GMT+0530",
+      title: "Tea with Katy",
+      description: "",
+      time: "12:00 AM",
+    },
+    {
+      date: "wed Jan 10 2024 00:00:00 GMT+0530",
+      title: "Mother Goose Help me!",
+      description: "",
+      time: "09:30 AM",
+    },
+    {
+      date: "Mon Jan 16 2024 00:00:00 GMT+0530",
+      title: "Brunch on sofa with Amanda",
+      description: "",
+      time: "12:45 AM",
+    },
+  ],
   selectedDate: new Date().toISOString(),
 };
 

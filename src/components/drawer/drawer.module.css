@@ -1,7 +1,7 @@
 .drawer {
     position: fixed;
     bottom: -100%;
-    right: 0;
+    right: 10px;
     height: auto;
     width: 300px;
     background-color: #fff;
@@ -14,7 +14,7 @@
 }
 
 .drawer.open {
-    bottom: 0;
+    bottom: 10px;
 }
 
 .drawer div {

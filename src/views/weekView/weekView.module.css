@@ -83,6 +83,15 @@
     height: 25px;
 }
 
+.timeBlockQuater p {
+    background-color: #000;
+    color: #fff;
+    height: 100%;
+    cursor: pointer;
+    padding: 2px;
+
+}
+
 .timeBlockQuater:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }

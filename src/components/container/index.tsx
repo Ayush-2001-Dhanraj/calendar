@@ -8,16 +8,11 @@ import MonthView from "../../views/monthView";
 import { createWeekData, createMonthData, createYearData } from "clad-calendar";
 import { handleClickViewControls } from "../../utils/handleClickViewControls";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import {
-  getEvents,
-  getSelectedDate,
-  setSelectedDate,
-} from "../../redux/appSlice";
+import { getSelectedDate, setSelectedDate } from "../../redux/appSlice";
 
 export default function Container() {
   const dispatch = useAppDispatch();
   const selectedDate = useAppSelector(getSelectedDate);
-  const events = useAppSelector(getEvents);
 
   const [weekData, setWeekData] = useState<Array<Date>>([]);
   const [monthData, setMonthData] = useState<Array<Array<Date>>>([]);
@@ -78,10 +73,6 @@ export default function Container() {
       handleChangeSelectedDate
     );
   const onClickToday = () => handleChangeSelectedDate(new Date());
-
-  useEffect(() => {
-    console.log("events", events);
-  }, [events]);
 
   useEffect(() => {
     createCalendarDate();
