@@ -1,6 +1,7 @@
 // src/features/appSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
+import { createSelector } from "reselect";
 
 interface AppState {
   isDrawerOpen: boolean;
@@ -10,11 +11,13 @@ interface AppState {
     date: string;
     time: string;
   }[];
+  selectedDate: string;
 }
 
 const initialState: AppState = {
   isDrawerOpen: false,
   events: [],
+  selectedDate: new Date().toISOString(),
 };
 
 const appSlice = createSlice({
@@ -36,10 +39,24 @@ const appSlice = createSlice({
       const { title, description, date, time } = action.payload;
       state.events.push({ title, description, date, time });
     },
+    setSelectedDate: (
+      state,
+      action: PayloadAction<{
+        newDate: string;
+      }>
+    ) => {
+      const { newDate } = action.payload;
+      state.selectedDate = newDate;
+    },
   },
 });
 
-export const { toggleDrawer, addEvent } = appSlice.actions;
+export const { toggleDrawer, addEvent, setSelectedDate } = appSlice.actions;
 export const getDrawerState = (state: RootState) => state.app.isDrawerOpen;
+export const getEvents = (state: RootState) => state.app.events;
+export const getSelectedDate = createSelector(
+  [(state: RootState) => state.app.selectedDate],
+  (selectedDate) => new Date(selectedDate)
+);
 
 export default appSlice.reducer;

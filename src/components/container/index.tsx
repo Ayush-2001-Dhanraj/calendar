@@ -7,9 +7,12 @@ import YearView from "../../views/yearView";
 import MonthView from "../../views/monthView";
 import { createWeekData, createMonthData, createYearData } from "clad-calendar";
 import { handleClickViewControls } from "../../utils/handleClickViewControls";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { getSelectedDate, setSelectedDate } from "../../redux/appSlice";
 
 export default function Container() {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const dispatch = useAppDispatch();
+  const selectedDate = useAppSelector(getSelectedDate);
 
   const [weekData, setWeekData] = useState<Array<Date>>([]);
   const [monthData, setMonthData] = useState<Array<Array<Date>>>([]);
@@ -19,7 +22,8 @@ export default function Container() {
     calendarViews.WEEK
   );
 
-  const handleChangeSelectedDate = (date: Date) => setSelectedDate(date);
+  const handleChangeSelectedDate = (newDate: Date) =>
+    dispatch(setSelectedDate({ newDate: newDate.toISOString() }));
 
   const createCalendarDate = useCallback(() => {
     switch (viewSelected) {
