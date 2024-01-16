@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./yearView.module.css";
 import { YearProps } from "../../common/interfaces";
 import MonthView from "../monthView";
@@ -8,6 +8,11 @@ export default function YearView({
   selectedDate,
   onChangeDate,
 }: YearProps) {
+  useEffect(() => {
+    // set page title
+    document.title = "Calendar - Year";
+  }, []);
+
   return (
     <div className={styles.yearView}>
       {year.map((month, index) => {

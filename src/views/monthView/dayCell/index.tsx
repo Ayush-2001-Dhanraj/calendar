@@ -13,12 +13,14 @@ export default function DayCell({
       : ""
   } ${
     dayOfWeek.getMonth() === selectedDate.getMonth() &&
-    dayOfWeek.getDate() === selectedDate.getDate()
+    dayOfWeek.getDate() === selectedDate.getDate() &&
+    dayOfWeek.getFullYear() === selectedDate.getFullYear()
       ? styles.selectedDayOfWeek
       : ""
   } ${
     dayOfWeek.getMonth() === new Date().getMonth() &&
-    dayOfWeek.getDate() === new Date().getDate()
+    dayOfWeek.getDate() === new Date().getDate() &&
+    dayOfWeek.getFullYear() === new Date().getFullYear()
       ? styles.today
       : ""
   } ${heightAuto ? styles.heightAuto : styles.height100}`;

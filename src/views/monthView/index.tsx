@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { MonthProps } from "../../common/interfaces";
 import styles from "./monthView.module.css";
 
@@ -14,6 +14,10 @@ function MonthView({
   heightAuto,
 }: MonthProps) {
   const MonthSection = () => {
+    useEffect(() => {
+      // set page title
+      document.title = "Calendar - Month";
+    }, []);
     return (
       <>
         {month.map((week, index) => (

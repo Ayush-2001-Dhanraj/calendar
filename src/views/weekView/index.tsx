@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./weekView.module.css";
 import { WeekProps } from "../../common/interfaces";
 import { weekHeads, monthHeads, hoursOfDay } from "../../common";
@@ -50,6 +50,11 @@ export default function WeekView({
       return <p>{currentEvent[0].title}</p>;
     }
   };
+
+  useEffect(() => {
+    // set page title
+    document.title = "Calendar - Week";
+  }, []);
 
   return (
     <div className={styles.weekView} ref={calendarRef}>
