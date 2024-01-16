@@ -11,19 +11,21 @@ function App() {
     const options = {
       hour: "numeric",
       minute: "2-digit",
-      hour12: false,
+      hour12: true,
     } as Intl.DateTimeFormatOptions;
 
     const timeSlot = new Intl.DateTimeFormat("en-US", options).format(
       new Date()
     );
-    const [hour, minutes] = timeSlot.split(/:| /);
+    const [hour, minutes, period] = timeSlot.split(/:| /);
 
     // Round minutes to the nearest 15
     const roundedMinutes = Math.round(parseInt(minutes, 10) / 15) * 15;
 
     // Format the rounded time
-    const roundedTime = `${hour}:${roundedMinutes.toString().padStart(2, "0")}`;
+    const roundedTime = `${hour}:${roundedMinutes
+      .toString()
+      .padStart(2, "0")} ${period}`;
 
     dispatch(setSelectedHour({ hour: roundedTime }));
     // eslint-disable-next-line react-hooks/exhaustive-deps

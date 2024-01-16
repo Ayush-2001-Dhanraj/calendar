@@ -28,7 +28,6 @@ export default function Container() {
   const createCalendarDate = useCallback(() => {
     switch (viewSelected) {
       case calendarViews.WEEK:
-        console.log("week called");
         setWeekData(createWeekData(selectedDate));
         break;
       case calendarViews.MONTH:

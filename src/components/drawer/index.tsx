@@ -68,16 +68,15 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
   };
 
   useEffect(() => {
-    let hr: string | number = parseInt(userSelectedHour.split(":")[0]);
-    const min = userSelectedHour.split(":")[1];
-    const period = parseInt(userSelectedHour.split(":")[0]) > 11 ? "PM" : "AM";
-    hr = hr > 12 ? hr - 12 : hr;
-    hr = hr < 10 ? "0" + hr : hr;
-    setSelectedHour(hr as string);
-    setSelectedMinute(min);
-    setSelectedPeriod(period);
-    const time = `${hr}:${min} ${period}`;
-    setEvent((preV) => ({ ...preV, time }));
+    if (userSelectedHour) {
+      const hr = userSelectedHour.split(":")[0];
+      const min = userSelectedHour.split(":")[1].split(" ")[0];
+      const per = userSelectedHour.split(":")[1].split(" ")[1];
+      setSelectedHour(hr);
+      setSelectedMinute(min);
+      setSelectedPeriod(per);
+      setEvent((preV) => ({ ...preV, time: `${hr}:${min} ${per}` }));
+    }
   }, [userSelectedHour]);
 
   return (

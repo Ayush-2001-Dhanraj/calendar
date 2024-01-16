@@ -1,8 +1,13 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import styles from "./weekView.module.css";
 import { WeekProps } from "../../common/interfaces";
 import { weekHeads, monthHeads, hoursOfDay } from "../../common";
-import { getEvents, getSelectedHour, toggleDrawer } from "../../redux/appSlice";
+import {
+  getEvents,
+  setSelectedHour,
+  openDrawer,
+  setSelectedDate,
+} from "../../redux/appSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 export default function WeekView({
@@ -11,7 +16,6 @@ export default function WeekView({
   onChangeDate,
 }: WeekProps) {
   const events = useAppSelector(getEvents);
-  const selectedHour = useAppSelector(getSelectedHour);
   const calendarRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useAppDispatch();
@@ -22,20 +26,11 @@ export default function WeekView({
     timeQuater: number
   ) => {
     const hr = hour.split(":")[0];
-    const min = timeQuater ? (timeQuater * 15).toString() : "00";
-    const period = hour.split(" ")[1];
-    const currentTime = hr + ":" + min + " " + period;
-    console.log(
-      "Date: ",
-      date,
-      " hour: ",
-      hour,
-      "quater: ",
-      timeQuater,
-      "currentTime",
-      currentTime
-    );
-    dispatch(toggleDrawer());
+    const per = hour.split(":")[1].split(" ")[1];
+    const min = timeQuater * 15 === 0 ? "00" : (timeQuater * 15).toString();
+    dispatch(setSelectedDate({ newDate: date.toISOString() }));
+    dispatch(setSelectedHour({ hour: `${hr}:${min} ${per}` }));
+    dispatch(openDrawer());
   };
 
   const getEventInPlace = (date: Date, hour: string, timeQuater: number) => {
@@ -55,19 +50,6 @@ export default function WeekView({
       return <p>{currentEvent[0].title}</p>;
     }
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (calendarRef.current && selectedHour) {
-        const hours = parseInt(selectedHour.split(":")[0]);
-        calendarRef.current.scrollTop = 100 * hours;
-      }
-    }, 2000);
-  }, [selectedHour]);
-
-  useEffect(() => {
-    console.log(events);
-  }, [events]);
 
   return (
     <div className={styles.weekView} ref={calendarRef}>

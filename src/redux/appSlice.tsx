@@ -44,6 +44,12 @@ const appSlice = createSlice({
     toggleDrawer: (state) => {
       state.isDrawerOpen = !state.isDrawerOpen;
     },
+    openDrawer: (state) => {
+      state.isDrawerOpen = true;
+    },
+    closeDrawer: (state) => {
+      state.isDrawerOpen = false;
+    },
     addEvent: (state, action: PayloadAction<Event>) => {
       const { title, description, date, time } = action.payload;
       state.events.push({ title, description, date, time });
@@ -63,8 +69,14 @@ const appSlice = createSlice({
   },
 });
 
-export const { toggleDrawer, addEvent, setSelectedDate, setSelectedHour } =
-  appSlice.actions;
+export const {
+  toggleDrawer,
+  addEvent,
+  setSelectedDate,
+  setSelectedHour,
+  openDrawer,
+  closeDrawer,
+} = appSlice.actions;
 export const getDrawerState = (state: RootState) => state.app.isDrawerOpen;
 
 export const getEvents = createSelector(
