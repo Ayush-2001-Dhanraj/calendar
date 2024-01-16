@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styles from "./weekView.module.css";
 import { WeekProps } from "../../common/interfaces";
 import { weekHeads, monthHeads, hoursOfDay } from "../../common";
-import { getEvents } from "../../redux/appSlice";
-import { useAppSelector } from "../../redux/store";
+import { getEvents, getSelectedHour, toggleDrawer } from "../../redux/appSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 export default function WeekView({
   week,
@@ -11,6 +11,10 @@ export default function WeekView({
   onChangeDate,
 }: WeekProps) {
   const events = useAppSelector(getEvents);
+  const selectedHour = useAppSelector(getSelectedHour);
+  const calendarRef = useRef<HTMLDivElement>(null);
+
+  const dispatch = useAppDispatch();
 
   const handleTimeBlockClick = (
     date: Date,
@@ -31,6 +35,7 @@ export default function WeekView({
       "currentTime",
       currentTime
     );
+    dispatch(toggleDrawer());
   };
 
   const getEventInPlace = (date: Date, hour: string, timeQuater: number) => {
@@ -51,8 +56,21 @@ export default function WeekView({
     }
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (calendarRef.current && selectedHour) {
+        const hours = parseInt(selectedHour.split(":")[0]);
+        calendarRef.current.scrollTop = 100 * hours;
+      }
+    }, 2000);
+  }, [selectedHour]);
+
+  useEffect(() => {
+    console.log(events);
+  }, [events]);
+
   return (
-    <div className={styles.weekView}>
+    <div className={styles.weekView} ref={calendarRef}>
       <div className={styles.mainContainer}>
         {week.map((dayOfWeek, index) => {
           return (

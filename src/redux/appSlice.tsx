@@ -8,6 +8,7 @@ interface AppState {
   isDrawerOpen: boolean;
   events: Event[];
   selectedDate: string;
+  selectedHour: string;
 }
 
 const initialState: AppState = {
@@ -20,7 +21,7 @@ const initialState: AppState = {
       time: "12:00 AM",
     },
     {
-      date: "wed Jan 10 2024 00:00:00 GMT+0530",
+      date: "wed Jan 17 2024 00:00:00 GMT+0530",
       title: "Mother Goose Help me!",
       description: "",
       time: "09:30 AM",
@@ -33,6 +34,7 @@ const initialState: AppState = {
     },
   ],
   selectedDate: new Date().toISOString(),
+  selectedHour: "",
 };
 
 const appSlice = createSlice({
@@ -55,10 +57,14 @@ const appSlice = createSlice({
       const { newDate } = action.payload;
       state.selectedDate = newDate;
     },
+    setSelectedHour: (state, action) => {
+      state.selectedHour = action.payload.hour;
+    },
   },
 });
 
-export const { toggleDrawer, addEvent, setSelectedDate } = appSlice.actions;
+export const { toggleDrawer, addEvent, setSelectedDate, setSelectedHour } =
+  appSlice.actions;
 export const getDrawerState = (state: RootState) => state.app.isDrawerOpen;
 
 export const getEvents = createSelector(
@@ -69,6 +75,7 @@ export const getEvents = createSelector(
       date: new Date(e.date),
     }))
 );
+export const getSelectedHour = (state: RootState) => state.app.selectedHour;
 
 export const getSelectedDate = createSelector(
   [(state: RootState) => state.app.selectedDate],

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./drawer.module.css";
 import TimePicker from "../timePicker";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
@@ -6,6 +6,7 @@ import {
   getSelectedDate,
   setSelectedDate,
   addEvent,
+  getSelectedHour,
 } from "../../redux/appSlice";
 
 interface DrawerProps {
@@ -19,6 +20,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
   const [selectedPeriod, setSelectedPeriod] = useState("AM");
 
   const selectedDate = useAppSelector(getSelectedDate);
+  const userSelectedHour = useAppSelector(getSelectedHour);
   const dispatch = useAppDispatch();
 
   const eventDefault = {
@@ -64,6 +66,19 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
     setEvent(eventDefault);
     dispatch(addEvent({ ...event, date: selectedDate.toISOString() }));
   };
+
+  useEffect(() => {
+    let hr: string | number = parseInt(userSelectedHour.split(":")[0]);
+    const min = userSelectedHour.split(":")[1];
+    const period = parseInt(userSelectedHour.split(":")[0]) > 11 ? "PM" : "AM";
+    hr = hr > 12 ? hr - 12 : hr;
+    hr = hr < 10 ? "0" + hr : hr;
+    setSelectedHour(hr as string);
+    setSelectedMinute(min);
+    setSelectedPeriod(period);
+    const time = `${hr}:${min} ${period}`;
+    setEvent((preV) => ({ ...preV, time }));
+  }, [userSelectedHour]);
 
   return (
     <div className={`${styles.drawer} ${isOpen ? styles.open : ""}`}>
