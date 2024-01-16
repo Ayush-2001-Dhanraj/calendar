@@ -7,6 +7,7 @@ import {
   setSelectedDate,
   addEvent,
   getSelectedHour,
+  closeDrawer,
 } from "../../redux/appSlice";
 
 interface DrawerProps {
@@ -65,6 +66,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
     e.preventDefault();
     setEvent(eventDefault);
     dispatch(addEvent({ ...event, date: selectedDate.toISOString() }));
+    dispatch(closeDrawer());
   };
 
   useEffect(() => {
