@@ -23,14 +23,16 @@ export default function WeekView({
   const handleTimeBlockClick = (
     date: Date,
     hour: string,
-    timeQuater: number
+    timeQuater: number,
+    x: number,
+    y: number
   ) => {
     const hr = hour.split(":")[0];
     const per = hour.split(":")[1].split(" ")[1];
     const min = timeQuater * 15 === 0 ? "00" : (timeQuater * 15).toString();
     dispatch(setSelectedDate({ newDate: date.toISOString() }));
     dispatch(setSelectedHour({ hour: `${hr}:${min} ${per}` }));
-    dispatch(openDrawer());
+    dispatch(openDrawer({ top: y, left: x }));
   };
 
   const getEventInPlace = (date: Date, hour: string, timeQuater: number) => {
@@ -47,7 +49,13 @@ export default function WeekView({
         e.date.getFullYear() === date.getFullYear()
     );
     if (currentEvent.length) {
-      return <p>{currentEvent[0].title}</p>;
+      return (
+        <>
+          {currentEvent.map((eve) => (
+            <p>{eve.title}</p>
+          ))}
+        </>
+      );
     }
   };
 
@@ -55,6 +63,8 @@ export default function WeekView({
     // set page title
     document.title = "Calendar - Week";
   }, []);
+
+  console.log(events);
 
   return (
     <div className={styles.weekView} ref={calendarRef}>
@@ -101,8 +111,14 @@ export default function WeekView({
                       <div
                         key={`timeBlock - ${dayOfWeek.getDate()} - ${hour} - ${timeQuater}`}
                         className={`${styles.timeBlockQuater}`}
-                        onClick={() =>
-                          handleTimeBlockClick(dayOfWeek, hour, timeQuater)
+                        onClick={(e) =>
+                          handleTimeBlockClick(
+                            dayOfWeek,
+                            hour,
+                            timeQuater,
+                            e.pageX,
+                            e.pageY
+                          )
                         }
                       >
                         {getEventInPlace(dayOfWeek, hour, timeQuater)}

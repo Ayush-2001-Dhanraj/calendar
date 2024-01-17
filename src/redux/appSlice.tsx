@@ -6,6 +6,8 @@ import { Event } from "../common/interfaces";
 
 interface AppState {
   isDrawerOpen: boolean;
+  drawerTop: number;
+  drawerLeft: number;
   events: Event[];
   selectedDate: string;
   selectedHour: string;
@@ -13,6 +15,8 @@ interface AppState {
 
 const initialState: AppState = {
   isDrawerOpen: false,
+  drawerTop: 0,
+  drawerLeft: 0,
   events: [
     {
       date: "Mon Jan 15 2024 00:00:00 GMT+0530",
@@ -43,12 +47,18 @@ const appSlice = createSlice({
   reducers: {
     toggleDrawer: (state) => {
       state.isDrawerOpen = !state.isDrawerOpen;
+      state.drawerTop = 0;
+      state.drawerLeft = 0;
     },
-    openDrawer: (state) => {
+    openDrawer: (state, action) => {
       state.isDrawerOpen = true;
+      state.drawerTop = action.payload.top || 0;
+      state.drawerLeft = action.payload.left || 0;
     },
     closeDrawer: (state) => {
       state.isDrawerOpen = false;
+      state.drawerTop = 0;
+      state.drawerLeft = 0;
     },
     addEvent: (state, action: PayloadAction<Event>) => {
       const { title, description, date, time } = action.payload;
@@ -77,8 +87,15 @@ export const {
   openDrawer,
   closeDrawer,
 } = appSlice.actions;
-export const getDrawerState = (state: RootState) => state.app.isDrawerOpen;
 
+export const getDrawerState = (state: RootState) => state.app.isDrawerOpen;
+export const getDrawerPosition = createSelector(
+  [
+    (state: RootState) => state.app.drawerTop,
+    (state: RootState) => state.app.drawerLeft,
+  ],
+  (drawerTop, drawerLeft) => ({ top: drawerTop, left: drawerLeft })
+);
 export const getEvents = createSelector(
   [(state: RootState) => state.app.events],
   (events) =>
@@ -88,7 +105,6 @@ export const getEvents = createSelector(
     }))
 );
 export const getSelectedHour = (state: RootState) => state.app.selectedHour;
-
 export const getSelectedDate = createSelector(
   [(state: RootState) => state.app.selectedDate],
   (selectedDate) => new Date(selectedDate)

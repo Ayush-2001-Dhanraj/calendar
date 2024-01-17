@@ -1,8 +1,7 @@
 .drawer {
     position: fixed;
     bottom: -100%;
-    right: 10px;
-    height: auto;
+    height: fit-content;
     width: 300px;
     background-color: #fff;
     box-shadow: 0 20px 20px rgba(0, 0, 0, 0.4);
@@ -11,10 +10,6 @@
     transition: bottom 0.3s ease-in;
     padding: 10px;
     overflow: hidden;
-}
-
-.drawer.open {
-    bottom: 10px;
 }
 
 .drawer div {

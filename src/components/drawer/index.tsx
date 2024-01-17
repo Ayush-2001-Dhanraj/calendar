@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./drawer.module.css";
 import TimePicker from "../timePicker";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
@@ -13,12 +13,15 @@ import {
 interface DrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  top?: number;
+  left?: number;
 }
 
-const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
+const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
   const [selectedHour, setSelectedHour] = useState("12");
   const [selectedMinute, setSelectedMinute] = useState("00");
   const [selectedPeriod, setSelectedPeriod] = useState("AM");
+  const drawerRef = useRef<HTMLDivElement>(null);
 
   const selectedDate = useAppSelector(getSelectedDate);
   const userSelectedHour = useAppSelector(getSelectedHour);
@@ -71,10 +74,11 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (userSelectedHour) {
-      const hr = userSelectedHour.split(":")[0];
+      let hr: string | number = parseInt(userSelectedHour.split(":")[0]);
+      hr = hr < 10 ? "0" + hr : hr;
       const min = userSelectedHour.split(":")[1].split(" ")[0];
       const per = userSelectedHour.split(":")[1].split(" ")[1];
-      setSelectedHour(hr);
+      setSelectedHour(hr as string);
       setSelectedMinute(min);
       setSelectedPeriod(per);
       setEvent((preV) => ({ ...preV, time: `${hr}:${min} ${per}` }));
@@ -82,7 +86,18 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
   }, [userSelectedHour]);
 
   return (
-    <div className={`${styles.drawer} ${isOpen ? styles.open : ""}`}>
+    <div
+      ref={drawerRef}
+      className={`${styles.drawer} ${isOpen ? styles.open : ""}`}
+      style={{
+        top: isOpen
+          ? top
+            ? top + "px"
+            : `calc(100vh - ${(drawerRef.current?.clientHeight || 0) + 10}px)`
+          : "100%",
+        left: left ? left + "px" : "calc(100vw - 310px)",
+      }}
+    >
       <button className={styles.closeButton} onClick={onClose}>
         &times;
       </button>

@@ -4,7 +4,11 @@ import styles from "./header.module.css";
 import { calendarViews, monthHeads } from "../../common";
 import { HeaderProps } from "../../common/interfaces";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { toggleDrawer, getDrawerState } from "../../redux/appSlice";
+import {
+  toggleDrawer,
+  getDrawerState,
+  getDrawerPosition,
+} from "../../redux/appSlice";
 import Drawer from "../drawer";
 
 export default function Header({
@@ -22,6 +26,7 @@ export default function Header({
 
   const dispatch = useAppDispatch();
   const isDrawerOpen = useAppSelector(getDrawerState);
+  const drawerPosition = useAppSelector(getDrawerPosition);
 
   const handleAddEvent = () => {
     dispatch(toggleDrawer());
@@ -85,7 +90,12 @@ export default function Header({
       <button className={styles.createEventFAB} onClick={handleAddEvent}>
         ➕
       </button>
-      <Drawer isOpen={isDrawerOpen} onClose={handleAddEvent} />
+      <Drawer
+        isOpen={isDrawerOpen}
+        onClose={handleAddEvent}
+        top={drawerPosition.top}
+        left={drawerPosition.left}
+      />
     </div>
   );
 }

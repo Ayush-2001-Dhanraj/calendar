@@ -78,17 +78,27 @@
 .timeBlockQuater {
     height: 25px;
     padding: 2px;
+    display: flex;
+    gap: 5px;
 }
 
 .timeBlockQuater p {
     background-color: #000;
     color: #fff;
-    height: 100%;
     cursor: pointer;
     padding: 2px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-size: 0.9rem;
+    flex: 1;
+    border-radius: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    letter-spacing: 0em;
+    height: fit-content;
+    height: 100%;
 }
+
 
 .timeBlockQuater:hover {
     background-color: rgba(0, 0, 0, 0.1);
