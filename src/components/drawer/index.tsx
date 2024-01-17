@@ -91,11 +91,15 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
       className={`${styles.drawer} ${isOpen ? styles.open : ""}`}
       style={{
         top: isOpen
-          ? top
+          ? top &&
+            window.innerHeight - top > (drawerRef.current?.clientHeight || 200)
             ? top + "px"
             : `calc(100vh - ${(drawerRef.current?.clientHeight || 0) + 10}px)`
           : "100%",
-        left: left ? left + "px" : "calc(100vw - 310px)",
+        left:
+          left && window.innerWidth - left > 310
+            ? left + "px"
+            : "calc(100vw - 310px)",
       }}
     >
       <button className={styles.closeButton} onClick={onClose}>
