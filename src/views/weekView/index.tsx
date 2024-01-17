@@ -64,8 +64,6 @@ export default function WeekView({
     document.title = "Calendar - Week";
   }, []);
 
-  console.log(events);
-
   return (
     <div className={styles.weekView} ref={calendarRef}>
       <div className={styles.mainContainer}>
