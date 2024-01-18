@@ -36,13 +36,24 @@ export default function Header({
     switch (viewSelected) {
       case calendarViews.WEEK:
         if (week[0] && week[6])
-          if (week[0].getMonth() !== week[6].getMonth())
+          if (week[0].getMonth() !== week[6].getMonth()) {
+            if (week[0].getFullYear() !== week[6].getFullYear()) {
+              setHeaderText(
+                `${monthHeads[week[0].getMonth()]} ${week[0].getFullYear()} - ${
+                  monthHeads[week[6].getMonth()]
+                } ${week[6].getFullYear()}`
+              );
+            } else {
+              setHeaderText(
+                `${monthHeads[week[0].getMonth()]} - ${
+                  monthHeads[week[6].getMonth()]
+                } ${week[6].getFullYear()}`
+              );
+            }
+          } else
             setHeaderText(
-              `${monthHeads[week[0].getMonth()]} - ${
-                monthHeads[week[6].getMonth()]
-              }`
+              `${monthHeads[week[0].getMonth()]} ${week[0].getFullYear()}`
             );
-          else setHeaderText(`${monthHeads[week[0].getMonth()]}`);
         break;
       case calendarViews.MONTH:
         setHeaderText(

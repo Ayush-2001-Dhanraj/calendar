@@ -52,7 +52,14 @@ export default function WeekView({
       return (
         <>
           {currentEvent.map((eve) => (
-            <p>{eve.title}</p>
+            <p
+              key={`event - date:${eve.date.toISOString()} time:${
+                eve.time
+              } title:${eve.title}`}
+              className={styles.event}
+            >
+              {eve.title}
+            </p>
           ))}
         </>
       );
