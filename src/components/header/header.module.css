@@ -13,16 +13,16 @@
         justify-content: space-between;
         align-items: center;
         background-color: transparent;
-        color: rgba(1, 1, 1, 0.2);
+        color: rgba(1, 1, 1, 0.4);
         cursor: pointer;
     }
 
     .outline {
-        border: 1px solid rgba(1, 1, 1, 0.2);
+        border: 1px solid rgba(1, 1, 1, 0.4);
     }
 
     .btns:hover {
-        color: rgba(1, 1, 1, 0.5);
+        color: rgba(1, 1, 1, 0.8);
     }
 
     .actions {
