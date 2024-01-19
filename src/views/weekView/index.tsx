@@ -12,7 +12,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { motion } from "framer-motion";
 
-export default function WeekView({ week, onChangeDate }: WeekProps) {
+export default function WeekView({ week }: WeekProps) {
   const events = useAppSelector(getEvents);
   const calendarRef = useRef<HTMLDivElement>(null);
 
@@ -97,7 +97,11 @@ export default function WeekView({ week, onChangeDate }: WeekProps) {
                     ? styles.selectedDate
                     : ""
                 }`}
-                onClick={() => onChangeDate(dayOfWeek)}
+                onClick={() =>
+                  dispatch(
+                    setSelectedDate({ newDate: dayOfWeek.toISOString() })
+                  )
+                }
               >
                 {dayOfWeek.getDate()}
                 <span className={styles.weekHead}>
@@ -109,7 +113,7 @@ export default function WeekView({ week, onChangeDate }: WeekProps) {
                 layout
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                transition={{ duration: 2 }}
+                transition={{ duration: 1 }}
                 className={styles.timeBlockContainer}
               >
                 {hoursOfDay.map((hour) => (

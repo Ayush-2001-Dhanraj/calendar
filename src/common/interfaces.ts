@@ -1,27 +1,21 @@
 import { headerActions } from ".";
 
-export interface CommonViewProps {
-  onChangeDate: (arg0: Date) => void;
-}
-
-export interface MonthProps extends CommonViewProps {
+export interface MonthProps {
   month: Array<Array<Date>>;
-  showMonth?: boolean;
   heightAuto?: boolean;
 }
 
-export interface WeekProps extends CommonViewProps {
+export interface WeekProps {
   week: Array<Date>;
   heightAuto?: boolean;
 }
 
-export interface YearProps extends CommonViewProps {
+export interface YearProps {
   year: Array<Array<Array<Date>>>;
 }
 
 export interface DayCellProps {
   dayOfWeek: Date;
-  onChangeDate: (arg0: Date) => void;
   heightAuto?: boolean;
 }
 

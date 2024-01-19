@@ -5,7 +5,7 @@ import DayCell from "../dayCell";
 import { monthHeads } from "../../../common";
 import { motion } from "framer-motion";
 
-export default function Week({ week, onChangeDate, heightAuto }: WeekProps) {
+export default function Week({ week, heightAuto }: WeekProps) {
   return (
     <motion.div className={styles.week}>
       {week.map((dayOfWeek, index) => (
@@ -14,7 +14,6 @@ export default function Week({ week, onChangeDate, heightAuto }: WeekProps) {
             monthHeads[dayOfWeek.getMonth()]
           } ${dayOfWeek.getDate()}`}
           dayOfWeek={dayOfWeek}
-          onChangeDate={onChangeDate}
           heightAuto={heightAuto}
         />
       ))}

@@ -2,7 +2,7 @@
     display: flex;
     position: relative;
     margin-top: 10px;
-    width: 100vw;
+    width: 100%;
 }
 
 .headsOfWeek {

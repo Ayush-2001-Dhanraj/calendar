@@ -4,10 +4,14 @@ import styles from "./monthView.module.css";
 
 import Week from "./week";
 import WeekHeads from "../../components/weekHeads";
-import { monthHeads } from "../../common";
+import { calendarViews, monthHeads } from "../../common";
 import { motion } from "framer-motion";
+import { useAppSelector } from "../../redux/store";
+import { getViewSelected } from "../../redux/appSlice";
 
-function MonthView({ onChangeDate, month, showMonth, heightAuto }: MonthProps) {
+const MonthView = ({ month, heightAuto }: MonthProps) => {
+  const viewSelected = useAppSelector(getViewSelected);
+
   const MonthSection = () => {
     useEffect(() => {
       // set page title
@@ -16,12 +20,7 @@ function MonthView({ onChangeDate, month, showMonth, heightAuto }: MonthProps) {
     return (
       <>
         {month.map((week, index) => (
-          <Week
-            key={`week ${index + 1}`}
-            week={week}
-            onChangeDate={onChangeDate}
-            heightAuto={heightAuto}
-          />
+          <Week key={`week ${index + 1}`} week={week} heightAuto={heightAuto} />
         ))}
       </>
     );
@@ -31,9 +30,9 @@ function MonthView({ onChangeDate, month, showMonth, heightAuto }: MonthProps) {
     <motion.div
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
-      transition={{ duration: 2 }}
+      transition={{ duration: viewSelected === calendarViews.YEAR ? 2 : 1 }}
     >
-      {showMonth && month[2] && month[2][6] && (
+      {viewSelected === calendarViews.YEAR && month[2] && month[2][6] && (
         <div className={styles.monthTile}>
           {monthHeads[month[2][6].getMonth()]}
         </div>
@@ -42,6 +41,6 @@ function MonthView({ onChangeDate, month, showMonth, heightAuto }: MonthProps) {
       <MonthSection />
     </motion.div>
   );
-}
+};
 
 export default memo(MonthView);

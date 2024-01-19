@@ -1,14 +1,11 @@
 import styles from "./dayCell.module.css";
 import { DayCellProps } from "../../../common/interfaces";
-import { useAppSelector } from "../../../redux/store";
-import { getSelectedDate } from "../../../redux/appSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
+import { getSelectedDate, setSelectedDate } from "../../../redux/appSlice";
 
-export default function DayCell({
-  dayOfWeek,
-  onChangeDate,
-  heightAuto,
-}: DayCellProps) {
+export default function DayCell({ dayOfWeek, heightAuto }: DayCellProps) {
   const selectedDate = useAppSelector(getSelectedDate);
+  const dispatch = useAppDispatch();
 
   const dayCellStyles = `${styles.dayOfWeek} ${
     dayOfWeek.getMonth() !== selectedDate.getMonth() && !heightAuto
@@ -29,7 +26,12 @@ export default function DayCell({
   } ${heightAuto ? styles.heightAuto : styles.height100}`;
 
   return (
-    <div className={dayCellStyles} onClick={() => onChangeDate(dayOfWeek)}>
+    <div
+      className={dayCellStyles}
+      onClick={() =>
+        dispatch(setSelectedDate({ newDate: dayOfWeek.toISOString() }))
+      }
+    >
       {dayOfWeek.getDate()}
     </div>
   );

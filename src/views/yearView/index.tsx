@@ -3,7 +3,7 @@ import styles from "./yearView.module.css";
 import { YearProps } from "../../common/interfaces";
 import MonthView from "../monthView";
 
-export default function YearView({ year, onChangeDate }: YearProps) {
+export default function YearView({ year }: YearProps) {
   useEffect(() => {
     // set page title
     document.title = "Calendar - Year";
@@ -17,12 +17,7 @@ export default function YearView({ year, onChangeDate }: YearProps) {
             className={styles.monthContainer}
             key={`year ${year[0][0][0].getFullYear()} month ${index + 1}`}
           >
-            <MonthView
-              month={month}
-              onChangeDate={onChangeDate}
-              showMonth
-              heightAuto
-            />
+            <MonthView month={month} heightAuto />
           </div>
         );
       })}

@@ -13,7 +13,6 @@ import {
   getViewSelected,
   setSelectedDate,
 } from "../../redux/appSlice";
-import { motion } from "framer-motion";
 
 export default function Container() {
   const dispatch = useAppDispatch();
@@ -72,18 +71,12 @@ export default function Container() {
   }, [createCalendarDate, selectedDate, viewSelected]);
 
   return (
-    <motion.div layout className={styles.container}>
+    <div className={styles.container}>
       <Header onClickAction={handleHeaderActions} week={weekData} />
 
-      {viewSelected === calendarViews.WEEK && (
-        <WeekView week={weekData} onChangeDate={handleChangeSelectedDate} />
-      )}
-      {viewSelected === calendarViews.MONTH && (
-        <MonthView month={monthData} onChangeDate={handleChangeSelectedDate} />
-      )}
-      {viewSelected === calendarViews.YEAR && (
-        <YearView year={yearData} onChangeDate={handleChangeSelectedDate} />
-      )}
-    </motion.div>
+      {viewSelected === calendarViews.WEEK && <WeekView week={weekData} />}
+      {viewSelected === calendarViews.MONTH && <MonthView month={monthData} />}
+      {viewSelected === calendarViews.YEAR && <YearView year={yearData} />}
+    </div>
   );
 }
