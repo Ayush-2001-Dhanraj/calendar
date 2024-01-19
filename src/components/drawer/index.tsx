@@ -9,6 +9,7 @@ import {
   getSelectedHour,
   closeDrawer,
 } from "../../redux/appSlice";
+import { motion } from "framer-motion";
 
 interface DrawerProps {
   isOpen: boolean;
@@ -86,7 +87,10 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
   }, [userSelectedHour]);
 
   return (
-    <div
+    <motion.div
+      layout
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       ref={drawerRef}
       className={`${styles.drawer} ${isOpen ? styles.open : ""}`}
       style={{
@@ -149,7 +153,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
           Create Event
         </button>
       </form>
-    </div>
+    </motion.div>
   );
 };
 

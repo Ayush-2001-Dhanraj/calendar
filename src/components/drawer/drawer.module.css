@@ -5,7 +5,6 @@
     width: 300px;
     background-color: #fff;
     box-shadow: 0 20px 20px rgba(0, 0, 0, 0.4);
-    transition: left 0.3s ease;
     z-index: 999;
     transition: bottom 0.3s ease-in;
     padding: 10px;

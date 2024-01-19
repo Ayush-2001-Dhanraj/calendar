@@ -9,6 +9,7 @@ import {
   setSelectedDate,
 } from "../../redux/appSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { motion } from "framer-motion";
 
 export default function WeekView({
   week,
@@ -52,14 +53,16 @@ export default function WeekView({
       return (
         <>
           {currentEvent.map((eve) => (
-            <p
+            <motion.p
+              whileHover={{ scale: 0.9 }}
+              whileTap={{ scale: 1.1 }}
               key={`event - date:${eve.date.toISOString()} time:${
                 eve.time
               } title:${eve.title}`}
               className={styles.event}
             >
               {eve.title}
-            </p>
+            </motion.p>
           ))}
         </>
       );
@@ -76,13 +79,15 @@ export default function WeekView({
       <div className={styles.mainContainer}>
         {week.map((dayOfWeek, index) => {
           return (
-            <div
+            <motion.div
+              layout
               key={`Day cel ${index} ${
                 monthHeads[dayOfWeek.getMonth()]
               } ${dayOfWeek.getDate()}`}
               className={`${styles.DateNumberContainer}`}
             >
-              <div
+              <motion.div
+                layout
                 className={`${styles.DateNumber} ${
                   new Date().getDate() === dayOfWeek.getDate() &&
                   new Date().getFullYear() === dayOfWeek.getFullYear() &&
@@ -100,9 +105,9 @@ export default function WeekView({
                 <span className={styles.weekHead}>
                   {weekHeads[dayOfWeek.getDay()]}
                 </span>
-              </div>
+              </motion.div>
 
-              <div className={styles.timeBlockContainer}>
+              <motion.div layout className={styles.timeBlockContainer}>
                 {hoursOfDay.map((hour) => (
                   <div
                     className={styles.timeBlock}
@@ -113,7 +118,9 @@ export default function WeekView({
                     )}
 
                     {[0, 1, 2, 3].map((timeQuater) => (
-                      <div
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
                         key={`timeBlock - ${dayOfWeek.getDate()} - ${hour} - ${timeQuater}`}
                         className={`${styles.timeBlockQuater}`}
                         onClick={(e) =>
@@ -127,12 +134,12 @@ export default function WeekView({
                         }
                       >
                         {getEventInPlace(dayOfWeek, hour, timeQuater)}
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           );
         })}
       </div>

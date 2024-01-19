@@ -3,13 +3,7 @@ import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 import styles from "./header.module.css";
 import { calendarViews, monthHeads } from "../../common";
 import { HeaderProps } from "../../common/interfaces";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import {
-  toggleDrawer,
-  getDrawerState,
-  getDrawerPosition,
-} from "../../redux/appSlice";
-import Drawer from "../drawer";
+import { motion } from "framer-motion";
 
 export default function Header({
   selectedDate,
@@ -23,14 +17,6 @@ export default function Header({
   const [headerText, setHeaderText] = useState<string>(
     `${monthHeads[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`
   );
-
-  const dispatch = useAppDispatch();
-  const isDrawerOpen = useAppSelector(getDrawerState);
-  const drawerPosition = useAppSelector(getDrawerPosition);
-
-  const handleAddEvent = () => {
-    dispatch(toggleDrawer());
-  };
 
   useEffect(() => {
     switch (viewSelected) {
@@ -70,22 +56,32 @@ export default function Header({
   }, [selectedDate, viewSelected, week]);
 
   return (
-    <div className={styles.monthHead}>
+    <motion.div layout className={styles.monthHead}>
       <button
         className={`${styles.btns} ${styles.outline}`}
         onClick={onClickToday}
       >
         Today
       </button>
-      <div className={styles.actions}>
-        <button onClick={onClickBack} className={styles.btns}>
-          <HiOutlineArrowLeft />
-        </button>
+      <motion.div layout className={styles.actions}>
+        <motion.button
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onClickBack}
+          className={styles.btns}
+        >
+          <HiOutlineArrowLeft size={25} />
+        </motion.button>
         {headerText}
-        <button onClick={onClickNext} className={styles.btns}>
-          <HiOutlineArrowRight />
-        </button>
-      </div>
+        <motion.button
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onClickNext}
+          className={styles.btns}
+        >
+          <HiOutlineArrowRight size={25} />
+        </motion.button>
+      </motion.div>
 
       <select
         className={`${styles.btns} ${styles.outline} ${styles.select}`}
@@ -98,15 +94,6 @@ export default function Header({
           </option>
         ))}
       </select>
-      <button className={styles.createEventFAB} onClick={handleAddEvent}>
-        ➕
-      </button>
-      <Drawer
-        isOpen={isDrawerOpen}
-        onClose={handleAddEvent}
-        top={drawerPosition.top}
-        left={drawerPosition.left}
-      />
-    </div>
+    </motion.div>
   );
 }

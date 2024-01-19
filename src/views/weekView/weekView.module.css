@@ -98,11 +98,6 @@
     height: 100%;
 }
 
-.event:hover {
-    transform: scale(0.9);
-}
-
-
 .timeBlockQuater:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }

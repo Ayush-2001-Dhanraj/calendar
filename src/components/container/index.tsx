@@ -9,6 +9,7 @@ import { createWeekData, createMonthData, createYearData } from "clad-calendar";
 import { handleClickViewControls } from "../../utils/handleClickViewControls";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { getSelectedDate, setSelectedDate } from "../../redux/appSlice";
+import { motion } from "framer-motion";
 
 export default function Container() {
   const dispatch = useAppDispatch();
@@ -78,7 +79,7 @@ export default function Container() {
   }, [createCalendarDate, selectedDate, viewSelected]);
 
   return (
-    <div className={styles.container}>
+    <motion.div className={styles.container}>
       <Header
         selectedDate={selectedDate}
         onClickNext={onClickNext}
@@ -109,6 +110,6 @@ export default function Container() {
           onChangeDate={handleChangeSelectedDate}
         />
       )}
-    </div>
+    </motion.div>
   );
 }
