@@ -3,26 +3,21 @@ import styles from "./week.module.css";
 import { WeekProps } from "../../../common/interfaces";
 import DayCell from "../dayCell";
 import { monthHeads } from "../../../common";
+import { motion } from "framer-motion";
 
-export default function Week({
-  week,
-  selectedDate,
-  onChangeDate,
-  heightAuto,
-}: WeekProps) {
+export default function Week({ week, onChangeDate, heightAuto }: WeekProps) {
   return (
-    <div className={styles.week}>
+    <motion.div className={styles.week}>
       {week.map((dayOfWeek, index) => (
         <DayCell
           key={`Day cel ${index} ${
             monthHeads[dayOfWeek.getMonth()]
           } ${dayOfWeek.getDate()}`}
           dayOfWeek={dayOfWeek}
-          selectedDate={selectedDate}
           onChangeDate={onChangeDate}
           heightAuto={heightAuto}
         />
       ))}
-    </div>
+    </motion.div>
   );
 }

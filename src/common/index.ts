@@ -42,9 +42,10 @@ export const monthHeads = [
   "Dec",
 ];
 
-export enum calendarViewControls {
+export enum headerActions {
   NEXT = "NEXT",
   BACK = "BACK",
+  TODAY = "TODAY",
 }
 
 export enum calendarViews {

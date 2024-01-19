@@ -1,12 +1,15 @@
 import styles from "./dayCell.module.css";
 import { DayCellProps } from "../../../common/interfaces";
+import { useAppSelector } from "../../../redux/store";
+import { getSelectedDate } from "../../../redux/appSlice";
 
 export default function DayCell({
-  selectedDate,
   dayOfWeek,
   onChangeDate,
   heightAuto,
 }: DayCellProps) {
+  const selectedDate = useAppSelector(getSelectedDate);
+
   const dayCellStyles = `${styles.dayOfWeek} ${
     dayOfWeek.getMonth() !== selectedDate.getMonth() && !heightAuto
       ? styles.daysNotOfCurrentMonth

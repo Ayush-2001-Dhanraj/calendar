@@ -7,19 +7,17 @@ import {
   setSelectedHour,
   openDrawer,
   setSelectedDate,
+  getSelectedDate,
 } from "../../redux/appSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { motion } from "framer-motion";
 
-export default function WeekView({
-  week,
-  selectedDate,
-  onChangeDate,
-}: WeekProps) {
+export default function WeekView({ week, onChangeDate }: WeekProps) {
   const events = useAppSelector(getEvents);
   const calendarRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useAppDispatch();
+  const selectedDate = useAppSelector(getSelectedDate);
 
   const handleTimeBlockClick = (
     date: Date,
@@ -107,7 +105,13 @@ export default function WeekView({
                 </span>
               </motion.div>
 
-              <motion.div layout className={styles.timeBlockContainer}>
+              <motion.div
+                layout
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 2 }}
+                className={styles.timeBlockContainer}
+              >
                 {hoursOfDay.map((hour) => (
                   <div
                     className={styles.timeBlock}

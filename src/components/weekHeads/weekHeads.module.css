@@ -1,6 +1,8 @@
 .week {
     display: flex;
     position: relative;
+    margin-top: 10px;
+    width: 100vw;
 }
 
 .headsOfWeek {
@@ -8,4 +10,11 @@
     border: none !important;
     flex: 1;
     font-size: larger;
+}
+
+.monthView {
+    font-style: italic;
+    font-weight: bold;
+    font-size: 1.8rem;
+    text-align: center;
 }

@@ -1,8 +1,6 @@
-import { Dispatch, SetStateAction } from "react";
-import { calendarViews } from ".";
+import { headerActions } from ".";
 
 export interface CommonViewProps {
-  selectedDate: Date;
   onChangeDate: (arg0: Date) => void;
 }
 
@@ -22,19 +20,13 @@ export interface YearProps extends CommonViewProps {
 }
 
 export interface DayCellProps {
-  selectedDate: Date;
   dayOfWeek: Date;
   onChangeDate: (arg0: Date) => void;
   heightAuto?: boolean;
 }
 
 export interface HeaderProps {
-  selectedDate: Date;
-  onClickNext: () => void;
-  onClickToday: () => void;
-  onClickBack: () => void;
-  setViewSelected: Dispatch<SetStateAction<calendarViews>>;
-  viewSelected: calendarViews;
+  onClickAction: (action: headerActions) => void;
   week: Array<Date>;
 }
 

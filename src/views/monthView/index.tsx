@@ -5,14 +5,9 @@ import styles from "./monthView.module.css";
 import Week from "./week";
 import WeekHeads from "../../components/weekHeads";
 import { monthHeads } from "../../common";
+import { motion } from "framer-motion";
 
-function MonthView({
-  selectedDate,
-  onChangeDate,
-  month,
-  showMonth,
-  heightAuto,
-}: MonthProps) {
+function MonthView({ onChangeDate, month, showMonth, heightAuto }: MonthProps) {
   const MonthSection = () => {
     useEffect(() => {
       // set page title
@@ -24,7 +19,6 @@ function MonthView({
           <Week
             key={`week ${index + 1}`}
             week={week}
-            selectedDate={selectedDate}
             onChangeDate={onChangeDate}
             heightAuto={heightAuto}
           />
@@ -34,7 +28,11 @@ function MonthView({
   };
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 2 }}
+    >
       {showMonth && month[2] && month[2][6] && (
         <div className={styles.monthTile}>
           {monthHeads[month[2][6].getMonth()]}
@@ -42,7 +40,7 @@ function MonthView({
       )}
       <WeekHeads />
       <MonthSection />
-    </>
+    </motion.div>
   );
 }
 

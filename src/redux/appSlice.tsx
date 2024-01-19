@@ -3,8 +3,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import { createSelector } from "reselect";
 import { Event } from "../common/interfaces";
+import { calendarViews } from "../common";
 
 interface AppState {
+  viewSelected: calendarViews;
   isDrawerOpen: boolean;
   drawerTop: number;
   drawerLeft: number;
@@ -14,6 +16,7 @@ interface AppState {
 }
 
 const initialState: AppState = {
+  viewSelected: calendarViews.WEEK,
   isDrawerOpen: false,
   drawerTop: 0,
   drawerLeft: 0,
@@ -45,6 +48,14 @@ const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
+    setViewSelected: (
+      state,
+      action: PayloadAction<{
+        view: calendarViews;
+      }>
+    ) => {
+      state.viewSelected = action.payload.view;
+    },
     toggleDrawer: (state) => {
       state.isDrawerOpen = !state.isDrawerOpen;
       state.drawerTop = 0;
@@ -86,9 +97,12 @@ export const {
   setSelectedHour,
   openDrawer,
   closeDrawer,
+  setViewSelected,
 } = appSlice.actions;
 
 export const getDrawerState = (state: RootState) => state.app.isDrawerOpen;
+export const getViewSelected = (state: RootState) => state.app.viewSelected;
+export const getSelectedHour = (state: RootState) => state.app.selectedHour;
 export const getDrawerPosition = createSelector(
   [
     (state: RootState) => state.app.drawerTop,
@@ -104,7 +118,7 @@ export const getEvents = createSelector(
       date: new Date(e.date),
     }))
 );
-export const getSelectedHour = (state: RootState) => state.app.selectedHour;
+
 export const getSelectedDate = createSelector(
   [(state: RootState) => state.app.selectedDate],
   (selectedDate) => new Date(selectedDate)

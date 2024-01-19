@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 import styles from "./header.module.css";
-import { calendarViews, monthHeads } from "../../common";
+import { calendarViews, headerActions, monthHeads } from "../../common";
 import { HeaderProps } from "../../common/interfaces";
 import { motion } from "framer-motion";
-
-export default function Header({
-  selectedDate,
-  onClickNext,
-  onClickBack,
-  viewSelected,
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import {
+  getSelectedDate,
+  getViewSelected,
   setViewSelected,
-  onClickToday,
-  week,
-}: HeaderProps) {
+} from "../../redux/appSlice";
+
+export default function Header({ onClickAction, week }: HeaderProps) {
+  const selectedDate = useAppSelector(getSelectedDate);
+
   const [headerText, setHeaderText] = useState<string>(
     `${monthHeads[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`
   );
+
+  const dispatch = useAppDispatch();
+  const viewSelected = useAppSelector(getViewSelected);
+
+  const handleViewChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    dispatch(setViewSelected({ view: e.target.value as calendarViews }));
 
   useEffect(() => {
     switch (viewSelected) {
@@ -59,7 +65,7 @@ export default function Header({
     <motion.div layout className={styles.monthHead}>
       <button
         className={`${styles.btns} ${styles.outline}`}
-        onClick={onClickToday}
+        onClick={() => onClickAction(headerActions.TODAY)}
       >
         Today
       </button>
@@ -67,7 +73,7 @@ export default function Header({
         <motion.button
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 0.9 }}
-          onClick={onClickBack}
+          onClick={() => onClickAction(headerActions.BACK)}
           className={styles.btns}
         >
           <HiOutlineArrowLeft size={25} />
@@ -76,7 +82,7 @@ export default function Header({
         <motion.button
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 0.9 }}
-          onClick={onClickNext}
+          onClick={() => onClickAction(headerActions.NEXT)}
           className={styles.btns}
         >
           <HiOutlineArrowRight size={25} />
@@ -86,7 +92,7 @@ export default function Header({
       <select
         className={`${styles.btns} ${styles.outline} ${styles.select}`}
         value={viewSelected}
-        onChange={(e) => setViewSelected(e.target.value as calendarViews)}
+        onChange={handleViewChange}
       >
         {Object.keys(calendarViews).map((key) => (
           <option key={key} value={key}>

@@ -1,14 +1,19 @@
-import { calendarViewControls, calendarViews } from "../common";
+import { headerActions, calendarViews } from "../common";
 
 export const handleClickViewControls = (
-  control: calendarViewControls,
+  action: headerActions,
   viewSelected: calendarViews,
   selectedDate: Date,
   handleChangeSelectedDate: (date: Date) => void
 ) => {
+  if (action === headerActions.TODAY) {
+    handleChangeSelectedDate(new Date());
+    return;
+  }
+
   switch (viewSelected) {
     case calendarViews.WEEK:
-      const delta = control === calendarViewControls.NEXT ? 7 : -7;
+      const delta = action === headerActions.NEXT ? 7 : -7;
       const newWeek = new Date(
         selectedDate.getFullYear(),
         selectedDate.getMonth(),
@@ -18,7 +23,7 @@ export const handleClickViewControls = (
       break;
     case calendarViews.MONTH:
       const newMonth =
-        control === calendarViewControls.NEXT
+        action === headerActions.NEXT
           ? selectedDate.getMonth() + 1
           : selectedDate.getMonth() - 1;
       const newSelectedDate = new Date(selectedDate.getFullYear(), newMonth, 1);
@@ -26,7 +31,7 @@ export const handleClickViewControls = (
       break;
     case calendarViews.YEAR:
       const newYear = new Date(
-        control === calendarViewControls.NEXT
+        action === headerActions.NEXT
           ? selectedDate.getFullYear() + 1
           : selectedDate.getFullYear() - 1,
         0,
