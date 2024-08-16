@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { headerActions } from ".";
 
 export interface MonthProps {
@@ -31,7 +32,10 @@ export interface Event {
   time: string;
 }
 
-
 export interface BottomNavProps {
   onClickAction: (action: headerActions) => void;
+}
+
+export interface ProtectedCompProps {
+  children: ReactNode;
 }

@@ -1,0 +1,19 @@
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+}
+
+.label {
+    display: block;
+    color: #fff;
+    background-color: #000;
+    width: fit-content;
+    padding: 4px 12px 4px 4px;
+    font-size: 14px;
+}
+
+.input {
+    border-width: 3px;
+    padding: 8px;
+}

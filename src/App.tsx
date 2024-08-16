@@ -9,6 +9,7 @@ import {
   toggleDrawer,
 } from "./redux/appSlice";
 import Drawer from "./components/drawer";
+import ProtectedComp from "./components/protectedComp";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -45,14 +46,15 @@ function App() {
 
   return (
     <div className={styles.app}>
-      <Container />
-
-      <Drawer
-        isOpen={isDrawerOpen}
-        onClose={handleAddEvent}
-        top={drawerPosition.top}
-        left={drawerPosition.left}
-      />
+      <ProtectedComp>
+        <Container />
+        <Drawer
+          isOpen={isDrawerOpen}
+          onClose={handleAddEvent}
+          top={drawerPosition.top}
+          left={drawerPosition.left}
+        />
+      </ProtectedComp>
     </div>
   );
 }

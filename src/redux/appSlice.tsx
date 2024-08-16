@@ -13,6 +13,7 @@ interface AppState {
   events: Event[];
   selectedDate: string;
   selectedHour: string;
+  user: any;
 }
 
 const initialState: AppState = {
@@ -42,6 +43,7 @@ const initialState: AppState = {
   ],
   selectedDate: new Date().toISOString(),
   selectedHour: "",
+  user: null,
 };
 
 const appSlice = createSlice({
@@ -87,6 +89,9 @@ const appSlice = createSlice({
     setSelectedHour: (state, action) => {
       state.selectedHour = action.payload.hour;
     },
+    setUser: (state, action) => {
+      state.user = action.payload.user;
+    },
   },
 });
 
@@ -123,5 +128,6 @@ export const getSelectedDate = createSelector(
   [(state: RootState) => state.app.selectedDate],
   (selectedDate) => new Date(selectedDate)
 );
+export const getUser = (state: RootState) => state.app.user;
 
 export default appSlice.reducer;

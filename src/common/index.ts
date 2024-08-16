@@ -53,3 +53,9 @@ export enum calendarViews {
   MONTH = "MONTH",
   YEAR = "YEAR",
 }
+
+export enum labelAlignValues {
+  LEFT = 'flex-start',
+  RIGHT = 'flex-end',
+  CENTER = 'center',
+}

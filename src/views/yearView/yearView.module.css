@@ -3,7 +3,6 @@
     flex-wrap: wrap;
     height: 100%;
     overflow-x: scroll;
-    padding-bottom: 20px;
 }
 
 .monthContainer {

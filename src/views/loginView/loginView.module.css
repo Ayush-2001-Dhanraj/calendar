@@ -1,0 +1,14 @@
+.loginView {
+    display: flex;
+    width: 100%;
+}
+
+.divider {
+    border-left-width: 3px;
+    border-left-color: #000;
+}
+
+.section {
+    flex: 1;
+    padding: 8px;
+}
