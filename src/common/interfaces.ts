@@ -30,3 +30,8 @@ export interface Event {
   date: string;
   time: string;
 }
+
+
+export interface BottomNavProps {
+  onClickAction: (action: headerActions) => void;
+}

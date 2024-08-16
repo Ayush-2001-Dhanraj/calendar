@@ -1,0 +1,39 @@
+.bottomNav {
+    display: flex;
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.createEventFAB {
+    padding: 5px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.btns {
+    outline: none;
+    padding: 10px 20px;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    color: rgba(1, 1, 1, 0.4);
+    cursor: pointer;
+}
+
+
+.btns:hover {
+    color: rgba(1, 1, 1, 0.8);
+}

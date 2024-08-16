@@ -13,10 +13,6 @@ const MonthView = ({ month, heightAuto }: MonthProps) => {
   const viewSelected = useAppSelector(getViewSelected);
 
   const MonthSection = () => {
-    useEffect(() => {
-      // set page title
-      document.title = "Calendar - Month";
-    }, []);
     return (
       <>
         {month.map((week, index) => (
@@ -26,11 +22,17 @@ const MonthView = ({ month, heightAuto }: MonthProps) => {
     );
   };
 
+  useEffect(() => {
+    // set page title
+    document.title = "Calendar - Month";
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: viewSelected === calendarViews.YEAR ? 2 : 1 }}
+      className={styles.monthView}
     >
       {viewSelected === calendarViews.YEAR && month[2] && month[2][6] && (
         <div className={styles.monthTile}>

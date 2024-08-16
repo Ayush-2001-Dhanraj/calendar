@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 import styles from "./header.module.css";
 import { calendarViews, headerActions, monthHeads } from "../../common";
 import { HeaderProps } from "../../common/interfaces";
 import { motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import {
+  closeDrawer,
   getSelectedDate,
   getViewSelected,
   setViewSelected,
@@ -21,8 +21,10 @@ export default function Header({ onClickAction, week }: HeaderProps) {
   const dispatch = useAppDispatch();
   const viewSelected = useAppSelector(getViewSelected);
 
-  const handleViewChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
+  const handleViewChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setViewSelected({ view: e.target.value as calendarViews }));
+    dispatch(closeDrawer());
+  };
 
   useEffect(() => {
     switch (viewSelected) {
@@ -69,25 +71,8 @@ export default function Header({ onClickAction, week }: HeaderProps) {
       >
         Today
       </button>
-      <motion.div layout className={styles.actions}>
-        <motion.button
-          whileHover={{ scale: 1.2 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => onClickAction(headerActions.BACK)}
-          className={styles.btns}
-        >
-          <HiOutlineArrowLeft size={25} />
-        </motion.button>
-        {headerText}
-        <motion.button
-          whileHover={{ scale: 1.2 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => onClickAction(headerActions.NEXT)}
-          className={styles.btns}
-        >
-          <HiOutlineArrowRight size={25} />
-        </motion.button>
-      </motion.div>
+
+      {headerText}
 
       <select
         className={`${styles.btns} ${styles.outline} ${styles.select}`}

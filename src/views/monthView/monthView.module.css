@@ -3,3 +3,8 @@
     font-size: large;
     text-decoration: underline;
 }
+
+.monthView {
+    height: 100%;
+    overflow-x: scroll;
+}

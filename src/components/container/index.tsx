@@ -13,6 +13,8 @@ import {
   getViewSelected,
   setSelectedDate,
 } from "../../redux/appSlice";
+import Footer from "../footer";
+import BottomNav from "../bottomNav";
 
 export default function Container() {
   const dispatch = useAppDispatch();
@@ -58,7 +60,7 @@ export default function Container() {
     }
   }, [monthData, selectedDate, viewSelected, yearData]);
 
-  const handleHeaderActions = (action: headerActions) =>
+  const handleActions = (action: headerActions) =>
     handleClickViewControls(
       action,
       viewSelected,
@@ -72,11 +74,12 @@ export default function Container() {
 
   return (
     <div className={styles.container}>
-      <Header onClickAction={handleHeaderActions} week={weekData} />
-
+      <Header onClickAction={handleActions} week={weekData} />
       {viewSelected === calendarViews.WEEK && <WeekView week={weekData} />}
       {viewSelected === calendarViews.MONTH && <MonthView month={monthData} />}
       {viewSelected === calendarViews.YEAR && <YearView year={yearData} />}
+      <BottomNav onClickAction={handleActions} />
+      <Footer />
     </div>
   );
 }
