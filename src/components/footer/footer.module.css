@@ -4,3 +4,10 @@
     background-color: #000;
     color: #fff;
 }
+
+.creatorName {
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    font-style: italic;
+}

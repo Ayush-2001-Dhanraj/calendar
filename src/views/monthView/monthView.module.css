@@ -1,7 +1,9 @@
 .monthTile {
     padding: 10px 0;
-    font-size: large;
-    text-decoration: underline;
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
 }
 
 .monthView {
