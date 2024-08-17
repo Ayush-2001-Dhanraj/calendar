@@ -22,6 +22,7 @@ function Footer({ mode = FooterMode.DARK }: FooterProps) {
       <a
         href="https://github.com/Ayush-2001-Dhanraj"
         target="_blank"
+        rel="noreferrer"
         className={styles.creatorName}
         style={{
           color: mode === FooterMode.DARK ? "#fff" : "#000",

@@ -31,14 +31,14 @@ function LoginView() {
           labelAlign: labelAlignValues.LEFT,
           onChange: (value: string) => handleChangeValue("firstName", value),
           value: registerData.firstName,
-          style: { left: "20px" },
+          style: { left: `${Math.random() * (100 - 20) + 20}px` },
         },
         {
           label: "Last Name",
           labelAlign: labelAlignValues.RIGHT,
           onChange: (value: string) => handleChangeValue("lastName", value),
           value: registerData.lastName,
-          style: { right: "20px" },
+          style: { right: `${Math.random() * (100 - 20) + 20}px` },
         },
         {
           label: "Email",
@@ -53,7 +53,7 @@ function LoginView() {
           onChange: (value: string) => handleChangeValue("password", value),
           value: registerData.password,
           type: "password",
-          style: { left: "20px" },
+          style: { left: `${Math.random() * (100 - 20) + 20}px` },
         },
         {
           label: "Verify Password",
@@ -62,7 +62,7 @@ function LoginView() {
             handleChangeValue("verifyPassword", value),
           value: registerData.verifyPassword,
           type: "password",
-          style: { right: "20px" },
+          style: { right: `${Math.random() * (100 - 20) + 20}px` },
         },
       ]
     : [
@@ -71,7 +71,7 @@ function LoginView() {
           labelAlign: labelAlignValues.LEFT,
           onChange: (value: string) => handleChangeValue("email", value),
           value: registerData.email,
-          style: { left: "20px" },
+          style: { left: `${Math.random() * (100 - 80) + 80}px` },
         },
         {
           label: "Password",
@@ -79,7 +79,7 @@ function LoginView() {
           onChange: (value: string) => handleChangeValue("password", value),
           value: registerData.password,
           type: "password",
-          style: { right: "20px" },
+          style: { right: `${Math.random() * (100 - 80) + 80}px` },
         },
       ];
 
