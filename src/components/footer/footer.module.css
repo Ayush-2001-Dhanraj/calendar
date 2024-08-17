@@ -1,13 +1,11 @@
 .footer {
     text-align: center;
     padding: 4px;
-    background-color: #000;
-    color: #fff;
 }
 
 .creatorName {
     font-weight: bold;
-    color: #fff;
     text-decoration: none;
     font-style: italic;
+    font-size: 12px;
 }

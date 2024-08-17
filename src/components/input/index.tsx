@@ -7,9 +7,18 @@ export interface InputProps {
   value: string;
   onChange: (value: string) => void;
   labelAlign: labelAlignValues;
+  type?: string;
+  required?: boolean;
 }
 
-function Input({ label, value, onChange, labelAlign }: InputProps) {
+function Input({
+  label,
+  value,
+  onChange,
+  labelAlign,
+  type = "text",
+  required = false,
+}: InputProps) {
   const handleValueChange = (e: any) => {
     onChange(e.target.value);
   };
@@ -27,8 +36,9 @@ function Input({ label, value, onChange, labelAlign }: InputProps) {
       <input
         value={value}
         onChange={handleValueChange}
-        type="text"
+        type={type}
         id={label}
+        required={required}
         className={styles.input}
       />
     </div>

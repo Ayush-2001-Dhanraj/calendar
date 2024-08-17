@@ -1,6 +1,7 @@
 .loginView {
     display: flex;
     width: 100%;
+    position: relative;
 }
 
 .divider {
@@ -11,4 +12,29 @@
 .section {
     flex: 1;
     padding: 8px;
+}
+
+.inputComp {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.actionSection {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+
+}
+
+.toggleViewBtn {
+    text-align: right;
+    font-size: 12px;
+    cursor: pointer;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 4px;
+    background-color: #fff;
 }
