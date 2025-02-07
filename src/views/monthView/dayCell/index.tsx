@@ -3,7 +3,11 @@ import { DayCellProps } from "../../../common/interfaces";
 import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { getSelectedDate, setSelectedDate } from "../../../redux/appSlice";
 
-export default function DayCell({ dayOfWeek, heightAuto }: DayCellProps) {
+export default function DayCell({
+  dayOfWeek,
+  heightAuto,
+  currentMonth,
+}: DayCellProps) {
   const selectedDate = useAppSelector(getSelectedDate);
   const dispatch = useAppDispatch();
 
@@ -19,6 +23,7 @@ export default function DayCell({ dayOfWeek, heightAuto }: DayCellProps) {
       : ""
   } ${
     dayOfWeek.getMonth() === new Date().getMonth() &&
+    dayOfWeek.getMonth() === currentMonth &&
     dayOfWeek.getDate() === new Date().getDate() &&
     dayOfWeek.getFullYear() === new Date().getFullYear()
       ? styles.today

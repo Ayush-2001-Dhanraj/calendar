@@ -65,26 +65,28 @@ export default function Header({ onClickAction, week }: HeaderProps) {
 
   return (
     <motion.div layout className={styles.monthHead}>
-      <button
-        className={`${styles.btns} ${styles.outline}`}
-        onClick={() => onClickAction(headerActions.TODAY)}
-      >
-        Today
-      </button>
-
-      {headerText}
-
-      <select
-        className={`${styles.btns} ${styles.outline} ${styles.select}`}
-        value={viewSelected}
-        onChange={handleViewChange}
-      >
-        {Object.keys(calendarViews).map((key) => (
-          <option key={key} value={key}>
-            {calendarViews[key as calendarViews]}
-          </option>
-        ))}
-      </select>
+      <div className={styles.btnWrapper}>
+        <button
+          className={styles.btns}
+          onClick={() => onClickAction(headerActions.TODAY)}
+        >
+          Today
+        </button>
+      </div>
+      <p className={styles.headerText}>{headerText}</p>
+      <div className={styles.btnWrapper}>
+        <select
+          className={styles.btns}
+          value={viewSelected}
+          onChange={handleViewChange}
+        >
+          {Object.keys(calendarViews).map((key) => (
+            <option key={key} value={key}>
+              {calendarViews[key as calendarViews]}
+            </option>
+          ))}
+        </select>
+      </div>
     </motion.div>
   );
 }

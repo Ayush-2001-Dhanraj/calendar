@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import styles from "./weekView.module.css";
 import { WeekProps } from "../../common/interfaces";
 import { weekHeads, monthHeads, hoursOfDay } from "../../common";
@@ -14,7 +14,6 @@ import { motion } from "framer-motion";
 
 export default function WeekView({ week }: WeekProps) {
   const events = useAppSelector(getEvents);
-  const calendarRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useAppDispatch();
   const selectedDate = useAppSelector(getSelectedDate);
@@ -73,7 +72,39 @@ export default function WeekView({ week }: WeekProps) {
   }, []);
 
   return (
-    <div className={styles.weekView} ref={calendarRef}>
+    <>
+      <motion.div layout className={styles.weekHeadsContainer}>
+        {week.map((dayOfWeek, index) => {
+          return (
+            <motion.div
+              key={`Day Header ${index} ${
+                monthHeads[dayOfWeek.getMonth()]
+              } ${dayOfWeek.getDate()}`}
+              layout
+              className={`${styles.DateNumber} ${
+                new Date().getDate() === dayOfWeek.getDate() &&
+                new Date().getFullYear() === dayOfWeek.getFullYear() &&
+                new Date().getMonth() === dayOfWeek.getMonth()
+                  ? styles.currentDate
+                  : ""
+              }  ${
+                selectedDate.getDate() === dayOfWeek.getDate()
+                  ? styles.selectedDate
+                  : ""
+              }`}
+              onClick={() =>
+                dispatch(setSelectedDate({ newDate: dayOfWeek.toISOString() }))
+              }
+            >
+              {dayOfWeek.getDate()}
+              <span className={styles.weekHead}>
+                {weekHeads[dayOfWeek.getDay()]}
+              </span>
+            </motion.div>
+          );
+        })}
+      </motion.div>
+
       <div className={styles.mainContainer}>
         {week.map((dayOfWeek, index) => {
           return (
@@ -84,31 +115,6 @@ export default function WeekView({ week }: WeekProps) {
               } ${dayOfWeek.getDate()}`}
               className={`${styles.DateNumberContainer}`}
             >
-              <motion.div
-                layout
-                className={`${styles.DateNumber} ${
-                  new Date().getDate() === dayOfWeek.getDate() &&
-                  new Date().getFullYear() === dayOfWeek.getFullYear() &&
-                  new Date().getMonth() === dayOfWeek.getMonth()
-                    ? styles.currentDate
-                    : ""
-                }  ${
-                  selectedDate.getDate() === dayOfWeek.getDate()
-                    ? styles.selectedDate
-                    : ""
-                }`}
-                onClick={() =>
-                  dispatch(
-                    setSelectedDate({ newDate: dayOfWeek.toISOString() })
-                  )
-                }
-              >
-                {dayOfWeek.getDate()}
-                <span className={styles.weekHead}>
-                  {weekHeads[dayOfWeek.getDay()]}
-                </span>
-              </motion.div>
-
               <motion.div
                 layout
                 initial={{ opacity: 0 }}
@@ -151,6 +157,6 @@ export default function WeekView({ week }: WeekProps) {
           );
         })}
       </div>
-    </div>
+    </>
   );
 }

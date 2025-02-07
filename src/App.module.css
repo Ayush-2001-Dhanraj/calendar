@@ -1,6 +1,7 @@
 .app {
     height: 100vh;
-    overflow: scroll;
     display: flex;
-    border: 10px double
+    border: 10px double;
+    box-sizing: border-box;
+    flex-direction: column;
 }

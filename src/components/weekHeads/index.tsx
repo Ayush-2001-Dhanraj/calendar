@@ -12,8 +12,8 @@ export default function WeekHeads() {
         <div
           key={head}
           className={`${styles.headsOfWeek} ${
-            selectedView === calendarViews.WEEK ? styles.weekView : ""
-          } ${selectedView === calendarViews.MONTH ? styles.monthView : ""}`}
+            selectedView === calendarViews.YEAR ? styles.yearView : ""
+          }`}
         >
           {head}
         </div>

@@ -73,13 +73,17 @@ export default function Container() {
   }, [createCalendarDate, selectedDate, viewSelected]);
 
   return (
-    <div className={styles.container}>
+    <>
       <Header onClickAction={handleActions} week={weekData} />
-      {viewSelected === calendarViews.WEEK && <WeekView week={weekData} />}
-      {viewSelected === calendarViews.MONTH && <MonthView month={monthData} />}
-      {viewSelected === calendarViews.YEAR && <YearView year={yearData} />}
+      <div className={styles.container}>
+        {viewSelected === calendarViews.WEEK && <WeekView week={weekData} />}
+        {viewSelected === calendarViews.MONTH && (
+          <MonthView month={monthData} />
+        )}
+        {viewSelected === calendarViews.YEAR && <YearView year={yearData} />}
+      </div>
       <BottomNav onClickAction={handleActions} />
       <Footer />
-    </div>
+    </>
   );
 }

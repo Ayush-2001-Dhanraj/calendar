@@ -6,6 +6,6 @@
 .creatorName {
     font-weight: bold;
     text-decoration: none;
-    font-style: italic;
     font-size: 12px;
+    color: black;
 }

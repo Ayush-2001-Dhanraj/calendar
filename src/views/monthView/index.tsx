@@ -16,7 +16,12 @@ const MonthView = ({ month, heightAuto }: MonthProps) => {
     return (
       <>
         {month.map((week, index) => (
-          <Week key={`week ${index + 1}`} week={week} heightAuto={heightAuto} />
+          <Week
+            key={`week ${index + 1}`}
+            week={week}
+            heightAuto={heightAuto}
+            currentMonth={month[2][6].getMonth()}
+          />
         ))}
       </>
     );

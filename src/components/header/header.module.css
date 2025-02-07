@@ -2,12 +2,18 @@
     padding: 10px;
     font-size: larger;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+
+    .btnWrapper {
+        width: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
     .btns {
         outline: none;
-        padding: 10px 20px;
+        /* padding: 10px 20px; */
         border: none;
         display: flex;
         justify-content: space-between;
@@ -15,20 +21,17 @@
         background-color: transparent;
         color: rgba(1, 1, 1, 0.4);
         cursor: pointer;
+        border: 1px solid rgba(1, 1, 1, 0.4);
+        padding: 4px;
     }
 
-    .outline {
-        border: 1px solid rgba(1, 1, 1, 0.4);
-    }
 
     .btns:hover {
         color: rgba(1, 1, 1, 0.8);
     }
-}
 
-.select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding-right: 15px;
+    .headerText {
+        flex: 1;
+        text-align: center;
+    }
 }

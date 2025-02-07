@@ -1,18 +1,26 @@
+@keyframes floatX {
+    0% {
+        transform: translateX(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateX(-10px) rotate(2deg);
+    }
+
+    100% {
+        transform: translateX(0px) rotate(0deg);
+    }
+}
+
+
 .loginView {
     display: flex;
     width: 100%;
     position: relative;
     overflow: hidden;
-}
-
-.divider {
-    border-left-width: 3px;
-    border-left-color: #000;
-}
-
-.section {
+    justify-content: center;
+    align-items: center;
     flex: 1;
-    padding: 8px;
 }
 
 .inputComp {
@@ -20,22 +28,32 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: floatX 4s infinite ease-in-out alternate;
+    transition: transform 0.5s ease-in-out;
+}
+
+.inputComp:hover {
+    transform: scale(1.05);
 }
 
 .actionSection {
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: 0;
-
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 4px
 }
 
 .toggleViewBtn {
-    text-align: right;
-    font-size: 12px;
+    font-size: 14px;
     cursor: pointer;
-    width: fit-content;
-    margin: 0 auto;
     padding: 4px;
-    background-color: #fff;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.toggleViewBtn:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
 }

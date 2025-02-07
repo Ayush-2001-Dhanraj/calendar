@@ -1,10 +1,32 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styles from "./loginView.module.css";
 import Input from "../../components/input";
 import { labelAlignValues } from "../../common";
 import Button from "../../components/button";
 import { motion } from "framer-motion";
-import Footer, { FooterMode } from "../../components/footer";
+import Footer from "../../components/footer";
+import { useAppDispatch } from "../../redux/store";
+import { setUser } from "../../redux/appSlice";
+
+function generatePositions() {
+  const fields = [
+    "First Name",
+    "Last Name",
+    "Email",
+    "Password",
+    "Verify Password",
+  ];
+  const positions: Record<string, { top: string; left: string }> = {};
+
+  fields.forEach((field, index) => {
+    positions[field] = {
+      top: `${8 + index * 10}vh`,
+      left: `${Math.random() * 60 + 10}vw`,
+    };
+  });
+
+  return positions;
+}
 
 function LoginView() {
   const [registerData, setRegisterData] = useState({
@@ -15,98 +37,58 @@ function LoginView() {
     verifyPassword: "",
   });
   const [isRegister, setIsRegister] = useState(true);
+  const dispatch = useAppDispatch();
+
+  const positionRef = useRef(generatePositions());
 
   const handleChangeValue = (property: string, value: string) => {
-    setRegisterData((prev) => {
-      return { ...prev, [property]: value };
-    });
+    setRegisterData((prev) => ({ ...prev, [property]: value }));
   };
 
   const toggleView = () => setIsRegister((prev) => !prev);
 
   const inputData = isRegister
     ? [
-        {
-          label: "First Name",
-          labelAlign: labelAlignValues.LEFT,
-          onChange: (value: string) => handleChangeValue("firstName", value),
-          value: registerData.firstName,
-          style: { left: `${Math.random() * (100 - 20) + 20}px` },
-        },
-        {
-          label: "Last Name",
-          labelAlign: labelAlignValues.RIGHT,
-          onChange: (value: string) => handleChangeValue("lastName", value),
-          value: registerData.lastName,
-          style: { right: `${Math.random() * (100 - 20) + 20}px` },
-        },
-        {
-          label: "Email",
-          labelAlign: labelAlignValues.CENTER,
-          onChange: (value: string) => handleChangeValue("email", value),
-          value: registerData.email,
-          style: { left: 0, right: 0 },
-        },
-        {
-          label: "Password",
-          labelAlign: labelAlignValues.LEFT,
-          onChange: (value: string) => handleChangeValue("password", value),
-          value: registerData.password,
-          type: "password",
-          style: { left: `${Math.random() * (100 - 20) + 20}px` },
-        },
-        {
-          label: "Verify Password",
-          labelAlign: labelAlignValues.RIGHT,
-          onChange: (value: string) =>
-            handleChangeValue("verifyPassword", value),
-          value: registerData.verifyPassword,
-          type: "password",
-          style: { right: `${Math.random() * (100 - 20) + 20}px` },
-        },
+        { label: "First Name", prop: "firstName" },
+        { label: "Last Name", prop: "lastName" },
+        { label: "Email", prop: "email" },
+        { label: "Password", prop: "password", type: "password" },
+        { label: "Verify Password", prop: "verifyPassword", type: "password" },
       ]
     : [
-        {
-          label: "Email",
-          labelAlign: labelAlignValues.LEFT,
-          onChange: (value: string) => handleChangeValue("email", value),
-          value: registerData.email,
-          style: { left: `${Math.random() * (100 - 80) + 80}px` },
-        },
-        {
-          label: "Password",
-          labelAlign: labelAlignValues.RIGHT,
-          onChange: (value: string) => handleChangeValue("password", value),
-          value: registerData.password,
-          type: "password",
-          style: { right: `${Math.random() * (100 - 80) + 80}px` },
-        },
+        { label: "Email", prop: "email" },
+        { label: "Password", prop: "password", type: "password" },
       ];
 
+  const handleSubmit = () => {
+    console.log("Submitting...");
+    dispatch(setUser({ user: "yaash" }));
+  };
+
   return (
-    <div className={styles.loginView}>
-      <div className={styles.section}></div>
-      <hr className={styles.divider} />
-      <div className={styles.section}></div>
-      {inputData.map((e, index) => {
-        return (
-          <div
+    <>
+      <div className={styles.loginView}>
+        {inputData.map(({ label, prop, type }, index) => (
+          <motion.div
+            key={label}
             className={styles.inputComp}
-            style={{ ...e.style, top: `${(index + 1) * 80}px` }}
-            key={e.label}
+            style={positionRef.current[label]}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: index * 0.4 }}
           >
             <Input
-              label={e.label}
-              labelAlign={e.labelAlign}
-              value={e.value}
-              type={e.type}
-              onChange={e.onChange}
+              label={label}
+              labelAlign={labelAlignValues.CENTER}
+              value={registerData[prop as keyof typeof registerData]}
+              type={type}
+              onChange={(value) => handleChangeValue(prop, value)}
             />
-          </div>
-        );
-      })}
+          </motion.div>
+        ))}
+      </div>
       <div className={styles.actionSection}>
-        <motion.div
+        <motion.button
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
@@ -114,15 +96,15 @@ function LoginView() {
           className={styles.toggleViewBtn}
         >
           {isRegister ? "Login??" : "Register??"}
-        </motion.div>
+        </motion.button>
         <Button
           text={isRegister ? "Register" : "Login"}
           type="submit"
-          onClick={() => {}}
+          onClick={handleSubmit}
         />
-        <Footer mode={FooterMode.LIGHT} />
+        <Footer />
       </div>
-    </div>
+    </>
   );
 }
 

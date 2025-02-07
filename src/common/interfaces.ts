@@ -9,6 +9,7 @@ export interface MonthProps {
 export interface WeekProps {
   week: Array<Date>;
   heightAuto?: boolean;
+  currentMonth?: number
 }
 
 export interface YearProps {
@@ -18,6 +19,7 @@ export interface YearProps {
 export interface DayCellProps {
   dayOfWeek: Date;
   heightAuto?: boolean;
+  currentMonth?: number;
 }
 
 export interface HeaderProps {

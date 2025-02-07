@@ -8,13 +8,17 @@
 .headsOfWeek {
     padding: 10px;
     flex: 1;
-    color: #fff;
     font-size: 1.2rem;
     font-style: normal;
     text-align: center;
-    text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000;
+    font-weight: bold;
 
     @media screen and (max-width:430px) {
         font-size: 0.5rem;
     }
+}
+
+.yearView {
+    color: #fff;
+    text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000;
 }

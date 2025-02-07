@@ -17,7 +17,7 @@ interface AppState {
 }
 
 const initialState: AppState = {
-  viewSelected: calendarViews.YEAR,
+  viewSelected: calendarViews.WEEK,
   isDrawerOpen: false,
   drawerTop: 0,
   drawerLeft: 0,
@@ -103,6 +103,7 @@ export const {
   openDrawer,
   closeDrawer,
   setViewSelected,
+  setUser,
 } = appSlice.actions;
 
 export const getDrawerState = (state: RootState) => state.app.isDrawerOpen;
