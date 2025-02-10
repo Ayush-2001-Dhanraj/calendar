@@ -7,6 +7,8 @@ import { motion } from "framer-motion";
 import Footer from "../../components/footer";
 import { useAppDispatch } from "../../redux/store";
 import { setUser } from "../../redux/appSlice";
+import AuthService from "../../services/AuthService";
+import UserService from "../../services/UserServices";
 
 function generatePositions() {
   const fields = [
@@ -60,9 +62,39 @@ function LoginView() {
         { label: "Password", prop: "password", type: "password" },
       ];
 
-  const handleSubmit = () => {
-    console.log("Submitting...");
-    dispatch(setUser({ user: "yaash" }));
+  const handleSubmit = async () => {
+    console.log(registerData);
+    if (!isRegister) {
+      // Login Flow
+      const payload = {
+        email: registerData.email,
+        password: registerData.password,
+      };
+      const result = await AuthService.login(payload);
+      if (result.msg) {
+        console.log("Login Failed:", result.msg);
+      } else {
+        console.log(result);
+        const res = await UserService.getUser(result.user.id);
+        console.log(res);
+        // dispatch(setUser({ user: result.user }));
+      }
+    } else {
+      // Register Flow
+      const payload = {
+        email: registerData.email,
+        password: registerData.password,
+        firstName: registerData.firstName,
+        lastName: registerData.lastName,
+      };
+      const result = await AuthService.register(payload);
+      if (result.msg) {
+        console.log("Register Failed:", result.msg);
+      } else {
+        console.log(result);
+        // dispatch(setUser({ user: result.user }));
+      }
+    }
   };
 
   return (
