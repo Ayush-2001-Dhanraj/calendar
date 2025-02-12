@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import styles from "./loginView.module.css";
 import Input from "../../components/input";
 import { labelAlignValues } from "../../common";
@@ -8,6 +8,7 @@ import Footer from "../../components/footer";
 import { useAppDispatch } from "../../redux/store";
 import { setUser } from "../../redux/appSlice";
 import AuthService from "../../services/AuthService";
+import toast from "react-hot-toast";
 import UserService from "../../services/UserServices";
 
 function generatePositions() {
@@ -63,7 +64,6 @@ function LoginView() {
       ];
 
   const handleSubmit = async () => {
-    console.log(registerData);
     if (!isRegister) {
       // Login Flow
       const payload = {
@@ -72,12 +72,10 @@ function LoginView() {
       };
       const result = await AuthService.login(payload);
       if (result.msg) {
-        console.log("Login Failed:", result.msg);
+        toast.error(result.msg);
       } else {
-        console.log(result);
-        const res = await UserService.getUser(result.user.id);
-        console.log(res);
-        // dispatch(setUser({ user: result.user }));
+        dispatch(setUser({ user: result.user }));
+        toast.success("Login Successful!");
       }
     } else {
       // Register Flow
@@ -89,13 +87,35 @@ function LoginView() {
       };
       const result = await AuthService.register(payload);
       if (result.msg) {
-        console.log("Register Failed:", result.msg);
+        toast.error(result.msg);
       } else {
-        console.log(result);
-        // dispatch(setUser({ user: result.user }));
+        dispatch(setUser({ user: result.user }));
+        toast.success("Registration Successful!");
       }
     }
   };
+
+  useEffect(() => {
+    setRegisterData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      verifyPassword: "",
+    });
+  }, [isRegister]);
+
+  const getCurrentUser = useCallback(async () => {
+    const response = await UserService.getCurrentUser();
+    if (!response.msg) {
+      toast.success("Welcome Back!");
+      dispatch(setUser({ user: response.user }));
+    }
+  }, []);
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
 
   return (
     <>

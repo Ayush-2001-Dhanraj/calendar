@@ -3,6 +3,7 @@
     padding: 8px;
     justify-content: center;
     align-items: center;
+    gap: 10px;
 }
 
 .createEventFAB {
@@ -23,7 +24,7 @@
 
 .btns {
     outline: none;
-    padding: 10px 20px;
+    padding: 10px;
     border: none;
     display: flex;
     justify-content: space-between;

@@ -10,6 +10,7 @@ import {
 } from "./redux/appSlice";
 import Drawer from "./components/drawer";
 import ProtectedComp from "./components/protectedComp";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -55,6 +56,7 @@ function App() {
           left={drawerPosition.left}
         />
       </ProtectedComp>
+      <Toaster position="bottom-right" />
     </div>
   );
 }
