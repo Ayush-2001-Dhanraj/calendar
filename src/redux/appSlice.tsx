@@ -1,9 +1,23 @@
 // src/features/appSlice.ts
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import { createSelector } from "reselect";
 import { Event } from "../common/interfaces";
 import { calendarViews } from "../common";
+import UserService from "../services/UserServices";
+
+export const fetchEventsFromBackend = createAsyncThunk<
+  Event[], // Return type
+  string, // Argument type (userID)
+  { rejectValue: string } // Rejection type
+>("app/fetchEvents", async (userID, { rejectWithValue }) => {
+  try {
+    const events = await UserService.getAllEvents(userID);
+    return events.events;
+  } catch (error) {
+    return rejectWithValue("Failed to fetch events");
+  }
+});
 
 interface AppState {
   viewSelected: calendarViews;
@@ -21,26 +35,7 @@ const initialState: AppState = {
   isDrawerOpen: false,
   drawerTop: 0,
   drawerLeft: 0,
-  events: [
-    {
-      date: "Mon Jan 15 2024 00:00:00 GMT+0530",
-      title: "Tea with Katy",
-      description: "",
-      time: "12:00 AM",
-    },
-    {
-      date: "wed Jan 17 2024 00:00:00 GMT+0530",
-      title: "Mother Goose Help me!",
-      description: "",
-      time: "09:30 AM",
-    },
-    {
-      date: "Mon Jan 16 2024 00:00:00 GMT+0530",
-      title: "Brunch on sofa with Amanda",
-      description: "",
-      time: "12:45 AM",
-    },
-  ],
+  events: [],
   selectedDate: new Date().toISOString(),
   selectedHour: "",
   user: null,
@@ -73,9 +68,8 @@ const appSlice = createSlice({
       state.drawerTop = 0;
       state.drawerLeft = 0;
     },
-    addEvent: (state, action: PayloadAction<Event>) => {
-      const { title, description, date, time } = action.payload;
-      state.events.push({ title, description, date, time });
+    fetchLatestEvents: (state, action: PayloadAction<Event[]>) => {
+      state.events = action.payload;
     },
     setSelectedDate: (
       state,
@@ -92,18 +86,34 @@ const appSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload.user;
     },
+    resetState: (state) => {
+      Object.assign(state, initialState); // Reset state to initial values
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchEventsFromBackend.pending, (state) => {
+        // Optional: Handle loading state if needed
+      })
+      .addCase(fetchEventsFromBackend.fulfilled, (state, action) => {
+        state.events = action.payload;
+      })
+      .addCase(fetchEventsFromBackend.rejected, (state, action) => {
+        console.error(action.payload);
+      });
   },
 });
 
 export const {
   toggleDrawer,
-  addEvent,
+  fetchLatestEvents,
   setSelectedDate,
   setSelectedHour,
   openDrawer,
   closeDrawer,
   setViewSelected,
   setUser,
+  resetState,
 } = appSlice.actions;
 
 export const getDrawerState = (state: RootState) => state.app.isDrawerOpen;
@@ -121,7 +131,7 @@ export const getEvents = createSelector(
   (events) =>
     events.map((e) => ({
       ...e,
-      date: new Date(e.date),
+      event_date: new Date(e.event_date),
     }))
 );
 

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./bottomNav.module.css";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { getDrawerState, setUser, toggleDrawer } from "../../redux/appSlice";
+import { getDrawerState, resetState, toggleDrawer } from "../../redux/appSlice";
 import { motion } from "framer-motion";
 import { IoMdAdd } from "react-icons/io";
 import { RiLogoutCircleRFill } from "react-icons/ri";
@@ -10,6 +10,7 @@ import { FaUser } from "react-icons/fa";
 import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 import { BottomNavProps } from "../../common/interfaces";
 import AuthService from "../../services/AuthService";
+import toast from "react-hot-toast";
 
 const buttonVariants = {
   hover: { scale: 1.2 },
@@ -48,18 +49,19 @@ const BottomNav: React.FC<BottomNavProps> = ({ onClickAction }) => {
   const dispatch = useAppDispatch();
   const isDrawerOpen = useAppSelector(getDrawerState);
 
-  const handleUserEvent = () => {};
+  const handleViewUserDetails = () => {};
   const handleAddEvent = () => dispatch(toggleDrawer());
   const handleLogout = async () => {
     const result = await AuthService.logout();
     if (result && result.msg === "Logout Successful!") {
-      dispatch(setUser({ user: "" }));
+      dispatch(resetState());
+      toast.success("Logout Successful!");
     }
   };
 
   // Button Configuration
   const buttons: ActionButtonProps[] = [
-    { icon: <FaUser size={20} />, onClick: handleUserEvent },
+    { icon: <FaUser size={20} />, onClick: handleViewUserDetails },
     { icon: <IoMdAdd size={20} />, onClick: handleAddEvent },
     { icon: <RiLogoutCircleRFill size={20} />, onClick: handleLogout },
   ];

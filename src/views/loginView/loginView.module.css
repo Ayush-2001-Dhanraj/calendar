@@ -30,6 +30,9 @@
     align-items: center;
     animation: floatX 4s infinite ease-in-out alternate;
     transition: transform 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: 5px
 }
 
 .inputComp:hover {
@@ -56,4 +59,9 @@
 .toggleViewBtn:hover {
     background-color: rgba(0, 0, 0, 0.6);
     color: #fff;
+}
+
+.errorText {
+    color: red;
+    font-size: 12px;
 }

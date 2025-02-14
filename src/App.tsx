@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import Container from "./components/container";
 import styles from "./App.module.css";
 import { useAppDispatch, useAppSelector } from "./redux/store";
@@ -7,19 +7,39 @@ import {
   getDrawerState,
   getDrawerPosition,
   toggleDrawer,
+  getUser,
+  setUser,
+  fetchEventsFromBackend,
 } from "./redux/appSlice";
 import Drawer from "./components/drawer";
 import ProtectedComp from "./components/protectedComp";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import UserService from "./services/UserServices";
 
 function App() {
   const dispatch = useAppDispatch();
   const isDrawerOpen = useAppSelector(getDrawerState);
   const drawerPosition = useAppSelector(getDrawerPosition);
 
+  const user = useAppSelector(getUser);
+
   const handleAddEvent = () => {
     dispatch(toggleDrawer());
   };
+
+  const getCurrentUser = useCallback(async () => {
+    const response = await UserService.getCurrentUser();
+    if (!response.msg) {
+      toast.success("Welcome Back!");
+      dispatch(setUser({ user: response.user }));
+      console.log(response.user.id);
+      dispatch(fetchEventsFromBackend(response.user.id));
+    }
+  }, []);
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
 
   useEffect(() => {
     const options = {

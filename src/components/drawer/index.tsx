@@ -5,11 +5,15 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 import {
   getSelectedDate,
   setSelectedDate,
-  addEvent,
   getSelectedHour,
   closeDrawer,
+  getUser,
+  fetchEventsFromBackend,
 } from "../../redux/appSlice";
 import { motion } from "framer-motion";
+import { convertTo24Hour } from "../../utils/timeHelpers";
+import UserService from "../../services/UserServices";
+import toast from "react-hot-toast";
 
 interface DrawerProps {
   isOpen: boolean;
@@ -23,6 +27,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
   const [selectedMinute, setSelectedMinute] = useState("00");
   const [selectedPeriod, setSelectedPeriod] = useState("AM");
   const drawerRef = useRef<HTMLDivElement>(null);
+  const user = useAppSelector(getUser);
 
   const selectedDate = useAppSelector(getSelectedDate);
   const userSelectedHour = useAppSelector(getSelectedHour);
@@ -66,11 +71,33 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
     } else setEvent((preV) => ({ ...preV, [e.target.name]: e.target.value }));
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setEvent(eventDefault);
-    dispatch(addEvent({ ...event, date: selectedDate.toISOString() }));
-    dispatch(closeDrawer());
+
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    };
+
+    const formattedDate: string = selectedDate.toLocaleDateString(
+      "en-CA",
+      options
+    ); // "en-CA" ensures YYYY-MM-DD format
+
+    const result = await UserService.createEvent(user.id, {
+      ...event,
+      eventDate: formattedDate,
+      eventTime: convertTo24Hour(event.time),
+    });
+
+    if (!result.event) {
+      toast.error("Something went wrong!");
+    } else {
+      dispatch(fetchEventsFromBackend(user.id));
+      setEvent(eventDefault);
+      dispatch(closeDrawer());
+    }
   };
 
   useEffect(() => {

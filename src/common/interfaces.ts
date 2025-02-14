@@ -30,8 +30,8 @@ export interface HeaderProps {
 export interface Event {
   title: string;
   description: string;
-  date: string;
-  time: string;
+  event_date: string;
+  event_time: string;
 }
 
 export interface BottomNavProps {
