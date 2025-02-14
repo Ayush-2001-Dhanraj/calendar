@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./bottomNav.module.css";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { getDrawerState, toggleDrawer } from "../../redux/appSlice";
+import { getDrawerState, setUser, toggleDrawer } from "../../redux/appSlice";
 import { motion } from "framer-motion";
 import { IoMdAdd } from "react-icons/io";
 import { RiLogoutCircleRFill } from "react-icons/ri";
@@ -9,6 +9,7 @@ import { headerActions } from "../../common";
 import { FaUser } from "react-icons/fa";
 import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 import { BottomNavProps } from "../../common/interfaces";
+import AuthService from "../../services/AuthService";
 
 const buttonVariants = {
   hover: { scale: 1.2 },
@@ -47,13 +48,20 @@ const BottomNav: React.FC<BottomNavProps> = ({ onClickAction }) => {
   const dispatch = useAppDispatch();
   const isDrawerOpen = useAppSelector(getDrawerState);
 
+  const handleUserEvent = () => {};
   const handleAddEvent = () => dispatch(toggleDrawer());
+  const handleLogout = async () => {
+    const result = await AuthService.logout();
+    if (result && result.msg === "Logout Successful!") {
+      dispatch(setUser({ user: "" }));
+    }
+  };
 
   // Button Configuration
   const buttons: ActionButtonProps[] = [
-    { icon: <FaUser size={25} />, onClick: handleAddEvent },
-    { icon: <IoMdAdd size={25} />, onClick: handleAddEvent },
-    { icon: <RiLogoutCircleRFill size={25} />, onClick: handleAddEvent },
+    { icon: <FaUser size={20} />, onClick: handleUserEvent },
+    { icon: <IoMdAdd size={20} />, onClick: handleAddEvent },
+    { icon: <RiLogoutCircleRFill size={20} />, onClick: handleLogout },
   ];
 
   return (
@@ -65,7 +73,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ onClickAction }) => {
         onClick={() => onClickAction(headerActions.BACK)}
         className={styles.btns}
       >
-        <HiOutlineArrowLeft size={25} />
+        <HiOutlineArrowLeft size={20} />
       </motion.button>
 
       {/* Action Buttons (Dynamically Rendered) */}
@@ -80,7 +88,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ onClickAction }) => {
         onClick={() => onClickAction(headerActions.NEXT)}
         className={styles.btns}
       >
-        <HiOutlineArrowRight size={25} />
+        <HiOutlineArrowRight size={20} />
       </motion.button>
     </div>
   );

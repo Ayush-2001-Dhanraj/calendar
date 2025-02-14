@@ -1,11 +1,11 @@
+.monthView {
+    height: 100%;
+    overflow-x: scroll;
+}
+
 .monthTile {
     padding: 10px 0;
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
-}
-
-.monthView {
-    height: 100%;
-    overflow-x: scroll;
 }
