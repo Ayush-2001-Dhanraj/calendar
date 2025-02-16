@@ -12,6 +12,7 @@ import {
 } from "../../../redux/appSlice";
 import { calendarViews } from "../../../common";
 import { motion } from "framer-motion";
+import { FaDotCircle } from "react-icons/fa";
 
 export default function DayCell({
   dayOfWeek,
@@ -70,7 +71,6 @@ export default function DayCell({
 
   return (
     <div
-      style={{ overflow: "scroll" }}
       className={dayCellStyles}
       onClick={(e) => {
         dispatch(setSelectedDate({ newDate: dayOfWeek.toISOString() }));
@@ -97,6 +97,9 @@ export default function DayCell({
             </motion.p>
           ))}
         </>
+      )}
+      {viewSelected === calendarViews.YEAR && !!relevantEvents.length && (
+        <FaDotCircle size={10} className={styles.dotIcon} />
       )}
     </div>
   );

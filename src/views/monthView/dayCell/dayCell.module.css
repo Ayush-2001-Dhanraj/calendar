@@ -4,6 +4,8 @@
     flex: 1;
     cursor: pointer;
     background-color: #fff;
+    overflow: scroll;
+    position: relative;
 }
 
 .heightAuto {
@@ -55,4 +57,10 @@
     background-color: #fff;
     color: #000;
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+.dotIcon {
+    position: absolute;
+    top: 2px;
+    right: 2px;
 }
