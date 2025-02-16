@@ -1,0 +1,48 @@
+.open {
+    display: inherit;
+}
+
+.closed {
+    display: none;
+}
+
+
+.backdrop,
+.whiteBoard {
+    position: absolute;
+}
+
+.backdrop {
+    /* background-color: rgba(255, 255, 255, 0.7); */
+    height: 100vh;
+    width: 100vw;
+    z-index: 300;
+    top: 0;
+    left: 0
+}
+
+.whiteBoard {
+    height: 100vh;
+    width: 100vh;
+    background-color: #000;
+    z-index: 400;
+    right: -45vh;
+    bottom: -45vh;
+    transform: rotate(45deg);
+}
+
+.container {
+    position: relative;
+}
+
+.fixedItem,
+.inputComp {
+    position: absolute;
+    transform: rotate(-45deg) !important;
+
+}
+
+.fixedItem {
+    top: -40px;
+    left: -40px
+}

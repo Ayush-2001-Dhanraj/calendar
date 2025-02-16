@@ -5,7 +5,7 @@
     width: 300px;
     background-color: #fff;
     box-shadow: 0 20px 20px rgba(0, 0, 0, 0.4);
-    z-index: 999;
+    z-index: 200;
     transition: bottom 0.3s ease-in;
     padding: 10px;
     overflow: hidden;

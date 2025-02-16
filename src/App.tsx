@@ -7,21 +7,22 @@ import {
   getDrawerState,
   getDrawerPosition,
   toggleDrawer,
-  getUser,
   setUser,
   fetchEventsFromBackend,
+  getProfilePageState,
+  toggleProfile,
 } from "./redux/appSlice";
 import Drawer from "./components/drawer";
 import ProtectedComp from "./components/protectedComp";
 import toast, { Toaster } from "react-hot-toast";
 import UserService from "./services/UserServices";
+import ProfileModel from "./components/ProfileModel";
 
 function App() {
   const dispatch = useAppDispatch();
   const isDrawerOpen = useAppSelector(getDrawerState);
   const drawerPosition = useAppSelector(getDrawerPosition);
-
-  const user = useAppSelector(getUser);
+  const isProfileOpen = useAppSelector(getProfilePageState);
 
   const handleAddEvent = () => {
     dispatch(toggleDrawer());
@@ -32,10 +33,13 @@ function App() {
     if (!response.msg) {
       toast.success("Welcome Back!");
       dispatch(setUser({ user: response.user }));
-      console.log(response.user.id);
       dispatch(fetchEventsFromBackend(response.user.id));
     }
   }, []);
+
+  const toggleProfileModel = () => {
+    dispatch(toggleProfile());
+  };
 
   useEffect(() => {
     getCurrentUser();
@@ -75,6 +79,7 @@ function App() {
           top={drawerPosition.top}
           left={drawerPosition.left}
         />
+        <ProfileModel isOpen={isProfileOpen} onClose={toggleProfileModel} />
       </ProtectedComp>
       <Toaster position="bottom-right" />
     </div>

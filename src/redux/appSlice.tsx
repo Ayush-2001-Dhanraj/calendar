@@ -29,6 +29,7 @@ interface AppState {
   selectedHour: string;
   selectedEventID: string | null;
   user: any;
+  isProfileOpen: boolean;
 }
 
 const initialState: AppState = {
@@ -41,6 +42,7 @@ const initialState: AppState = {
   selectedHour: "",
   selectedEventID: null,
   user: null,
+  isProfileOpen: false,
 };
 
 const appSlice = createSlice({
@@ -69,6 +71,15 @@ const appSlice = createSlice({
       state.isDrawerOpen = false;
       state.drawerTop = 0;
       state.drawerLeft = 0;
+    },
+    toggleProfile: (state) => {
+      state.isProfileOpen = !state.isProfileOpen;
+    },
+    openProfile: (state, action) => {
+      state.isProfileOpen = true;
+    },
+    closeProfile: (state) => {
+      state.isProfileOpen = false;
     },
     fetchLatestEvents: (state, action: PayloadAction<Event[]>) => {
       state.events = action.payload;
@@ -120,9 +131,14 @@ export const {
   setUser,
   resetState,
   setSelectedEventID,
+  toggleProfile,
+  openProfile,
+  closeProfile,
 } = appSlice.actions;
 
 export const getDrawerState = (state: RootState) => state.app.isDrawerOpen;
+export const getProfilePageState = (state: RootState) =>
+  state.app.isProfileOpen;
 export const getViewSelected = (state: RootState) => state.app.viewSelected;
 export const getSelectedHour = (state: RootState) => state.app.selectedHour;
 export const getSelectedEvent = (state: RootState) => state.app.selectedEventID;

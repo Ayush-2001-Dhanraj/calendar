@@ -1,7 +1,12 @@
 import React from "react";
 import styles from "./bottomNav.module.css";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { getDrawerState, resetState, toggleDrawer } from "../../redux/appSlice";
+import {
+  getDrawerState,
+  resetState,
+  toggleDrawer,
+  toggleProfile,
+} from "../../redux/appSlice";
 import { motion } from "framer-motion";
 import { IoMdAdd } from "react-icons/io";
 import { RiLogoutCircleRFill } from "react-icons/ri";
@@ -49,7 +54,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ onClickAction }) => {
   const dispatch = useAppDispatch();
   const isDrawerOpen = useAppSelector(getDrawerState);
 
-  const handleViewUserDetails = () => {};
+  const handleViewUserDetails = () => dispatch(toggleProfile());
   const handleAddEvent = () => dispatch(toggleDrawer());
   const handleLogout = async () => {
     const result = await AuthService.logout();
