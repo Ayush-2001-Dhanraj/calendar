@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./drawer.module.css";
 import TimePicker from "../timePicker";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { IoCloseCircle } from "react-icons/io5";
 import {
   getSelectedDate,
   setSelectedDate,
@@ -19,6 +20,7 @@ import {
 } from "../../utils/dateTimeHelpers";
 import UserService from "../../services/UserServices";
 import toast from "react-hot-toast";
+import { MdDelete } from "react-icons/md";
 
 interface DrawerProps {
   isOpen: boolean;
@@ -133,6 +135,15 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
     }
   };
 
+  const handleDeleteEvent = async () => {
+    if (selectedEventID) {
+      await UserService.deleteEvent(selectedEventID);
+      dispatch(fetchEventsFromBackend(user.id));
+      setEvent(eventDefault);
+      dispatch(closeDrawer());
+    }
+  };
+
   useEffect(() => {
     if (userSelectedHour) {
       setEventTime(userSelectedHour);
@@ -170,9 +181,17 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
             : "calc(100vw - 310px)",
       }}
     >
-      <button className={styles.closeButton} onClick={onClose}>
-        &times;
-      </button>
+      <div className={styles.actionIconContainer}>
+        <button className={styles.closeButton} onClick={onClose}>
+          <IoCloseCircle />
+        </button>
+
+        {selectedEventID && (
+          <button className={styles.closeButton} onClick={handleDeleteEvent}>
+            <MdDelete />
+          </button>
+        )}
+      </div>
 
       <form>
         <div>
@@ -184,6 +203,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
             disabled={!!selectedEventID && !isEdit}
           />
         </div>
+
         <div>
           <input
             type="date"
@@ -199,6 +219,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
             required
           />
         </div>
+
         <div className={styles.dntSection}>
           <TimePicker
             onChange={handleChange}
@@ -208,6 +229,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
             disabled={!!selectedEventID && !isEdit}
           />
         </div>
+
         <div>
           <textarea
             name="description"

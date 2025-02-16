@@ -69,3 +69,8 @@
 .dntSection input {
     flex: 1;
 }
+
+.actionIconContainer {
+    display: flex;
+    justify-content: space-between;
+}
