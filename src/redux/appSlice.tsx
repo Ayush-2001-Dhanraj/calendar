@@ -32,7 +32,7 @@ interface AppState {
 }
 
 const initialState: AppState = {
-  viewSelected: calendarViews.WEEK,
+  viewSelected: calendarViews.MONTH,
   isDrawerOpen: false,
   drawerTop: 0,
   drawerLeft: 0,
