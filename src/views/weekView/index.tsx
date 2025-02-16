@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./weekView.module.css";
-import { WeekProps } from "../../common/interfaces";
+import { WeekProps, CalendarEvent } from "../../common/interfaces";
 import { weekHeads, monthHeads, hoursOfDay } from "../../common";
 import {
   getEvents,
@@ -8,16 +8,19 @@ import {
   openDrawer,
   setSelectedDate,
   getSelectedDate,
+  setSelectedEventID,
+  getSelectedEvent,
 } from "../../redux/appSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { motion } from "framer-motion";
-import { convertTo12Hour } from "../../utils/timeHelpers";
+import { convertTo12Hour } from "../../utils/dateTimeHelpers";
 
 export default function WeekView({ week }: WeekProps) {
   const events = useAppSelector(getEvents);
 
   const dispatch = useAppDispatch();
   const selectedDate = useAppSelector(getSelectedDate);
+  const selectedEventID = useAppSelector(getSelectedEvent);
 
   const handleTimeBlockClick = (
     date: Date,
@@ -26,6 +29,9 @@ export default function WeekView({ week }: WeekProps) {
     x: number,
     y: number
   ) => {
+    if (selectedEventID) {
+      dispatch(setSelectedEventID({ eventID: null }));
+    }
     const hr = hour.split(":")[0];
     const per = hour.split(":")[1].split(" ")[1];
     const min = timeQuarter * 15 === 0 ? "00" : (timeQuarter * 15).toString();
@@ -34,9 +40,14 @@ export default function WeekView({ week }: WeekProps) {
     dispatch(openDrawer({ top: y, left: x }));
   };
 
-  const handleClickEvent = (e: { stopPropagation: () => void }) => {
-    e.stopPropagation();
-    console.log("Event Pressed");
+  const handleClickEvent = (eve: CalendarEvent, x: number, y: number) => {
+    dispatch(
+      setSelectedEventID({
+        eventID: eve.id,
+      })
+    );
+    dispatch(setSelectedDate({ newDate: eve.event_date.toISOString() }));
+    dispatch(openDrawer({ top: y, left: x }));
   };
 
   const getEventInPlace = (date: Date, hour: string, timeQuarter: number) => {
@@ -52,10 +63,11 @@ export default function WeekView({ week }: WeekProps) {
         e.event_date.getMonth() === date.getMonth() &&
         e.event_date.getFullYear() === date.getFullYear()
     );
+
     if (currentEvent.length) {
       return (
         <>
-          {currentEvent.map((eve, index) => (
+          {currentEvent.map((eve: CalendarEvent, index) => (
             <motion.p
               whileHover={{ scale: 0.9 }}
               whileTap={{ scale: 1.1 }}
@@ -63,7 +75,10 @@ export default function WeekView({ week }: WeekProps) {
                 eve.event_time
               } title:${eve.title}`}
               className={styles.event}
-              onClick={handleClickEvent}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClickEvent(eve, e.pageX, e.pageY);
+              }}
             >
               {eve.title}
             </motion.p>

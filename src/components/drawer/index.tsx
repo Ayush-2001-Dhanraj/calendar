@@ -9,9 +9,14 @@ import {
   closeDrawer,
   getUser,
   fetchEventsFromBackend,
+  getSelectedEvent,
 } from "../../redux/appSlice";
 import { motion } from "framer-motion";
-import { convertTo24Hour } from "../../utils/timeHelpers";
+import {
+  convertTo12Hour,
+  convertTo24Hour,
+  getFormattedDate,
+} from "../../utils/dateTimeHelpers";
 import UserService from "../../services/UserServices";
 import toast from "react-hot-toast";
 
@@ -26,11 +31,13 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
   const [selectedHour, setSelectedHour] = useState("12");
   const [selectedMinute, setSelectedMinute] = useState("00");
   const [selectedPeriod, setSelectedPeriod] = useState("AM");
+  const [isEdit, setIsEdit] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
   const user = useAppSelector(getUser);
 
   const selectedDate = useAppSelector(getSelectedDate);
   const userSelectedHour = useAppSelector(getSelectedHour);
+  const selectedEventID = useAppSelector(getSelectedEvent);
   const dispatch = useAppDispatch();
 
   const eventDefault = {
@@ -71,25 +78,51 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
     } else setEvent((preV) => ({ ...preV, [e.target.name]: e.target.value }));
   };
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const setEventTime = (hour: string) => {
+    let hr: string | number = parseInt(hour.split(":")[0]);
+    hr = hr < 10 ? "0" + hr : hr;
+    const min = hour.split(":")[1].split(" ")[0];
+    const per = hour.split(":")[1].split(" ")[1];
+    setSelectedHour(hr as string);
+    setSelectedMinute(min);
+    setSelectedPeriod(per);
+    setEvent((preV) => ({ ...preV, time: `${hr}:${min} ${per}` }));
+  };
 
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    };
+  const getSelectedEventDetails = async (eventID: string) => {
+    const response = await UserService.getEvent(eventID);
+    if (response.msg) {
+      toast.error(response.msg);
+    } else {
+      const { id, user_id, ...eventDetails } = response.event;
+      const transformedEventDetails = {
+        title: eventDetails.title,
+        description: eventDetails.description,
+        time: convertTo12Hour(eventDetails.event_time),
+      };
+      setEvent(transformedEventDetails);
+      setEventTime(convertTo12Hour(eventDetails.event_time));
+    }
+  };
 
-    const formattedDate: string = selectedDate.toLocaleDateString(
-      "en-CA",
-      options
-    ); // "en-CA" ensures YYYY-MM-DD format
+  const handleFormSubmit = async () => {
+    const formattedDate = getFormattedDate(selectedDate);
 
-    const result = await UserService.createEvent(user.id, {
+    const formattedEvent = {
       ...event,
       eventDate: formattedDate,
       eventTime: convertTo24Hour(event.time),
-    });
+    };
+
+    let result;
+
+    if (selectedEventID) {
+      // Update current Event Flow
+      result = await UserService.updateEvent(selectedEventID, formattedEvent);
+    } else {
+      // Add new Event Flow
+      result = await UserService.createEvent(user.id, formattedEvent);
+    }
 
     if (!result.event) {
       toast.error("Something went wrong!");
@@ -102,16 +135,20 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
 
   useEffect(() => {
     if (userSelectedHour) {
-      let hr: string | number = parseInt(userSelectedHour.split(":")[0]);
-      hr = hr < 10 ? "0" + hr : hr;
-      const min = userSelectedHour.split(":")[1].split(" ")[0];
-      const per = userSelectedHour.split(":")[1].split(" ")[1];
-      setSelectedHour(hr as string);
-      setSelectedMinute(min);
-      setSelectedPeriod(per);
-      setEvent((preV) => ({ ...preV, time: `${hr}:${min} ${per}` }));
+      setEventTime(userSelectedHour);
     }
   }, [userSelectedHour]);
+
+  useEffect(() => {
+    if (selectedEventID) {
+      getSelectedEventDetails(selectedEventID);
+    } else {
+      setEvent((preEvent) => {
+        return { ...preEvent, description: "", title: "" };
+      });
+    }
+    setIsEdit(false);
+  }, [selectedEventID]);
 
   return (
     <motion.div
@@ -137,13 +174,14 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
         &times;
       </button>
 
-      <form onSubmit={handleFormSubmit}>
+      <form>
         <div>
           <input
             placeholder="Add Title"
             onChange={handleChange}
             name="title"
             value={event.title}
+            disabled={!!selectedEventID && !isEdit}
           />
         </div>
         <div>
@@ -157,6 +195,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
               month: "2-digit",
               day: "2-digit",
             })}
+            disabled={!!selectedEventID && !isEdit}
             required
           />
         </div>
@@ -166,6 +205,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
             selectedHour={selectedHour}
             selectedMinute={selectedMinute}
             selectedPeriod={selectedPeriod}
+            disabled={!!selectedEventID && !isEdit}
           />
         </div>
         <div>
@@ -174,10 +214,26 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
             placeholder="Add Description"
             onChange={handleChange}
             value={event.description}
+            disabled={!!selectedEventID && !isEdit}
           />
         </div>
-        <button type="submit" className={`${styles.dateBtn} ${styles.saveBtn}`}>
-          Create Event
+
+        <button
+          className={`${styles.dateBtn} ${styles.saveBtn}`}
+          onClick={(e) => {
+            e.preventDefault();
+            if (!!selectedEventID && !isEdit) {
+              setIsEdit(true);
+            } else {
+              handleFormSubmit();
+            }
+          }}
+        >
+          {selectedEventID
+            ? isEdit
+              ? "Update Event"
+              : "Edit Event"
+            : "Create Event"}
         </button>
       </form>
     </motion.div>

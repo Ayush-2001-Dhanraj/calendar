@@ -27,6 +27,7 @@ interface AppState {
   events: Event[];
   selectedDate: string;
   selectedHour: string;
+  selectedEventID: string | null;
   user: any;
 }
 
@@ -38,6 +39,7 @@ const initialState: AppState = {
   events: [],
   selectedDate: new Date().toISOString(),
   selectedHour: "",
+  selectedEventID: null,
   user: null,
 };
 
@@ -86,6 +88,9 @@ const appSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload.user;
     },
+    setSelectedEventID: (state, action) => {
+      state.selectedEventID = action.payload.eventID;
+    },
     resetState: (state) => {
       Object.assign(state, initialState); // Reset state to initial values
     },
@@ -114,11 +119,13 @@ export const {
   setViewSelected,
   setUser,
   resetState,
+  setSelectedEventID,
 } = appSlice.actions;
 
 export const getDrawerState = (state: RootState) => state.app.isDrawerOpen;
 export const getViewSelected = (state: RootState) => state.app.viewSelected;
 export const getSelectedHour = (state: RootState) => state.app.selectedHour;
+export const getSelectedEvent = (state: RootState) => state.app.selectedEventID;
 export const getDrawerPosition = createSelector(
   [
     (state: RootState) => state.app.drawerTop,

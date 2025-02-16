@@ -24,4 +24,16 @@ export function convertTo24Hour(time12h: string): string {
     return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
+export function getFormattedDate(date: Date) {
+    const options: Intl.DateTimeFormatOptions = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    };
+
+    return date.toLocaleDateString(
+        "en-CA",
+        options
+    ); // "en-CA" ensures YYYY-MM-DD format
+}
 

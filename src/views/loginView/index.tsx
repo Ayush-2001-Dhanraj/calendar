@@ -5,7 +5,7 @@ import { labelAlignValues } from "../../common";
 import Button from "../../components/button";
 import { motion } from "framer-motion";
 import Footer from "../../components/footer";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { useAppDispatch } from "../../redux/store";
 import { fetchEventsFromBackend, setUser } from "../../redux/appSlice";
 import AuthService from "../../services/AuthService";
 import toast from "react-hot-toast";

@@ -5,6 +5,7 @@ interface TimePickerProps {
   selectedHour: string;
   selectedMinute: string;
   selectedPeriod: string;
+  disabled?: boolean;
 }
 
 const TimePicker: React.FC<TimePickerProps> = ({
@@ -12,6 +13,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
   selectedHour,
   selectedMinute,
   selectedPeriod,
+  disabled,
 }) => {
   const hours: string[] = Array.from({ length: 12 }, (_, i) =>
     (i + 1).toString().padStart(2, "0")
@@ -23,7 +25,13 @@ const TimePicker: React.FC<TimePickerProps> = ({
 
   return (
     <>
-      <select id="hours" name="hours" onChange={onChange} value={selectedHour}>
+      <select
+        id="hours"
+        name="hours"
+        onChange={onChange}
+        value={selectedHour}
+        disabled={disabled}
+      >
         {hours.map((hour) => (
           <option key={hour} value={hour}>
             {hour}
@@ -36,6 +44,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
         name="minutes"
         onChange={onChange}
         value={selectedMinute}
+        disabled={disabled}
       >
         {minutes.map((minute) => (
           <option key={minute} value={minute}>
@@ -49,6 +58,7 @@ const TimePicker: React.FC<TimePickerProps> = ({
         name="period"
         onChange={onChange}
         value={selectedPeriod}
+        disabled={disabled}
       >
         {periods.map((period) => (
           <option key={period} value={period}>

@@ -33,6 +33,13 @@ export interface Event {
   event_date: string;
   event_time: string;
 }
+export interface CalendarEvent {
+  id?: string,
+  title: string;
+  description: string;
+  event_date: Date;
+  event_time: string;
+}
 
 export interface BottomNavProps {
   onClickAction: (action: headerActions) => void;
