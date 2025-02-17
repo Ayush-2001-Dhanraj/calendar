@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styles from "./input.module.css";
 import { labelAlignValues } from "../../common";
 
@@ -9,6 +9,8 @@ export interface InputProps {
   labelAlign: labelAlignValues;
   type?: string;
   required?: boolean;
+  disabled?: boolean;
+  expandWidth?: boolean;
 }
 
 function Input({
@@ -18,10 +20,28 @@ function Input({
   labelAlign,
   type = "text",
   required = false,
+  disabled = false,
+  expandWidth = false,
 }: InputProps) {
-  const handleValueChange = (e: any) => {
+  const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (expandWidth && inputRef.current) {
+      const tempSpan = document.createElement("span");
+      tempSpan.style.visibility = "hidden";
+      tempSpan.style.position = "absolute";
+      tempSpan.style.whiteSpace = "nowrap";
+      tempSpan.style.font = getComputedStyle(inputRef.current).font;
+      tempSpan.textContent = value || " ";
+      document.body.appendChild(tempSpan);
+      inputRef.current.style.width = `${tempSpan.offsetWidth + 30}px`;
+      document.body.removeChild(tempSpan);
+    }
+  }, [value, expandWidth]);
 
   return (
     <div
@@ -34,12 +54,14 @@ function Input({
         {label}
       </label>
       <input
+        ref={inputRef}
         value={value}
         onChange={handleValueChange}
         type={type}
         id={label}
         required={required}
-        className={styles.input}
+        className={`${styles.input} ${expandWidth ? styles.expandWidth : ""}`}
+        disabled={disabled}
       />
     </div>
   );

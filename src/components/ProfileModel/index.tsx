@@ -1,23 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./ProfileModel.module.css";
 import { FaUser } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
 import Input from "../input";
 import { labelAlignValues } from "../../common";
-
-function generatePositions() {
-  const fields = ["First Name", "Last Name", "Email"];
-  const positions: Record<string, { top: string; left: string }> = {};
-
-  fields.forEach((field, index) => {
-    positions[field] = {
-      top: `${20 * index + 15}vh`,
-      left: `-${Math.random() * 70 + 70}px`,
-    };
-  });
-
-  return positions;
-}
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { getUser, setUser } from "../../redux/appSlice";
+import UserService from "../../services/UserServices";
+import toast from "react-hot-toast";
 
 interface ProfileModeProps {
   isOpen: boolean;
@@ -25,19 +14,16 @@ interface ProfileModeProps {
 }
 
 function ProfileModel({ isOpen, onClose }: ProfileModeProps) {
-  const positionRef = useRef(generatePositions());
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [registerData, setRegisterData] = useState({
     firstName: "",
     lastName: "",
     email: "",
   });
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(getUser);
 
-  const inputData = [
-    { label: "First Name", prop: "firstName" },
-    { label: "Last Name", prop: "lastName" },
-    { label: "Email", prop: "email", type: "email" },
-  ];
+  const [isEdit, setIsEdit] = useState(false);
 
   const handleChangeValue = (property: string, value: string) => {
     setRegisterData((prev) => ({ ...prev, [property]: value }));
@@ -46,68 +32,104 @@ function ProfileModel({ isOpen, onClose }: ProfileModeProps) {
     setErrors((prev) => ({ ...prev, [property]: "" }));
   };
 
-  console.log(isOpen);
+  const handleClickEditBtn = async () => {
+    if (!isEdit) {
+      setIsEdit(true);
+    } else {
+      // Update user details
+      const result = await UserService.updateUser(user.id, registerData);
+      if (result.user) {
+        dispatch(setUser({ user: result.user }));
+        toast.success("User Details Updated");
+      } else {
+        toast.error("Some error occurred!");
+      }
+      setIsEdit(false);
+    }
+  };
+
+  useEffect(() => {
+    const { id, email, first_name, last_name } = user;
+    setRegisterData({ email, firstName: first_name, lastName: last_name });
+  }, [user]);
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          layout
-          transition={{ duration: 0.5 }}
-          className={styles.open}
-        >
-          <motion.div
-            className={styles.backdrop}
-            onClick={onClose}
-            initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
-            animate={{ backgroundColor: "rgba(255, 255, 255, 0.7)" }}
-            exit={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
-            transition={{ duration: 0.8 }}
-          />
-          <motion.div
-            className={styles.whiteBoard}
-            initial={{ backgroundColor: "rgba(255, 255, 255, 0)" }}
-            animate={{ backgroundColor: "rgba(0, 0, 0, 1)" }}
-            exit={{ backgroundColor: "rgba(255, 255, 255, 0)" }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className={styles.container}>
-              <motion.div
-                className={styles.fixedItem}
-                initial={{ color: "rgba(255, 255, 255, 0)" }}
-                animate={{ color: "rgba(0, 0, 0, 1)" }}
-                exit={{ color: "rgba(255, 255, 255, 0)" }}
-                transition={{ duration: 0.8 }}
-              >
-                <FaUser size={40} />
-              </motion.div>
-              {inputData.map(({ label, prop, type }, index) => (
-                <motion.div
-                  key={label}
-                  className={styles.inputComp}
-                  style={positionRef.current[label]}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }} // Reverse animation on exit
-                  transition={{ duration: 0.8, delay: index * 0.4 }}
-                >
-                  <Input
-                    label={label}
-                    labelAlign={labelAlignValues.RIGHT}
-                    value={registerData[prop as keyof typeof registerData]}
-                    type={type}
-                    onChange={(value) => handleChangeValue(prop, value)}
-                  />
-                  {errors[prop] && (
-                    <p className={styles.errorText}>{errors[prop]}</p>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div
+      className={`${isOpen ? styles.open : styles.closed} ${
+        styles.mainContainer
+      }`}
+    >
+      <div className={styles.backdrop} onClick={onClose} />
+      <div className={styles.whiteBoard} />
+      <FaUser
+        className={`${styles.icon} ${styles.absoluteElement}`}
+        size={40}
+      />
+      <div
+        className={`${styles.absoluteElement} ${styles.floatingInput}`}
+        style={{
+          bottom: "350px",
+          left: "35%",
+        }}
+      >
+        <Input
+          label="First Name"
+          labelAlign={labelAlignValues.LEFT}
+          value={registerData.firstName}
+          disabled={!isEdit}
+          onChange={(value) => handleChangeValue("firstName", value)}
+          expandWidth={true}
+        />
+        {errors["firstName"] && (
+          <p className={styles.errorText}>{errors["firstName"]}</p>
+        )}
+      </div>
+      <div
+        className={`${styles.absoluteElement} ${styles.floatingInput}`}
+        style={{
+          bottom: "250px",
+          left: "55%",
+          animationDelay: "2s",
+        }}
+      >
+        <Input
+          label="Last Name"
+          labelAlign={labelAlignValues.RIGHT}
+          value={registerData.lastName}
+          disabled={!isEdit}
+          onChange={(value) => handleChangeValue("lastName", value)}
+          expandWidth={true}
+        />
+        {errors["lastName"] && (
+          <p className={styles.errorText}>{errors["lastName"]}</p>
+        )}
+      </div>
+      <div
+        className={`${styles.absoluteElement} ${styles.floatingInput}`}
+        style={{
+          bottom: "150px",
+          left: "35%",
+          animationDelay: "1s",
+        }}
+      >
+        <Input
+          label="Email"
+          labelAlign={labelAlignValues.CENTER}
+          value={registerData.email}
+          disabled={!isEdit}
+          onChange={(value) => handleChangeValue("email", value)}
+          expandWidth={true}
+        />
+        {errors["email"] && (
+          <p className={styles.errorText}>{errors["email"]}</p>
+        )}
+      </div>
+      <div className={`${styles.editBtnContainer} ${styles.absoluteElement}`}>
+        <button onClick={handleClickEditBtn} className={styles.editBtn}>
+          {isEdit ? "Update" : "Edit"}
+        </button>
+      </div>
+    </div>
   );
 }
 

@@ -6,6 +6,13 @@
     display: none;
 }
 
+.mainContainer {
+    position: absolute;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
 
 .backdrop,
 .whiteBoard {
@@ -13,7 +20,7 @@
 }
 
 .backdrop {
-    /* background-color: rgba(255, 255, 255, 0.7); */
+    background-color: rgba(255, 255, 255, 0.8);
     height: 100vh;
     width: 100vw;
     z-index: 300;
@@ -22,27 +29,64 @@
 }
 
 .whiteBoard {
-    height: 100vh;
-    width: 100vh;
+    height: 500px;
+    width: 500px;
     background-color: #000;
     z-index: 400;
-    right: -45vh;
-    bottom: -45vh;
-    transform: rotate(45deg);
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.container {
-    position: relative;
-}
-
-.fixedItem,
-.inputComp {
+.absoluteElement {
     position: absolute;
-    transform: rotate(-45deg) !important;
-
+    z-index: 400;
 }
 
-.fixedItem {
-    top: -40px;
-    left: -40px
+.editBtnContainer {
+    bottom: 0;
+
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.editBtn {
+    padding: 10px 50px;
+    font-size: 14px;
+    background-color: #fff;
+}
+
+.editBtn:hover {
+    transform: scale(0.95);
+    animation: all 2s ease-in-out;
+}
+
+.icon {
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
+    bottom: 500px
+}
+
+@keyframes floatAnimation {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.floatingInput {
+    animation: floatAnimation 3s ease-in-out infinite;
 }

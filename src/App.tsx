@@ -32,8 +32,9 @@ function App() {
     const response = await UserService.getCurrentUser();
     if (!response.msg) {
       toast.success("Welcome Back!");
-      dispatch(setUser({ user: response.user }));
-      dispatch(fetchEventsFromBackend(response.user.id));
+      const currentUser = await UserService.getUser(response.user.id);
+      dispatch(setUser({ user: currentUser.user }));
+      dispatch(fetchEventsFromBackend(currentUser.user.id));
     }
   }, []);
 
