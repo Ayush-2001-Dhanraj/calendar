@@ -11,6 +11,7 @@ import {
   fetchEventsFromBackend,
   getProfilePageState,
   toggleProfile,
+  getUser,
 } from "./redux/appSlice";
 import Drawer from "./components/drawer";
 import ProtectedComp from "./components/protectedComp";
@@ -23,18 +24,21 @@ function App() {
   const isDrawerOpen = useAppSelector(getDrawerState);
   const drawerPosition = useAppSelector(getDrawerPosition);
   const isProfileOpen = useAppSelector(getProfilePageState);
+  const user = useAppSelector(getUser);
 
   const handleAddEvent = () => {
     dispatch(toggleDrawer());
   };
 
   const getCurrentUser = useCallback(async () => {
-    const response = await UserService.getCurrentUser();
-    if (!response.msg) {
-      toast.success("Welcome Back!");
-      const currentUser = await UserService.getUser(response.user.id);
-      dispatch(setUser({ user: currentUser.user }));
-      dispatch(fetchEventsFromBackend(currentUser.user.id));
+    if (user && user.id) {
+      const response = await UserService.getCurrentUser(user.id);
+      console.log(response);
+      if (response.user) {
+        toast.success("Welcome Back!");
+        dispatch(setUser({ user: response.user }));
+        dispatch(fetchEventsFromBackend(response.user.id));
+      }
     }
   }, []);
 

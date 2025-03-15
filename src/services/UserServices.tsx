@@ -1,8 +1,8 @@
 import apiRequest from "../utils/apiRequest";
 
 const UserService = {
-  getUser: async (userID: string) => await apiRequest("GET", `/user/${userID}`),
-  getCurrentUser: async () => await apiRequest("GET", "/user"),
+  getCurrentUser: async (userID: string) =>
+    await apiRequest("GET", `/user/${userID}`),
   updateUser: async (userID: string, data: any) =>
     await apiRequest("PUT", `/user/${userID}`, data),
   deleteUser: async (userID: string) =>

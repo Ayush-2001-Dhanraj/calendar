@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./bottomNav.module.css";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { persistor, useAppDispatch, useAppSelector } from "../../redux/store";
 import {
   getDrawerState,
   resetState,
@@ -57,11 +57,9 @@ const BottomNav: React.FC<BottomNavProps> = ({ onClickAction }) => {
   const handleViewUserDetails = () => dispatch(toggleProfile());
   const handleAddEvent = () => dispatch(toggleDrawer());
   const handleLogout = async () => {
-    const result = await AuthService.logout();
-    if (result && result.msg === "Logout Successful!") {
-      dispatch(resetState());
-      toast.success("Logout Successful!");
-    }
+    dispatch(resetState());
+    persistor.purge();
+    toast.success("Logout Successful!");
   };
 
   // Button Configuration
