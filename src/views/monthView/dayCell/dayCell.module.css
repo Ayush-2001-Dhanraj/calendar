@@ -22,6 +22,7 @@
 
 .daysNotOfCurrentMonth {
     color: rgba(1, 1, 1, 0.2);
+    opacity: 0.7;
 }
 
 .selectedDayOfWeek {

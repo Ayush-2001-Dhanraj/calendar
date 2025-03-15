@@ -36,7 +36,8 @@ export default function DayCell({
     dayOfWeek.getDate() === selectedDate.getDate() &&
     dayOfWeek.getFullYear() === selectedDate.getFullYear();
   const isOutOfMonth =
-    dayOfWeek.getMonth() !== selectedDate.getMonth() && !heightAuto;
+    (dayOfWeek.getMonth() !== selectedDate.getMonth() && !heightAuto) ||
+    (dayOfWeek.getMonth() !== currentMonth && heightAuto);
 
   const dayCellStyles = `${styles.dayOfWeek} ${
     isOutOfMonth ? styles.daysNotOfCurrentMonth : ""

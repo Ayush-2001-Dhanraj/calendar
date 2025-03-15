@@ -2,8 +2,11 @@ import React from "react";
 import styles from "./bottomNav.module.css";
 import { persistor, useAppDispatch, useAppSelector } from "../../redux/store";
 import {
+  fetchEventsFromBackend,
   getDrawerState,
+  getUser,
   resetState,
+  setUser,
   toggleDrawer,
   toggleProfile,
 } from "../../redux/appSlice";
@@ -16,6 +19,7 @@ import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 import { BottomNavProps } from "../../common/interfaces";
 import AuthService from "../../services/AuthService";
 import toast from "react-hot-toast";
+import UserService from "../../services/UserServices";
 
 const buttonVariants = {
   hover: { scale: 1.2 },
@@ -53,8 +57,16 @@ const ActionButton: React.FC<ActionButtonProps> = ({
 const BottomNav: React.FC<BottomNavProps> = ({ onClickAction }) => {
   const dispatch = useAppDispatch();
   const isDrawerOpen = useAppSelector(getDrawerState);
+  const user = useAppSelector(getUser);
 
-  const handleViewUserDetails = () => dispatch(toggleProfile());
+  const handleViewUserDetails = async () => {
+    const response = await UserService.getCurrentUser(user.id);
+    if (response.user) {
+      dispatch(setUser({ user: response.user }));
+      dispatch(fetchEventsFromBackend(response.user.id));
+    }
+    dispatch(toggleProfile());
+  };
   const handleAddEvent = () => dispatch(toggleDrawer());
   const handleLogout = async () => {
     dispatch(resetState());

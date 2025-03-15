@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ProfileModel.module.css";
-import { FaUser } from "react-icons/fa";
 import Input from "../input";
 import { labelAlignValues } from "../../common";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
@@ -37,7 +36,10 @@ function ProfileModel({ isOpen, onClose }: ProfileModeProps) {
       setIsEdit(true);
     } else {
       // Update user details
-      const result = await UserService.updateUser(user.id, registerData);
+      const result = await UserService.updateUser({
+        userID: user.id,
+        ...registerData,
+      });
       if (result.user) {
         dispatch(setUser({ user: result.user }));
         toast.success("User Details Updated");
@@ -61,10 +63,6 @@ function ProfileModel({ isOpen, onClose }: ProfileModeProps) {
     >
       <div className={styles.backdrop} onClick={onClose} />
       <div className={styles.whiteBoard} />
-      <FaUser
-        className={`${styles.icon} ${styles.absoluteElement}`}
-        size={40}
-      />
       <div
         className={`${styles.absoluteElement} ${styles.floatingInput}`}
         style={{

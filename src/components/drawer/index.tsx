@@ -11,6 +11,7 @@ import {
   getUser,
   fetchEventsFromBackend,
   getSelectedEvent,
+  setSelectedEventID,
 } from "../../redux/appSlice";
 import { motion } from "framer-motion";
 import {
@@ -92,7 +93,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
   };
 
   const getSelectedEventDetails = async (eventID: string) => {
-    const response = await UserService.getEvent(eventID);
+    const response = await UserService.getEvent(user.id, eventID);
     if (response.msg) {
       toast.error(response.msg);
     } else {
@@ -120,10 +121,16 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
 
     if (selectedEventID) {
       // Update current Event Flow
-      result = await UserService.updateEvent(selectedEventID, formattedEvent);
+      result = await UserService.updateEvent(selectedEventID, {
+        ...formattedEvent,
+        userID: user.id,
+      });
     } else {
       // Add new Event Flow
-      result = await UserService.createEvent(user.id, formattedEvent);
+      result = await UserService.createEvent({
+        ...formattedEvent,
+        userID: user.id,
+      });
     }
 
     if (!result.event) {
@@ -132,15 +139,17 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
       dispatch(fetchEventsFromBackend(user.id));
       setEvent(eventDefault);
       dispatch(closeDrawer());
+      dispatch(setSelectedEventID({ eventID: null }));
     }
   };
 
   const handleDeleteEvent = async () => {
     if (selectedEventID) {
-      await UserService.deleteEvent(selectedEventID);
+      await UserService.deleteEvent(user.id, selectedEventID);
       dispatch(fetchEventsFromBackend(user.id));
       setEvent(eventDefault);
       dispatch(closeDrawer());
+      dispatch(setSelectedEventID({ eventID: null }));
     }
   };
 
