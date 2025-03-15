@@ -31,6 +31,15 @@ function ProfileModel({ isOpen, onClose }: ProfileModeProps) {
     setErrors((prev) => ({ ...prev, [property]: "" }));
   };
 
+  const syncUserDetails = (trueUser: {
+    email: string;
+    first_name: string;
+    last_name: string;
+  }) => {
+    const { email, first_name, last_name } = trueUser;
+    setRegisterData({ email, firstName: first_name, lastName: last_name });
+  };
+
   const handleClickEditBtn = async () => {
     if (!isEdit) {
       setIsEdit(true);
@@ -44,15 +53,20 @@ function ProfileModel({ isOpen, onClose }: ProfileModeProps) {
         dispatch(setUser({ user: result.user }));
         toast.success("User Details Updated");
       } else {
+        syncUserDetails(user);
         toast.error("Some error occurred!");
       }
       setIsEdit(false);
     }
   };
 
+  const handleCancelUpdate = () => {
+    setIsEdit(false);
+    syncUserDetails(user);
+  };
+
   useEffect(() => {
-    const { id, email, first_name, last_name } = user;
-    setRegisterData({ email, firstName: first_name, lastName: last_name });
+    syncUserDetails(user);
   }, [user]);
 
   return (
@@ -114,7 +128,7 @@ function ProfileModel({ isOpen, onClose }: ProfileModeProps) {
           label="Email"
           labelAlign={labelAlignValues.CENTER}
           value={registerData.email}
-          disabled={!isEdit}
+          disabled={true}
           onChange={(value) => handleChangeValue("email", value)}
           expandWidth={true}
         />
@@ -123,6 +137,12 @@ function ProfileModel({ isOpen, onClose }: ProfileModeProps) {
         )}
       </div>
       <div className={`${styles.editBtnContainer} ${styles.absoluteElement}`}>
+        {isEdit && (
+          <button onClick={handleCancelUpdate} className={styles.editBtn}>
+            Cancel
+          </button>
+        )}
+
         <button onClick={handleClickEditBtn} className={styles.editBtn}>
           {isEdit ? "Update" : "Edit"}
         </button>
