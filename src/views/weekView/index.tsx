@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./weekView.module.css";
 import { WeekProps, CalendarEvent } from "../../common/interfaces";
 import { weekHeads, monthHeads, hoursOfDay } from "../../common";
@@ -21,6 +21,24 @@ export default function WeekView({ week }: WeekProps) {
   const dispatch = useAppDispatch();
   const selectedDate = useAppSelector(getSelectedDate);
   const selectedEventID = useAppSelector(getSelectedEvent);
+
+  const currentTimeBlockRef = useRef<HTMLDivElement | null>(null);
+
+  const findNearestTimeBlock = () => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinutes = now.getMinutes();
+    const roundedQuarter = Math.floor(currentMinutes / 15) * 15; // Convert minutes to the nearest quarter-hour
+
+    const formattedHour = currentHour % 12 === 0 ? 12 : currentHour % 12; // Convert to 12-hour format
+    const period = currentHour >= 12 ? "PM" : "AM";
+    const formattedMinutes =
+      roundedQuarter === 0 ? "00" : roundedQuarter.toString();
+
+    return `${formattedHour
+      .toString()
+      .padStart(2, "0")}:${formattedMinutes} ${period}`;
+  };
 
   const handleTimeBlockClick = (
     date: Date,
@@ -91,6 +109,15 @@ export default function WeekView({ week }: WeekProps) {
   useEffect(() => {
     // set page title
     document.title = "Calendar - Week";
+    setTimeout(() => {
+      console.log("Scrolling");
+      if (currentTimeBlockRef.current) {
+        currentTimeBlockRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }, 500);
   }, []);
 
   return (
@@ -128,6 +155,8 @@ export default function WeekView({ week }: WeekProps) {
       </motion.div>
 
       <div className={styles.mainContainer}>
+        {/* Ruler - Positioned at the current time block */}
+
         {week.map((dayOfWeek, index) => {
           return (
             <motion.div
@@ -153,25 +182,38 @@ export default function WeekView({ week }: WeekProps) {
                       <div className={styles.timeBlockGuide}>{hour}</div>
                     )}
 
-                    {[0, 1, 2, 3].map((timeQuarter) => (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        key={`timeBlock - ${dayOfWeek.getDate()} - ${hour} - ${timeQuarter}`}
-                        className={`${styles.timeBlockQuater}`}
-                        onClick={(e) =>
-                          handleTimeBlockClick(
-                            dayOfWeek,
-                            hour,
-                            timeQuarter,
-                            e.pageX,
-                            e.pageY
-                          )
-                        }
-                      >
-                        {getEventInPlace(dayOfWeek, hour, timeQuarter)}
-                      </motion.div>
-                    ))}
+                    {[0, 1, 2, 3].map((timeQuarter) => {
+                      const hr = hour.split(":")[0];
+                      const per = hour.split(":")[1].split(" ")[1];
+                      const min =
+                        timeQuarter * 15 === 0
+                          ? "00"
+                          : (timeQuarter * 15).toString();
+                      const currentBlockSpec = `${hr}:${min} ${per}`;
+                      const isCurrentTimeBlock =
+                        currentBlockSpec === findNearestTimeBlock();
+
+                      return (
+                        <motion.div
+                          ref={isCurrentTimeBlock ? currentTimeBlockRef : null}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          key={`timeBlock - ${dayOfWeek.getDate()} - ${hour} - ${timeQuarter}`}
+                          className={`${styles.timeBlockQuater}`}
+                          onClick={(e) =>
+                            handleTimeBlockClick(
+                              dayOfWeek,
+                              hour,
+                              timeQuarter,
+                              e.pageX,
+                              e.pageY
+                            )
+                          }
+                        >
+                          {getEventInPlace(dayOfWeek, hour, timeQuarter)}
+                        </motion.div>
+                      );
+                    })}
                   </div>
                 ))}
               </motion.div>
