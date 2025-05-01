@@ -14,6 +14,11 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { motion } from "framer-motion";
 import { convertTo12Hour } from "../../utils/dateTimeHelpers";
+import treeImage from "../../assets/images/tree_1.png";
+import rockImage from "../../assets/images/rock_1.png";
+import AnimationContainer from "../../components/AnimationContainer";
+import brightButterfly from "../../assets/animations/brightButterfly.json";
+import blueButterfly from "../../assets/animations/blueButterfly.json";
 
 export default function WeekView({ week }: WeekProps) {
   const events = useAppSelector(getEvents);

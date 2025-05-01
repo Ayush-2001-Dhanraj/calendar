@@ -18,6 +18,8 @@
 
 .dayOfWeek:hover {
     background-color: rgba(1, 1, 1, 0.1);
+    border: 2px solid rgba(1, 1, 1, 0.8);
+    color: #fff;
 }
 
 .daysNotOfCurrentMonth {
