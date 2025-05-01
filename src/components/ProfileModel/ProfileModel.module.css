@@ -1,11 +1,3 @@
-.open {
-    display: inherit;
-}
-
-.closed {
-    display: none;
-}
-
 .mainContainer {
     position: absolute;
     overflow: hidden;
@@ -23,32 +15,21 @@
     background-color: rgba(255, 255, 255, 0.8);
     height: 100vh;
     width: 100vw;
-    z-index: 300;
+    z-index: 120;
     top: 0;
     left: 0
 }
 
-.whiteBoard {
-    height: 500px;
-    width: 500px;
-    background-color: #000;
-    z-index: 400;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-}
 
 .absoluteElement {
     position: absolute;
-    z-index: 400;
+    z-index: 130;
 }
 
 .editBtnContainer {
-    bottom: 0;
-
+    bottom: 30px;
     left: 50%;
-    right: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,7 +39,8 @@
 .editBtn {
     padding: 10px 50px;
     font-size: 14px;
-    background-color: #fff;
+    background-color: #000;
+    color: #fff;
 }
 
 .editBtn:hover {
@@ -89,4 +71,12 @@
 
 .floatingInput {
     animation: floatAnimation 3s ease-in-out infinite;
+}
+
+.profileAnimation {
+    position: absolute;
+    z-index: 125;
+    left: 50%;
+    transform: translate(-50%, 30%);
+
 }

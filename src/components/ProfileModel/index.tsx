@@ -3,9 +3,16 @@ import styles from "./ProfileModel.module.css";
 import Input from "../input";
 import { labelAlignValues } from "../../common";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { getUser, setUser } from "../../redux/appSlice";
+import {
+  getUser,
+  setLoadingFalse,
+  setLoadingTrue,
+  setUser,
+} from "../../redux/appSlice";
 import UserService from "../../services/UserServices";
 import toast from "react-hot-toast";
+import AnimationContainer from "../AnimationContainer";
+import profile_animation from "../../assets/animations/background_placeholder.json";
 
 interface ProfileModeProps {
   isOpen: boolean;
@@ -44,6 +51,7 @@ function ProfileModel({ isOpen, onClose }: ProfileModeProps) {
     if (!isEdit) {
       setIsEdit(true);
     } else {
+      dispatch(setLoadingTrue());
       // Update user details
       const result = await UserService.updateUser({
         userID: user.id,
@@ -57,6 +65,7 @@ function ProfileModel({ isOpen, onClose }: ProfileModeProps) {
         toast.error("Some error occurred!");
       }
       setIsEdit(false);
+      dispatch(setLoadingFalse());
     }
   };
 
@@ -70,84 +79,94 @@ function ProfileModel({ isOpen, onClose }: ProfileModeProps) {
   }, [user]);
 
   return (
-    <div
-      className={`${isOpen ? styles.open : styles.closed} ${
-        styles.mainContainer
-      }`}
-    >
-      <div className={styles.backdrop} onClick={onClose} />
-      <div className={styles.whiteBoard} />
-      <div
-        className={`${styles.absoluteElement} ${styles.floatingInput}`}
-        style={{
-          bottom: "350px",
-          left: "35%",
-        }}
-      >
-        <Input
-          label="First Name"
-          labelAlign={labelAlignValues.LEFT}
-          value={registerData.firstName}
-          disabled={!isEdit}
-          onChange={(value) => handleChangeValue("firstName", value)}
-          expandWidth={true}
-        />
-        {errors["firstName"] && (
-          <p className={styles.errorText}>{errors["firstName"]}</p>
-        )}
-      </div>
-      <div
-        className={`${styles.absoluteElement} ${styles.floatingInput}`}
-        style={{
-          bottom: "250px",
-          left: "55%",
-          animationDelay: "2s",
-        }}
-      >
-        <Input
-          label="Last Name"
-          labelAlign={labelAlignValues.RIGHT}
-          value={registerData.lastName}
-          disabled={!isEdit}
-          onChange={(value) => handleChangeValue("lastName", value)}
-          expandWidth={true}
-        />
-        {errors["lastName"] && (
-          <p className={styles.errorText}>{errors["lastName"]}</p>
-        )}
-      </div>
-      <div
-        className={`${styles.absoluteElement} ${styles.floatingInput}`}
-        style={{
-          bottom: "150px",
-          left: "35%",
-          animationDelay: "1s",
-        }}
-      >
-        <Input
-          label="Email"
-          labelAlign={labelAlignValues.CENTER}
-          value={registerData.email}
-          disabled={true}
-          onChange={(value) => handleChangeValue("email", value)}
-          expandWidth={true}
-        />
-        {errors["email"] && (
-          <p className={styles.errorText}>{errors["email"]}</p>
-        )}
-      </div>
-      <div className={`${styles.editBtnContainer} ${styles.absoluteElement}`}>
-        {isEdit && (
-          <button onClick={handleCancelUpdate} className={styles.editBtn}>
-            Cancel
-          </button>
-        )}
+    <>
+      {isOpen && (
+        <>
+          <div className={styles.mainContainer}>
+            <div className={styles.backdrop} onClick={onClose} />
+            <div
+              className={`${styles.absoluteElement} ${styles.floatingInput}`}
+              style={{
+                bottom: "350px",
+                left: "35%",
+              }}
+            >
+              <Input
+                label="First Name"
+                labelAlign={labelAlignValues.LEFT}
+                value={registerData.firstName}
+                disabled={!isEdit}
+                onChange={(value) => handleChangeValue("firstName", value)}
+                expandWidth={true}
+              />
+              {errors["firstName"] && (
+                <p className={styles.errorText}>{errors["firstName"]}</p>
+              )}
+            </div>
+            <div
+              className={`${styles.absoluteElement} ${styles.floatingInput}`}
+              style={{
+                bottom: "250px",
+                left: "55%",
+                animationDelay: "2s",
+              }}
+            >
+              <Input
+                label="Last Name"
+                labelAlign={labelAlignValues.RIGHT}
+                value={registerData.lastName}
+                disabled={!isEdit}
+                onChange={(value) => handleChangeValue("lastName", value)}
+                expandWidth={true}
+              />
+              {errors["lastName"] && (
+                <p className={styles.errorText}>{errors["lastName"]}</p>
+              )}
+            </div>
+            <div
+              className={`${styles.absoluteElement} ${styles.floatingInput}`}
+              style={{
+                bottom: "150px",
+                left: "35%",
+                animationDelay: "1s",
+              }}
+            >
+              <Input
+                label="Email"
+                labelAlign={labelAlignValues.CENTER}
+                value={registerData.email}
+                disabled={true}
+                onChange={(value) => handleChangeValue("email", value)}
+                expandWidth={true}
+              />
+              {errors["email"] && (
+                <p className={styles.errorText}>{errors["email"]}</p>
+              )}
+            </div>
+            <div
+              className={`${styles.editBtnContainer} ${styles.absoluteElement}`}
+            >
+              {isEdit && (
+                <button onClick={handleCancelUpdate} className={styles.editBtn}>
+                  Cancel
+                </button>
+              )}
 
-        <button onClick={handleClickEditBtn} className={styles.editBtn}>
-          {isEdit ? "Update" : "Edit"}
-        </button>
-      </div>
-    </div>
+              <button onClick={handleClickEditBtn} className={styles.editBtn}>
+                {isEdit ? "Update" : "Edit"}
+              </button>
+            </div>
+          </div>
+          <div className={styles.profileAnimation}>
+            <AnimationContainer
+              animationData={profile_animation}
+              height={600}
+              width={800}
+            />
+          </div>
+        </>
+      )}
+    </>
   );
 }
 

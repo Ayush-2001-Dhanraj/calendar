@@ -4,19 +4,24 @@
     box-sizing: border-box;
 }
 
+:root {
+    --background: #1E0123;
+    --secondary: #C5FF00
+}
+
 ::-webkit-scrollbar {
     display: none;
 }
 
 ::-moz-selection {
     /* Code for Firefox */
-    color: #fff;
-    background: #000;
+    color: var(--background);
+    background: var(--secondary);
 }
 
 ::selection {
-    color: #fff;
-    background: #000;
+    color: var(--background);
+    background: var(--secondary);
 }
 
 body {

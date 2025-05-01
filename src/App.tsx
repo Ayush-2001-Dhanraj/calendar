@@ -12,12 +12,15 @@ import {
   getProfilePageState,
   toggleProfile,
   getUser,
+  setLoadingFalse,
+  setLoadingTrue,
 } from "./redux/appSlice";
 import Drawer from "./components/drawer";
 import ProtectedComp from "./components/protectedComp";
 import toast, { Toaster } from "react-hot-toast";
 import UserService from "./services/UserServices";
 import ProfileModel from "./components/ProfileModel";
+import LoadingComp from "./components/LoadingComp";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -32,13 +35,14 @@ function App() {
 
   const getCurrentUser = useCallback(async () => {
     if (user && user.id) {
+      dispatch(setLoadingTrue());
       const response = await UserService.getCurrentUser(user.id);
-      console.log(response);
       if (response.user) {
         toast.success("Welcome Back!");
         dispatch(setUser({ user: response.user }));
         dispatch(fetchEventsFromBackend(response.user.id));
       }
+      dispatch(setLoadingFalse());
     }
   }, []);
 
@@ -87,6 +91,7 @@ function App() {
         <ProfileModel isOpen={isProfileOpen} onClose={toggleProfileModel} />
       </ProtectedComp>
       <Toaster position="bottom-right" />
+      <LoadingComp />
     </div>
   );
 }

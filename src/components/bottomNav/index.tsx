@@ -8,6 +8,8 @@ import {
   resetState,
   setUser,
   toggleDrawer,
+  setLoadingFalse,
+  setLoadingTrue,
   toggleProfile,
 } from "../../redux/appSlice";
 import { motion } from "framer-motion";
@@ -60,12 +62,14 @@ const BottomNav: React.FC<BottomNavProps> = ({ onClickAction }) => {
   const user = useAppSelector(getUser);
 
   const handleViewUserDetails = async () => {
+    dispatch(setLoadingTrue());
     const response = await UserService.getCurrentUser(user.id);
     if (response.user) {
       dispatch(setUser({ user: response.user }));
       dispatch(fetchEventsFromBackend(response.user.id));
     }
     dispatch(toggleProfile());
+    dispatch(setLoadingFalse());
   };
   const handleAddEvent = () => dispatch(toggleDrawer());
   const handleLogout = async () => {

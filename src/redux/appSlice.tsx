@@ -30,6 +30,7 @@ interface AppState {
   selectedEventID: string | null;
   user: any;
   isProfileOpen: boolean;
+  isLoading: boolean;
 }
 
 const initialState: AppState = {
@@ -43,6 +44,7 @@ const initialState: AppState = {
   selectedEventID: null,
   user: null,
   isProfileOpen: false,
+  isLoading: false,
 };
 
 const appSlice = createSlice({
@@ -105,6 +107,12 @@ const appSlice = createSlice({
     resetState: (state) => {
       Object.assign(state, initialState); // Reset state to initial values
     },
+    setLoadingTrue: (state) => {
+      state.isLoading = true;
+    },
+    setLoadingFalse: (state) => {
+      state.isLoading = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -134,9 +142,12 @@ export const {
   toggleProfile,
   openProfile,
   closeProfile,
+  setLoadingTrue,
+  setLoadingFalse,
 } = appSlice.actions;
 
 export const getDrawerState = (state: RootState) => state.app.isDrawerOpen;
+export const getIsLoading = (state: RootState) => state.app.isLoading;
 export const getProfilePageState = (state: RootState) =>
   state.app.isProfileOpen;
 export const getViewSelected = (state: RootState) => state.app.viewSelected;

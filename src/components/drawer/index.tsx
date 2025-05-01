@@ -12,6 +12,8 @@ import {
   fetchEventsFromBackend,
   getSelectedEvent,
   setSelectedEventID,
+  setLoadingFalse,
+  setLoadingTrue,
 } from "../../redux/appSlice";
 import { motion } from "framer-motion";
 import {
@@ -93,6 +95,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
   };
 
   const getSelectedEventDetails = async (eventID: string) => {
+    dispatch(setLoadingTrue());
     const response = await UserService.getEvent(user.id, eventID);
     if (response.msg) {
       toast.error(response.msg);
@@ -106,6 +109,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
       setEvent(transformedEventDetails);
       setEventTime(convertTo12Hour(eventDetails.event_time));
     }
+    dispatch(setLoadingFalse());
   };
 
   const handleFormSubmit = async () => {
@@ -118,9 +122,10 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
     };
 
     let result;
-
+    dispatch(setLoadingTrue());
     if (selectedEventID) {
       // Update current Event Flow
+
       result = await UserService.updateEvent(selectedEventID, {
         ...formattedEvent,
         userID: user.id,
@@ -132,7 +137,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
         userID: user.id,
       });
     }
-
+    dispatch(setLoadingFalse());
     if (!result.event) {
       toast.error("Something went wrong!");
     } else {
@@ -145,11 +150,13 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, top, left }) => {
 
   const handleDeleteEvent = async () => {
     if (selectedEventID) {
+      dispatch(setLoadingTrue());
       await UserService.deleteEvent(user.id, selectedEventID);
       dispatch(fetchEventsFromBackend(user.id));
       setEvent(eventDefault);
       dispatch(closeDrawer());
       dispatch(setSelectedEventID({ eventID: null }));
+      dispatch(setLoadingFalse());
     }
   };
 

@@ -6,7 +6,12 @@ import Button from "../../components/button";
 import { motion } from "framer-motion";
 import Footer from "../../components/footer";
 import { useAppDispatch } from "../../redux/store";
-import { fetchEventsFromBackend, setUser } from "../../redux/appSlice";
+import {
+  fetchEventsFromBackend,
+  setLoadingFalse,
+  setLoadingTrue,
+  setUser,
+} from "../../redux/appSlice";
 import AuthService from "../../services/AuthService";
 import toast from "react-hot-toast";
 import wind_clouds from "../../assets/animations/wind_cloud.json";
@@ -112,6 +117,8 @@ function LoginView() {
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
+    dispatch(setLoadingTrue());
+
     if (!isRegister) {
       // Login Flow
       const payload = {
@@ -143,6 +150,8 @@ function LoginView() {
         toast.success("Registration Successful!");
       }
     }
+
+    dispatch(setLoadingFalse());
   };
 
   useEffect(() => {
