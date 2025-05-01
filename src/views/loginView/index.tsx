@@ -9,6 +9,10 @@ import { useAppDispatch } from "../../redux/store";
 import { fetchEventsFromBackend, setUser } from "../../redux/appSlice";
 import AuthService from "../../services/AuthService";
 import toast from "react-hot-toast";
+import wind_clouds from "../../assets/animations/wind_cloud.json";
+import AnimationContainer from "../../components/AnimationContainer";
+import cloud from "../../assets/animations/clouds.json";
+import bird_flying from "../../assets/animations/bird_flying.json";
 
 function generatePositions() {
   const fields = [
@@ -18,13 +22,17 @@ function generatePositions() {
     "Password",
     "Verify Password",
   ];
+
   const positions: Record<string, { top: string; left: string }> = {};
+  const minLeft = 30;
+  const maxLeft = 50;
+  const topStart = 8;
+  const topGap = 10;
 
   fields.forEach((field, index) => {
-    positions[field] = {
-      top: `${8 + index * 10}vh`,
-      left: `${Math.random() * 60 + 10}vw`,
-    };
+    const top = `${topStart + index * topGap}vh`;
+    const left = `${Math.random() * (maxLeft - minLeft) + minLeft}vw`;
+    positions[field] = { top, left };
   });
 
   return positions;
@@ -40,6 +48,8 @@ function LoginView() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isRegister, setIsRegister] = useState(true);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenHeight, setScreenHeight] = useState(window.innerHeight);
   const dispatch = useAppDispatch();
 
   const positionRef = useRef(generatePositions());
@@ -136,6 +146,15 @@ function LoginView() {
   };
 
   useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+      setScreenHeight(window.innerHeight);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
     setRegisterData({
       firstName: "",
       lastName: "",
@@ -185,6 +204,27 @@ function LoginView() {
           onClick={handleSubmit}
         />
         <Footer />
+      </div>
+      <div className={`${styles.animationContainer} ${styles.windmill}`}>
+        <AnimationContainer
+          animationData={wind_clouds}
+          height={screenHeight * 0.9}
+          width={screenHeight * 0.9}
+        />
+      </div>
+      <div className={`${styles.animationContainer} ${styles.cloudsA}`}>
+        <AnimationContainer
+          animationData={cloud}
+          height={screenWidth * 0.5}
+          width={screenWidth * 1.0}
+        />
+      </div>
+      <div className={`${styles.animationContainer}`}>
+        <AnimationContainer
+          animationData={bird_flying}
+          height={screenHeight * 0.4}
+          width={screenWidth * 1.0}
+        />
       </div>
     </>
   );

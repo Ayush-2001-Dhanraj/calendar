@@ -1,7 +1,9 @@
 .app {
     height: 100vh;
     display: flex;
-    border: 10px double;
+    border: 20px solid;
     box-sizing: border-box;
     flex-direction: column;
+    position: relative;
+    overflow: hidden;
 }

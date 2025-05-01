@@ -49,7 +49,7 @@
 }
 
 .toggleViewBtn {
-    font-size: 14px;
+    font-size: 10px;
     cursor: pointer;
     padding: 4px;
     border-radius: 4px;
@@ -64,4 +64,26 @@
 .errorText {
     color: red;
     font-size: 12px;
+}
+
+.animationContainer {
+    position: absolute;
+    z-index: -1;
+}
+
+.windmill {
+    bottom: -15%;
+    left: 0;
+
+    @media (max-width:481px) {
+        left: -50%;
+    }
+}
+
+.cloudsA {
+    top: -50%;
+
+    @media (max-width:481px) {
+        top: -10%;
+    }
 }
