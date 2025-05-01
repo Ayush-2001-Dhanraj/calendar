@@ -7,7 +7,6 @@ const apiRequest = async (method: string, url: string, data = {}) => {
       method: method,
       url: `${BASE_URL}${url}`,
       data: data,
-      withCredentials: true,
     };
 
     const response = await axios(config);
