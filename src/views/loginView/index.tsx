@@ -18,6 +18,7 @@ import wind_clouds from "../../assets/animations/wind_cloud.json";
 import AnimationContainer from "../../components/AnimationContainer";
 import cloud from "../../assets/animations/clouds.json";
 import bird_flying from "../../assets/animations/bird_flying.json";
+import landscape_1 from "../../assets/images/landscape_1.png";
 
 function generatePositions() {
   const fields = [
@@ -234,6 +235,9 @@ function LoginView() {
           height={screenHeight * 0.4}
           width={screenWidth * 1.0}
         />
+      </div>
+      <div className={`${styles.animationContainer} ${styles.landScapeImg}`}>
+        <img src={landscape_1} className={styles.landscapeImage} />
       </div>
     </>
   );
