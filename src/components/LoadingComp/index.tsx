@@ -1,6 +1,5 @@
 import React from "react";
 import loading_bird from "../../assets/animations/loading_bird.json";
-import egging_bird from "../../assets/animations/bird_egging.json";
 import AnimationContainer from "../AnimationContainer";
 import styles from "./LoadingComp.module.css";
 import { useAppSelector } from "../../redux/store";

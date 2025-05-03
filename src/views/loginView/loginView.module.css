@@ -116,7 +116,7 @@
     object-fit: cover;
 
     @media (max-width:1300px) {
-        width: 150%;
+        width: 110%;
     }
 
     @media (max-width:850px) {

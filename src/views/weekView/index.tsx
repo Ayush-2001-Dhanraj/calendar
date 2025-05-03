@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./weekView.module.css";
 import { WeekProps, CalendarEvent } from "../../common/interfaces";
 import { weekHeads, monthHeads, hoursOfDay } from "../../common";
@@ -14,11 +14,10 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { motion } from "framer-motion";
 import { convertTo12Hour } from "../../utils/dateTimeHelpers";
-import treeImage from "../../assets/images/tree_1.png";
 import rockImage from "../../assets/images/rock_1.png";
 import AnimationContainer from "../../components/AnimationContainer";
-import brightButterfly from "../../assets/animations/brightButterfly.json";
 import blueButterfly from "../../assets/animations/blueButterfly.json";
+import catLookup from "../../assets/animations/cat_lookup.json";
 
 export default function WeekView({ week }: WeekProps) {
   const events = useAppSelector(getEvents);
@@ -226,6 +225,27 @@ export default function WeekView({ week }: WeekProps) {
           );
         })}
       </div>
+
+      <>
+        <div className={styles.rockImgContainer}>
+          <img src={rockImage} className={styles.rockImage} />
+        </div>
+
+        <div className={`${styles.animationContainer} ${styles.butterFly}`}>
+          <AnimationContainer
+            animationData={blueButterfly}
+            height={250}
+            width={250}
+          />
+        </div>
+        <div className={`${styles.animationContainer} ${styles.catLookup}`}>
+          <AnimationContainer
+            animationData={catLookup}
+            height={250}
+            width={250}
+          />
+        </div>
+      </>
     </>
   );
 }

@@ -10,3 +10,29 @@
     flex: 1;
     padding: 10px;
 }
+
+.rockImgContainer {
+    position: absolute;
+    z-index: -1;
+    bottom: -20%;
+    left: 0;
+    transform: rotate(-45deg);
+}
+
+.rockImage {
+    width: 20vw;
+}
+
+.animationContainer {
+    position: absolute;
+    z-index: -1;
+}
+
+.butterFly {
+    bottom: 0;
+}
+
+.dogSitting {
+    bottom: -10%;
+    right: 2%;
+}
