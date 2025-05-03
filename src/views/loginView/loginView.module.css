@@ -83,8 +83,16 @@
 .cloudsA {
     top: -50%;
 
-    @media (max-width:481px) {
+    @media (max-width:1300px) {
+        top: -20%;
+    }
+
+    @media (max-width:850px) {
         top: -10%;
+    }
+
+    @media (max-width:450px) {
+        top: -7%;
     }
 }
 
@@ -97,16 +105,25 @@
     }
 
     @media (max-width:850px) {
-        bottom: -20%;
+        bottom: -30%;
     }
 
-    @media (max-width:450px) {
-        bottom: -10%;
-    }
 }
 
 .landscapeImage {
     height: auto;
     width: 100%;
     object-fit: cover;
+
+    @media (max-width:1300px) {
+        width: 150%;
+    }
+
+    @media (max-width:850px) {
+        width: 200%;
+    }
+
+    @media (max-width:450px) {
+        width: 300%;
+    }
 }
