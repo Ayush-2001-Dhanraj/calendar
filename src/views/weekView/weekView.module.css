@@ -123,10 +123,28 @@
     bottom: -20%;
     left: 0;
     transform: rotate(-45deg);
+
+    @media (max-width:850px) {
+        bottom: -15%;
+        left: 6%;
+    }
+
+    @media (max-width:450px) {
+        bottom: -10%;
+        left: 10%;
+    }
 }
 
 .rockImage {
     width: 20vw;
+
+    @media (max-width:850px) {
+        width: 30vw;
+    }
+
+    @media (max-width:450px) {
+        width: 45vw;
+    }
 }
 
 .animationContainer {
