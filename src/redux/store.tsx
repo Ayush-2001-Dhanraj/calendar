@@ -8,6 +8,7 @@ import appReducer from "./appSlice";
 const persistConfig = {
   key: "app", // Key to store in localStorage
   storage, // Defines the storage engine
+  blacklist: ["isLoading"],
 };
 
 const persistedAppReducer = persistReducer(persistConfig, appReducer);
